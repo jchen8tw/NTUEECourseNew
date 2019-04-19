@@ -10,8 +10,13 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { authenticated: false };
   }
+
+  setAuthentication = authenticated => {
+    this.setState({ authenticated: authenticated });
+  };
+
   render() {
     return (
       <BrowserRouter>
@@ -20,8 +25,19 @@ class App extends Component {
             Select
           </Button>
           <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route path="/select" component={Select} />
+            <Route
+              exact
+              path="/login"
+              render={props => (
+                <Login {...props} setAuthentication={this.setAuthentication} />
+              )}
+            />
+            <Route
+              path="/select"
+              render={props => (
+                <Select {...props} authenticated={this.state.authenticated} />
+              )}
+            />
             <Redirect from="/" to="/login" />
           </Switch>
         </div>

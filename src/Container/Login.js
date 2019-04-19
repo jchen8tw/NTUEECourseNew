@@ -4,14 +4,18 @@ import { Redirect } from 'react-router-dom';
 class Login extends Component {
   constructor(props) {
     super(props);
-    console.log(Login);
     this.state = { loginState: Login.loginStates.Default };
+    if (props.location.state && props.location.state.notLogin)
+      alert('You are not allowed to view this page, please login first!');
   }
 
   handleLogin = () => {
     this.setState({ loginState: Login.loginStates.Waiting });
     setTimeout(
-      () => this.setState({ loginState: Login.loginStates.Authenticated }), // Dummy function, simulating server authentication
+      () => {
+        this.props.setAuthentication(true); // Need to change authentication before changing state
+        this.setState({ loginState: Login.loginStates.Authenticated });
+      }, // Dummy function, simulating server authentication
       3000
     );
   };
