@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { TextField, Button, Paper, LinearProgress } from '@material-ui/core';
 
+import SnackBar from '../Components/SnackBar';
+
+const style = {
+  container: {
+    margin: '0 auto',
+    maxWidth: '450px',
+    padding: '5%',
+    display: 'flex',
+    flexDirection: 'column'
+  }
+};
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -21,22 +35,29 @@ class Login extends Component {
   };
 
   render() {
+    const classes = this.props.classes;
     return (
-      <React.Fragment>
-        <p>This is login page</p>
+      <Paper className={classes.container}>
+        <h1>選課系統</h1>
+        <TextField label="帳號" margin="dense" />
+        <TextField label="密碼" type="password" margin="dense" />
+        <Button onClick={this.handleLogin}>Login</Button>
         {Login.reaction[this.state.loginState]}
-        <button onClick={this.handleLogin}>Login</button>
-      </React.Fragment>
+      </Paper>
     );
   }
 }
 
 Login.loginStates = { Default: 0, Waiting: 1, Authenticated: 2, Failed: 3 };
 Login.reaction = [
-  <p>Press `Login` to login!</p>,
-  <p>Loading... Please wait</p>,
+  '',
+  <LinearProgress />,
   <Redirect from="/login" to="/select" />,
-  <p>Authentication failed, please try again</p>
+  <SnackBar variant="error" message="Authentication failed, please try again" />
 ];
 
-export default Login;
+Login.propTypes = {
+  setAuthentication: PropTypes.func.isRequired,
+  location: PropTypes.object
+};
+export default withStyles(style)(Login);
