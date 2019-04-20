@@ -21,9 +21,6 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Button component={NavLink} to="/select">
-            Select
-          </Button>
           <Switch>
             <Route
               exact

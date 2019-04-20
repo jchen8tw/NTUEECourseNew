@@ -52,24 +52,31 @@ class Login extends Component {
   render() {
     const failed = this.state.loginState === Login.loginStates.Failed;
     return (
-      <Paper className={style.container}>
-        <h1>選課系統</h1>
-        <TextField
-          autoFocus={true}
-          error={failed}
-          label="帳號"
-          margin="dense"
-        />
-        <TextField error={failed} label="密碼" type="password" margin="dense" />
-        <Button onClick={this.handleLogin}>Login</Button>
-        {Login.reaction[this.state.loginState]}
-        <Button onClick={this.fireError}>Test Error</Button>
-        <ErrorSnackbar
-          open={failed}
-          onClose={this.handleClose}
-          message="Authentication failed, please try again"
-        />
-      </Paper>
+      <div className={style.centerVertically}>
+        <Paper className={style.container}>
+          <h1 className={style.title}>選課系統</h1>
+          <TextField
+            autoFocus={true}
+            error={failed}
+            label="帳號"
+            margin="dense"
+          />
+          <TextField
+            error={failed}
+            label="密碼"
+            type="password"
+            margin="dense"
+          />
+          <Button onClick={this.handleLogin}>Login</Button>
+          {Login.reaction[this.state.loginState]}
+          <Button onClick={this.fireError}>Test Error</Button>
+          <ErrorSnackbar
+            open={failed}
+            onClose={this.handleClose}
+            message="Authentication failed, please try again"
+          />
+        </Paper>
+      </div>
     );
   }
 }
