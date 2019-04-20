@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import { TextField, Button, Paper, LinearProgress } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Paper,
+  LinearProgress,
+  Snackbar
+} from '@material-ui/core';
 
-import SnackBar from '../Components/SnackBar';
+import SnackbarContent from '../Components/SnackbarContent';
+import style from './Login.module.css';
 
-const style = {
-  container: {
-    margin: '0 auto',
-    maxWidth: '450px',
-    padding: '5%',
-    display: 'flex',
-    flexDirection: 'column'
-  }
-};
+const ErrorSnackbar = ({ open, onClose, message }) => (
+  <Snackbar
+    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+    open={open}
+    autoHideDuration={2200}
+    onClose={onClose}
+  >
+    <SnackbarContent variant="error" message={message} onClose={onClose} />
+  </Snackbar>
+);
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -34,15 +41,34 @@ class Login extends Component {
     );
   };
 
+  fireError = () => {
+    this.setState({ loginState: Login.loginStates.Failed });
+  };
+
+  handleClose = () => {
+    this.setState({ loginState: Login.loginStates.Default });
+  };
+
   render() {
-    const classes = this.props.classes;
+    const failed = this.state.loginState === Login.loginStates.Failed;
     return (
-      <Paper className={classes.container}>
+      <Paper className={style.container}>
         <h1>選課系統</h1>
-        <TextField label="帳號" margin="dense" />
-        <TextField label="密碼" type="password" margin="dense" />
+        <TextField
+          autoFocus={true}
+          error={failed}
+          label="帳號"
+          margin="dense"
+        />
+        <TextField error={failed} label="密碼" type="password" margin="dense" />
         <Button onClick={this.handleLogin}>Login</Button>
         {Login.reaction[this.state.loginState]}
+        <Button onClick={this.fireError}>Test Error</Button>
+        <ErrorSnackbar
+          open={failed}
+          onClose={this.handleClose}
+          message="Authentication failed, please try again"
+        />
       </Paper>
     );
   }
@@ -53,11 +79,11 @@ Login.reaction = [
   '',
   <LinearProgress />,
   <Redirect from="/login" to="/select" />,
-  <SnackBar variant="error" message="Authentication failed, please try again" />
+  ''
 ];
 
 Login.propTypes = {
   setAuthentication: PropTypes.func.isRequired,
   location: PropTypes.object
 };
-export default withStyles(style)(Login);
+export default Login;

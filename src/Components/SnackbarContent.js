@@ -39,7 +39,7 @@ const styles = theme => ({
   }
 });
 
-function SnackBar(props) {
+function SnackbarContentWrapper(props) {
   const { classes, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
@@ -69,7 +69,7 @@ function SnackBar(props) {
   );
 }
 
-SnackBar.propTypes = {
+SnackbarContentWrapper.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   message: PropTypes.node,
@@ -77,4 +77,4 @@ SnackBar.propTypes = {
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired
 };
 
-export default withStyles(styles)(SnackBar);
+export default withStyles(styles)(SnackbarContentWrapper);
