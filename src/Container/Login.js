@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import {Button} from '@material-ui/core';
+
 
 class Login extends Component {
   constructor(props) {
@@ -25,7 +27,7 @@ class Login extends Component {
       <React.Fragment>
         <p>This is login page</p>
         {Login.reaction[this.state.loginState]}
-        <button onClick={this.handleLogin}>Login</button>
+        <Button onClick={this.handleLogin}>Login</Button>
       </React.Fragment>
     );
   }
