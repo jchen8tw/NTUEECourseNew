@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const StudentSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
-  id: { type: String, required: true, index: true, unique: true }
+  id: { type: String, required: true, index: true, unique: true },
+  hashedPassword: { type: String, required: true },
+  token: { type: String }
 });
 
 const CourseSchema = new mongoose.Schema({

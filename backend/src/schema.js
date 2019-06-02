@@ -6,11 +6,16 @@ const schema = gql`
   type Query {
     allCourseGroups: [CourseGroup!]!
     me(student_id: String!): Student
-    token: String
   }
 
   type Mutation {
-    addUser(student_id: String!): Student # Admin only
+    createStudent(data: LoginInput!): Student # Admin only
+    login(data: LoginInput!): Token
+  }
+
+  input LoginInput {
+    student_id: String!
+    password: String! # Assume HTTPS is used
   }
 
   type Student {
@@ -29,6 +34,10 @@ const schema = gql`
     _id: ID!
     courses: [Course!]!
     name: String!
+  }
+
+  type Token {
+    raw: String
   }
 `;
 
