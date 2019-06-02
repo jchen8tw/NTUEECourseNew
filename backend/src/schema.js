@@ -37,7 +37,7 @@ const schema = gql`
   }
 
   type Token {
-    raw: String
+    raw: String!
   }
 `;
 

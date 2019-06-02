@@ -10,7 +10,11 @@ const Mutation = {
   async login(_, { data }, context) {
     const { student_id, password } = data;
     const student = await Student.findOne({ id: student_id }).exec();
-    if (!student) return null;
+    if (!student)
+      throw new Error(
+        'Authentication failed: User not found, please try again'
+      );
+    // It is easy to tell if a student ID exist or not, so showing this error is acceptable
     const same = await context.passwordProcessor.compare(
       password,
       student.hashedPassword
@@ -23,7 +27,7 @@ const Mutation = {
       await student.save().catch(err => console.log(err.errmsg));
       return { raw: token };
     }
-    return null;
+    throw new Error('Authentication failed: Wrong password, please try again');
   }
 };
 

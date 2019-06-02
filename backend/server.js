@@ -5,7 +5,7 @@ const PasswordProcessor = require('./src/PasswordProcessor.js');
 const resolvers = require('./src/resolver.js');
 const typeDefs = require('./src/schema.js');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const saltRounds = 10;
 const secret = 'TODO: replace this with better secret';
 

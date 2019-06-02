@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { NavLink, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './Container/Login';
 import Select from './Container/Select';
-import { Button } from '@material-ui/core';
 
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { authenticated: false };
+    this.state = { token: null };
   }
 
-  setAuthentication = authenticated => {
-    this.setState({ authenticated: authenticated });
+  setToken = token => {
+    this.setState({ token: token });
   };
 
   render() {
@@ -25,14 +24,12 @@ class App extends Component {
             <Route
               exact
               path="/login"
-              render={props => (
-                <Login {...props} setAuthentication={this.setAuthentication} />
-              )}
+              render={props => <Login {...props} setToken={this.setToken} />}
             />
             <Route
               path="/select"
               render={props => (
-                <Select {...props} authenticated={this.state.authenticated} />
+                <Select {...props} authenticated={!!this.state.token} />
               )}
             />
             <Redirect from="/" to="/login" />
