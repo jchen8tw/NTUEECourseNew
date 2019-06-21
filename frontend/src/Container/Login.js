@@ -60,7 +60,10 @@ function LoginForm({ login, data, loading, error }) {
       <ErrorSnackbar
         open={failed && !snackbarTriggered}
         onClose={() => setSnackbarTriggered(true)}
-        message={error && error.graphQLErrors[0].message}
+        message={
+          (error && error.graphQLErrors[0] && error.graphQLErrors[0].message) ||
+          'Authentication Failed'
+        }
       />
     </form>
   );
