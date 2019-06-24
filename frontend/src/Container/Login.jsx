@@ -64,7 +64,7 @@ function LoginForm({ login, data, loading, error }) {
       />
       <Button type="submit">Login</Button>
       {loading && <LinearProgress />}
-      {data && <Redirect from="/login" to="/select" />}
+      {data && <Redirect from="/login" to="/dashboard" />}
       <ErrorSnackbar
         open={failed && !snackbarTriggered}
         onClose={() => setSnackbarTriggered(true)}
