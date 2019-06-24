@@ -22,9 +22,9 @@ const passwordProcessor = new PasswordProcessor(saltRounds, secret);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: {
+  context: ({req}) =>({
     passwordProcessor
-  }
+  })
 });
 const app = express();
 server.applyMiddleware({ app });
