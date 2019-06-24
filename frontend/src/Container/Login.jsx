@@ -13,6 +13,14 @@ import {
 
 import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
+import { connect } from 'react-redux';
+import {Store_jwt} from '../redux/actions';
+
+const mapDispatchToProps = dispatch => {
+  console.log(dispatch);
+  console.log(Store_jwt);
+  return { setToken: jwt => dispatch(Store_jwt(jwt)) };
+};
 
 const ErrorSnackbar = ({ open, onClose, message }) => (
   <Snackbar
@@ -97,9 +105,12 @@ function Login(props) {
     </div>
   );
 }
-
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
   location: PropTypes.object
 };
-export default Login;
+const connectedLogin = connect(
+  null,
+  mapDispatchToProps
+)(Login);
+export default connectedLogin;
