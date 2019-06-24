@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from "react-redux";
 const mapStateToProps = state => {
-  return {authenticated : !!state.jwt};
+  return {authenticated : state.jwt};
 }
 class Select extends Component {
   render() {
-    const authenticated = this.props.authenticated;
+    const authenticated = !!this.props.authenticated;
     if (!authenticated)
       return (
         <Redirect

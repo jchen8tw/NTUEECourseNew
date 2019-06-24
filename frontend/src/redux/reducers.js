@@ -12,7 +12,7 @@ function rootReducer(state = initialState,action){
             return Object.assign({},initialState);
         }
         else{
-            return Object.assign({},state,localStorage.getItem("jwt"));
+            return Object.assign({},state,{jwt: localStorage.getItem("jwt")});
         }
     }
 }

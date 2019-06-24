@@ -21,11 +21,13 @@ const schema = gql`
   type Student {
     _id: ID!
     id: String!
+    nickname: String
+    fullname: String
   }
 
   type Course {
     _id: ID!
-    capacity: Int!
+    limit: Int!
     group: CourseGroup
     teacher: String!
   }
@@ -34,6 +36,7 @@ const schema = gql`
     _id: ID!
     courses: [Course!]!
     name: String!
+    grade: Int!
   }
 
   type Token {
