@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './Container/Login';
 import Select from './Container/Select';
+import Admin from './Container/Admin';
 
 import './App.css';
 
@@ -32,6 +33,7 @@ class App extends Component {
                 <Select {...props} authenticated={!!this.state.token} />
               )}
             />
+            <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>
         </div>
