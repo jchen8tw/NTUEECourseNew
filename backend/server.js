@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const PasswordProcessor = require('./src/PasswordProcessor.js');
 const resolvers = require('./src/resolver.js');
 const typeDefs = require('./src/schema.js');
+const { Student } = require('./src/model.js');
 
 const port = process.env.PORT || 8000;
 const saltRounds = 10;
@@ -22,14 +23,25 @@ const passwordProcessor = new PasswordProcessor(saltRounds, secret);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({req}) =>({
-    passwordProcessor
-  })
+  context: async ({ req, res }) => {
+    const auth = req.headers.authorization || '';
+    const token = passwordProcessor.isValid(auth) ? auth : null;
+    // Assume user is valid if the token is valid
+    // The context is regenerated upon each request
+    return {
+      res,
+      token,
+      passwordProcessor
+    };
+  }
 });
 const app = express();
 server.applyMiddleware({ app });
 
 app.use(express.static('../frontend/build'));
+app.use((req, res, next) => {
+  res.redirect('/'); // Redirect 404 to root
+});
 
 app.listen(port, () =>
   console.log(`

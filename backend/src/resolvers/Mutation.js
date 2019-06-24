@@ -20,12 +20,19 @@ const Mutation = {
       student.hashedPassword
     );
     if (same) {
-      if (context.passwordProcessor.isValid(student.token))
-        return { raw: student.token };
-      const token = await context.passwordProcessor.issueToken(student_id);
-      student.token = token;
-      await student.save().catch(err => console.log(err.errmsg));
-      return { raw: token };
+      let raw = null;
+      if (context.passwordProcessor.isValid(student.token)) raw = student.token;
+      else {
+        const token = await context.passwordProcessor.issueToken(student_id);
+        student.token = token;
+        await student.save().catch(err => console.log(err.errmsg));
+        raw = token;
+      }
+      context.res.cookie('authorization', raw, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 3 // 3 hours
+      });
+      return { raw };
     }
     throw new Error('Authentication failed: Wrong password, please try again');
   }
