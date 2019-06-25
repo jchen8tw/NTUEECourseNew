@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Login from './Container/Login';
 import Select from './Container/Select';
 import Admin from './Container/Admin';
-import BreadCrumbs from './Components/Breadcrumbs';
+
 
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
@@ -33,7 +33,6 @@ class App extends Component {
                 handleTabChange={this.handleTabChange}
               />
             )}
-            {this.props.token && <BreadCrumbs />}
           <Switch>
             <Route exact path="/login" render={props => <Login {...props} />} />
             {!this.props.token && (
