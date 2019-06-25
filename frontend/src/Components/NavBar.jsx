@@ -12,6 +12,9 @@ const styles = {
   },
   tabs: {
     flexGrow: 1
+  },
+  toolbar: {
+    minHeight: '100%'
   }
 };
 
@@ -26,7 +29,7 @@ function NavBar({ classes, tabIndex, handleTabChange }) {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Tabs
             className={classes.tabs}
             centered

@@ -1,17 +1,13 @@
 .container {
   margin: 0 auto;
-  max-width: 450px;
+  width: auto;
+  min-width: 300px;
   padding: 5%;
 }
 
 .container > form {
   display: flex;
   flex-direction: column;
-}
-
-.centerVertically {
-  display: table-cell;
-  vertical-align: middle;
 }
 
 @media screen and (max-width: 500px) {
