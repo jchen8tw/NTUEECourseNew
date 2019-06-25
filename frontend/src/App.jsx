@@ -17,6 +17,11 @@ class App extends Component {
     super(props);
     this.state = { tabIndex: 0 };
   }
+
+  handleTabChange = (_, tabIndex) => {
+    this.setState({ tabIndex });
+  };
+
   render() {
     return (
       <BrowserRouter>
