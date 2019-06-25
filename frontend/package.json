@@ -8,6 +8,8 @@
     "@material-ui/icons": "^3.0.2",
     "apollo-boost": "^0.4.0",
     "babel-polyfill": "^6.26.0",
+    "apollo-client": "^2.6.3",
+    "apollo-link-context": "^1.0.18",
     "classnames": "^2.2.6",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",

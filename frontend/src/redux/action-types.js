@@ -1,1 +1,3 @@
-export const STORE_JWT = "STORE_JWT";
+const STORE_JWT = "STORE_JWT";
+const GET_COURSE_INFO = "GET_COURSE_INFO";
+export { STORE_JWT, GET_COURSE_INFO};

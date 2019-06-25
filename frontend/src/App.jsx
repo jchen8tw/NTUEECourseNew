@@ -43,9 +43,7 @@ class App extends Component {
             <Route path="/select" render={props => <Select {...props} />} />
             <Route
               path="/dashboard"
-              render={props => (
-                <Dashboard {...props} authenticated={!!this.state.token} />
-              )}
+              component={Dashboard}
             />
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
