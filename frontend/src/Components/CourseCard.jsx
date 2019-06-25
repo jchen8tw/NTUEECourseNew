@@ -11,13 +11,18 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = {
   card: {
-    minWidth: 250,
-    margin: '1rem 1.2rem'
+    // height: '260px',
+    margin: '1rem 1.2rem',
+    width: 'auto'
+  },
+  actionArea: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    height: '100%',
+    textAlign: 'left'
   },
   media: {
-    minHeight: 180,
-    backgroundPosition: 'top',
-    backgroundSize: 'cover'
+    width: '100%'
   }
 };
 
@@ -25,10 +30,22 @@ function CourseCard(props) {
   const { classes, name, image, choices } = props;
   return (
     <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={image} title={name} />
+      <CardActionArea className={classes.actionArea}>
+        <div style={{ height: '100%' }}>
+          <CardMedia
+            className={classes.media}
+            image={image}
+            title={name}
+            component="img"
+          />
+        </div>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="h2"
+            style={{ whiteSpace: 'nowrap' }}
+          >
             {name}
           </Typography>
           {choices &&
