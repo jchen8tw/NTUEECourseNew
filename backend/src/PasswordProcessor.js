@@ -42,7 +42,9 @@ class PasswordProcessor {
    * @param {String!} token
    * @returns {bool} validity
    */
-  isValid(token) {
+  //check if jwt is valid
+  //if expired or id doesn't equal to the id in payload return false
+  isValid(token){
     try {
       jwt.verify(token, this.secret);
       return true;
