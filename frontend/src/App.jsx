@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={style.app}>
-          {this.props.token && (
+          {this.props.token &&  (
             <NavBar
               tabIndex={this.state.tabIndex}
               handleTabChange={this.handleTabChange}
