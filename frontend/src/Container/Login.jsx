@@ -85,8 +85,8 @@ const LOGIN_MUTATION = gql`
   }
 `;
 function Login(props) {
-  if (props.location.state && props.location.state.notLogin)
-    alert('You are not allowed to view this page, please login first!');
+  //if (props.location.state && props.location.state.notLogin)
+    //alert('You are not allowed to view this page, please login first!');
   if (!!props.jwt) {
     return <Redirect from="/login" to="/dashboard" />;
     // so select needs to check if token is valid
