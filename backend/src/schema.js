@@ -11,21 +11,28 @@ const schema = gql`
   type Mutation {
     createStudent(data: LoginInput!): Student # Admin only
     login(data: LoginInput!): Token
+    adminSubmit(data: AdminInput!): Message
   }
 
   input LoginInput {
     student_id: String!
     password: String! # Assume HTTPS is used
   }
-
+  input AdminInput {
+    title: String
+    content: String
+  }
   type Student {
     _id: ID!
     id: String!
+    nickname: String!
+    fullname: String!
   }
 
   type Course {
     _id: ID!
-    capacity: Int!
+    name: String!
+    limit: Int!
     group: CourseGroup
     teacher: String!
   }
@@ -34,10 +41,15 @@ const schema = gql`
     _id: ID!
     courses: [Course!]!
     name: String!
+    grade: Int!
   }
 
   type Token {
     raw: String!
+  }
+
+  type Message {
+    message: String!
   }
 `;
 
