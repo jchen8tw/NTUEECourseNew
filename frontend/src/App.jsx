@@ -5,23 +5,21 @@ import Select from './Container/Select';
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
 import './App.css';
+import { connect } from 'react-redux';
 
+const mapStateToProps = state => {
+  return { token: state.jwt };
+};
 class App extends Component {
-  /*
   constructor(props) {
     super(props);
-    this.state = { token: null, tabIndex: 0 };
+    this.state = { tabIndex: 0 };
   }
-  setToken = token => {
-    this.setState({ token: token });
-  };
-*/
-
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          {this.state.token && (
+          {this.props.token && (
             <NavBar
               tabIndex={this.state.tabIndex}
               handleTabChange={this.handleTabChange}
@@ -29,24 +27,24 @@ class App extends Component {
           )}
           <Switch>
             <Route exact path="/login" render={props => <Login {...props} />} />
-            <Route
-              path="/select"
-              render={props => (
-                <Select {...props} />
-              )}
-            />
+            {!this.props.token  && (
+              <Redirect
+                from="*"
+                to={{ pathname: '/login', state: { notLogin: true } }}
+              />
+            )}
+            <Route path="/select" render={props => <Select {...props} />} />
             <Route
               path="/dashboard"
               render={props => (
                 <Dashboard {...props} authenticated={!!this.state.token} />
               )}
             />
-            <Redirect from="/" to="/login" />
           </Switch>
         </div>
       </BrowserRouter>
     );
   }
 }
-
-export default App;
+const connectedApp = connect(mapStateToProps)(App);
+export default connectedApp;

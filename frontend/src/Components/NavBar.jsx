@@ -35,7 +35,7 @@ function NavBar({ classes, tabIndex, handleTabChange }) {
             scrollButtons="auto"
           >
             <EnlargedTab label="Home" component={Link} to="/dashboard" />
-            <EnlargedTab label="選課" component={Link} to="/dashboard" />
+            <EnlargedTab label="選課" component={Link} to="/select" />
             <EnlargedTab label="評價" component={Link} to="/dashboard" />
             <EnlargedTab
               label="Sweety Course"

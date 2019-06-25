@@ -6,14 +6,6 @@ const mapStateToProps = state => {
 }
 class Select extends Component {
   render() {
-    const authenticated = !!this.props.authenticated;
-    if (!authenticated)
-      return (
-        <Redirect
-          from="/select"
-          to={{ pathname: '/login', state: { notLogin: true } }}
-        />
-      );
     return <p>This is select</p>;
   }
 }

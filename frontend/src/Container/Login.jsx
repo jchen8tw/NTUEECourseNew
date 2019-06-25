@@ -88,7 +88,7 @@ function Login(props) {
   if (props.location.state && props.location.state.notLogin)
     alert('You are not allowed to view this page, please login first!');
   if(!!props.jwt){
-    return <Redirect from='/login' to='select'></Redirect>
+    return <Redirect from='/login' to='/dashboard'></Redirect>
     // so select needs to check if token is valid
     // if not, select will delete the token
   }
