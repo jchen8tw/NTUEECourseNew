@@ -14,14 +14,14 @@ import {
 import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
 import { connect } from 'react-redux';
-import { Store_jwt } from '../redux/actions';
+import { store_jwt } from '../redux/actions';
 
 const mapDispatchToProps = dispatch => {
-  return { setToken: jwt => dispatch(Store_jwt(jwt)) };
+  return { setToken: jwt => dispatch(store_jwt(jwt)) };
 };
 const mapStateToProps = state => {
-  return {jwt: state.jwt};
-}
+  return { jwt: state.jwt };
+};
 const ErrorSnackbar = ({ open, onClose, message }) => (
   <Snackbar
     anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -85,28 +85,23 @@ const LOGIN_MUTATION = gql`
   }
 `;
 function Login(props) {
-  if (props.location.state && props.location.state.notLogin)
-    alert('You are not allowed to view this page, please login first!');
-  if(!!props.jwt){
-    return <Redirect from='/login' to='/dashboard'></Redirect>
+  if (!!props.jwt) {
+    return <Redirect from="/login" to="/dashboard" />;
     // so select needs to check if token is valid
     // if not, select will delete the token
-  }
-  else{
+  } else {
     return (
-      <div className={style.centerVertically}>
-        <Paper className={style.container}>
-          <h1 className={style.title}>選課系統</h1>
-          <Mutation
-            mutation={LOGIN_MUTATION}
-            onCompleted={data => props.setToken(data.login.raw)}
-          >
-            {(login, { data, loading, error }) => (
-              <LoginForm {...{ login, data, loading, error }} />
-            )}
-          </Mutation>
-        </Paper>
-      </div>
+      <Paper className={style.container}>
+        <h1 className={style.title}>選課系統</h1>
+        <Mutation
+          mutation={LOGIN_MUTATION}
+          onCompleted={data => props.setToken(data.login.raw)}
+        >
+          {(login, { data, loading, error }) => (
+            <LoginForm {...{ login, data, loading, error }} />
+          )}
+        </Mutation>
+      </Paper>
     );
   }
 }
