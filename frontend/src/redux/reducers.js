@@ -1,19 +1,27 @@
-import {STORE_JWT} from './action-types'
+import { STORE_JWT, GET_COURSE_INFO, LOGOUT } from './action-types';
+
 const initialState = {
-    jwt: null
+  jwt: null,
+  courses: null
+};
+
+function rootReducer(state = initialState, action) {
+  switch (action.type) {
+    case STORE_JWT:
+      localStorage.setItem('jwt', action.payload);
+      return { ...state, jwt: action.payload };
+    case GET_COURSE_INFO:
+      return { ...state, courses: action.payload };
+    case LOGOUT:
+      localStorage.removeItem('jwt');
+      return { ...initialState };
+    default:
+      if (!localStorage.getItem('jwt')) {
+        return { ...initialState };
+      } else {
+        return { ...state, jwt: localStorage.getItem('jwt') };
+      }
+  }
 }
-function rootReducer(state = initialState,action){
-    if(action.type === STORE_JWT){
-        localStorage.setItem("jwt",action.payload);
-        return (Object.assign({},state,{jwt: action.payload}));
-    }
-    else{
-        if(!localStorage.getItem("jwt")){
-            return Object.assign({},initialState);
-        }
-        else{
-            return Object.assign({},state,{jwt: localStorage.getItem("jwt")});
-        }
-    }
-}
+
 export default rootReducer;

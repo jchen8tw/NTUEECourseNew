@@ -1,0 +1,12 @@
+.app {
+  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.app > :last-child:not(:first-child) {
+  overflow-y: auto;
+}

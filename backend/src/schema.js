@@ -6,6 +6,7 @@ const schema = gql`
   type Query {
     allCourseGroups: [CourseGroup!]!
     me(student_id: String!): Student
+    allTeacher: [Course!]!
   }
 
   type Mutation {
