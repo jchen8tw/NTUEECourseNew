@@ -5,10 +5,11 @@ function CardGroup(props) {
   return (
     <div
       style={{
-        width: '100%',
-        flexFlow: 'row wrap',
         display: 'flex',
-        justifyContent: 'space-evenly'
+        flexFlow: 'row wrap',
+        boxSizing: 'border-box',
+        width: '100%',
+        padding: '0 20px'
       }}
     >
       {props.data.map(i => (
