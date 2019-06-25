@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Login from "./Container/Login";
-import Select from "./Container/Select";
-import Admin from "./Container/Admin";
+import React, { Component } from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Login from './Container/Login';
+import Select from './Container/Select';
+import Admin from './Container/Admin';
 
-import Dashboard from "./Container/Dashboard";
-import NavBar from "./Components/NavBar";
-import "./App.css";
-import { connect } from "react-redux";
+import Dashboard from './Container/Dashboard';
+import NavBar from './Components/NavBar';
+import style from './App.module.css';
 
 const mapStateToProps = state => {
   return { token: state.jwt };
@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="App">
+        <div className={style.app}>
           {this.props.token && (
             <NavBar
               tabIndex={this.state.tabIndex}
@@ -32,7 +32,7 @@ class App extends Component {
             {!this.props.token && (
               <Redirect
                 from="*"
-                to={{ pathname: "/login", state: { notLogin: true } }}
+                to={{ pathname: '/login', state: { notLogin: true } }}
               />
             )}
             <Route path="/select" render={props => <Select {...props} />} />

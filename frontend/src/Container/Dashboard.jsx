@@ -22,7 +22,6 @@ const data = [
 ];
 
 function Dashboard(props) {
-  console.log(props, style.container, style);
   return (
     <div className={style.container}>
       <section>
