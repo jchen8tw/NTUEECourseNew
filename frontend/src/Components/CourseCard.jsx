@@ -15,7 +15,7 @@ const styles = {
     margin: '1rem 1.2rem'
   },
   media: {
-    minHeight: 250,
+    minHeight: 180,
     backgroundPosition: 'top',
     backgroundSize: 'cover'
   }

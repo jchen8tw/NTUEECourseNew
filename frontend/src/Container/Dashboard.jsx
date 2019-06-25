@@ -55,7 +55,18 @@ function Dashboard(props) {
       >
         {({ loading, error, data }) => {
           if (loading) {
-            return <LinearProgress color="secondary" />;
+            return (
+              <LinearProgress
+                color="secondary"
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  height: 3,
+                  width: '100vw'
+                }}
+              />
+            );
           } else if (!!error) {
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
@@ -65,7 +76,7 @@ function Dashboard(props) {
       </Query>
       <section>
         <div className={style.headingWrapper}>
-          <Typography align="left" variant="h3" component="h3">
+          <Typography align="left" variant="h4" component="h3">
             您已經選的課程
           </Typography>
         </div>
@@ -74,7 +85,7 @@ function Dashboard(props) {
       <Divider />
       <section>
         <div className={style.headingWrapper}>
-          <Typography align="left" variant="h3" component="h3">
+          <Typography align="left" variant="h4" component="h3">
             您尚未選的課程
           </Typography>
         </div>

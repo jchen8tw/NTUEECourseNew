@@ -9,9 +9,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { logout } from '../redux/actions';
 
 const styles = {
-  root: {
-    flexGrow: 1
-  },
   tabs: {
     flexGrow: 1
   },
