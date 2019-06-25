@@ -29,10 +29,12 @@ const Mutation = {
         await student.save().catch(err => console.log(err.errmsg));
         raw = token;
       }
+      /*
       context.res.cookie('authorization', raw, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 3 // 3 hours
       });
+      */
       return { raw };
     }
     throw new Error('Authentication failed: Wrong password, please try again');

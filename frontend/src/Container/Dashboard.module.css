@@ -1,0 +1,21 @@
+.container {
+  background-color: #fafafa;
+  padding: 20px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.container > section {
+  padding: 2rem 0;
+}
+
+.container > section h3 {
+  position: relative;
+}
+
+.headingWrapper {
+  display: table;
+  padding: 0 15px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.87);
+}

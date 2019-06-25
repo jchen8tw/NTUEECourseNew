@@ -50,6 +50,13 @@ class PasswordProcessor {
       return false;
     }
   }
+  /**
+   * @param {String!} token
+   * @returns {String} username
+   */
+  decode(token){
+    return jwt.decode(token);
+  }
 }
 
 module.exports = PasswordProcessor;

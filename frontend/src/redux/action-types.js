@@ -1,0 +1,1 @@
+export const STORE_JWT = "STORE_JWT";

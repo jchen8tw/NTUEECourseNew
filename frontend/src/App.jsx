@@ -1,36 +1,45 @@
-import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Login from './Container/Login';
-import Select from './Container/Select';
-import Admin from './Container/Admin';
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Login from "./Container/Login";
+import Select from "./Container/Select";
+import Admin from "./Container/Admin";
 
-import './App.css';
+import Dashboard from "./Container/Dashboard";
+import NavBar from "./Components/NavBar";
+import "./App.css";
+import { connect } from "react-redux";
 
+const mapStateToProps = state => {
+  return { token: state.jwt };
+};
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { token: null };
+    this.state = { tabIndex: 0 };
   }
-
-  setToken = token => {
-    this.setState({ token: token });
-  };
-
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Switch>
-            <Route
-              exact
-              path="/login"
-              render={props => <Login {...props} setToken={this.setToken} />}
+          {this.props.token && (
+            <NavBar
+              tabIndex={this.state.tabIndex}
+              handleTabChange={this.handleTabChange}
             />
+          )}
+          <Switch>
+            <Route exact path="/login" render={props => <Login {...props} />} />
+            {!this.props.token && (
+              <Redirect
+                from="*"
+                to={{ pathname: "/login", state: { notLogin: true } }}
+              />
+            )}
+            <Route path="/select" render={props => <Select {...props} />} />
             <Route
-              path="/select"
+              path="/dashboard"
               render={props => (
-                <Select {...props} authenticated={!!this.state.token} />
+                <Dashboard {...props} authenticated={!!this.state.token} />
               )}
             />
             <Route path="/admin" component={Admin} />
@@ -41,5 +50,5 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+const connectedApp = connect(mapStateToProps)(App);
+export default connectedApp;
