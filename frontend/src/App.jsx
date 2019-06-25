@@ -26,7 +26,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={style.app}>
-          {this.props.token &&  (
+          {this.props.token && (
             <NavBar
               tabIndex={this.state.tabIndex}
               handleTabChange={this.handleTabChange}
@@ -40,11 +40,10 @@ class App extends Component {
                 to={{ pathname: '/login', state: { notLogin: true } }}
               />
             )}
-            <Route path="/select" render={props => <Select {...props} />} />
-            <Route
-              path="/dashboard"
-              component={Dashboard}
-            />
+            <div id="test">
+              <Route path="/select" render={props => <Select {...props} />} />
+              <Route path="/dashboard" component={Dashboard} />
+            </div>
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>

@@ -12,15 +12,60 @@ const data = [
     _id: '1',
     image:
       'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
-    name: '108-1 電子學一',
+    year: '108-1',
+    name: '電子學一',
     choices: ['呂帥', '呂漂亮', '呂醜']
   },
   {
     _id: '2',
     image:
       'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
-    name: '108-1 電路學',
+    year: '108-1',
+    name: '電工實驗(網路與多媒體)',
     choices: ['呂帥', '呂漂亮', '呂醜']
+  },
+  {
+    _id: '3',
+    image:
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    year: '108-1',
+    name: '交換電路與邏輯設計',
+    choices: ['呂帥', '呂漂亮', '呂醜']
+  },
+  {
+    _id: '4',
+    image:
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    year: '108-1',
+    name: '交換電路與邏輯設計',
+    choices: ['呂帥', '呂漂亮', '呂醜']
+  },
+  {
+    _id: '5',
+    image:
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    year: '108-1',
+    name: '交換電路與邏輯設計',
+    choices: ['呂帥', '呂漂亮', '呂醜', '呂漂亮', '呂醜']
+  }
+];
+
+const data2 = [
+  {
+    _id: '3',
+    image:
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    year: '108-1',
+    name: '線性代數',
+    choices: null
+  },
+  {
+    _id: '4',
+    image:
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    year: '108-1',
+    name: '微分方程',
+    choices: null
   }
 ];
 
@@ -89,7 +134,7 @@ function Dashboard(props) {
             您尚未選的課程
           </Typography>
         </div>
-        <CardGroup data={data} />
+        <CardGroup data={data2} />
       </section>
     </div>
   );
