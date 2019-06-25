@@ -1,9 +1,15 @@
-import { STORE_JWT,GET_COURSE_INFO } from './action-types';
-function Store_jwt(payload) {
+import { STORE_JWT, GET_COURSE_INFO, LOGOUT } from './action-types';
+
+function store_jwt(payload) {
   return { type: STORE_JWT, payload };
 }
-function Get_course_info(payload){
-  return {type: GET_COURSE_INFO, payload};
+
+function get_course_info(payload) {
+  return { type: GET_COURSE_INFO, payload };
 }
 
-export  { Store_jwt,Get_course_info };
+function logout(payload) {
+  return { type: LOGOUT, payload };
+}
+
+export { store_jwt, get_course_info, logout };
