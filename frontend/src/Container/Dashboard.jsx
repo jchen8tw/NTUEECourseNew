@@ -1,11 +1,11 @@
 import React from 'react';
-import CardGroup from '../Components/CardGroup';
-import { Typography, Divider, LinearProgress } from '@material-ui/core';
-import gql from 'graphql-tag';
-import style from './Dashboard.module.css';
-import { Get_course_info } from '../redux/actions';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Typography, Divider, LinearProgress } from '@material-ui/core';
+import { get_course_info } from '../redux/actions';
+import CardGroup from '../Components/CardGroup';
+import style from './Dashboard.module.css';
 
 const data = [
   {
@@ -23,6 +23,7 @@ const data = [
     choices: ['呂帥', '呂漂亮', '呂醜']
   }
 ];
+
 const COURSE_QUERY = gql`
   query {
     allCourseGroups {
@@ -36,17 +37,22 @@ const COURSE_QUERY = gql`
     }
   }
 `;
+
 const mapDispatchToProps = dispatch => {
-  return { getCourse: data => dispatch(Get_course_info(data)) };
+  return { getCourse: data => dispatch(get_course_info(data)) };
 };
 const mapStateToProps = state => {
   return { courses: state.courses };
 };
+
 function Dashboard(props) {
-  console.log(props);
   return (
     <div className={style.container}>
-      <Query query={COURSE_QUERY} skip={!!props.courses} onCompleted={data=>props.getCourse(data)}>
+      <Query
+        query={COURSE_QUERY}
+        skip={!!props.courses}
+        onCompleted={data => props.getCourse(data)}
+      >
         {({ loading, error, data }) => {
           if (loading) {
             return <LinearProgress color="secondary" />;

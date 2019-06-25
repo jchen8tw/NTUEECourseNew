@@ -14,10 +14,10 @@ import {
 import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
 import { connect } from 'react-redux';
-import { Store_jwt } from '../redux/actions';
+import { store_jwt } from '../redux/actions';
 
 const mapDispatchToProps = dispatch => {
-  return { setToken: jwt => dispatch(Store_jwt(jwt)) };
+  return { setToken: jwt => dispatch(store_jwt(jwt)) };
 };
 const mapStateToProps = state => {
   return { jwt: state.jwt };
@@ -85,8 +85,6 @@ const LOGIN_MUTATION = gql`
   }
 `;
 function Login(props) {
-  if (props.location.state && props.location.state.notLogin)
-    alert('You are not allowed to view this page, please login first!');
   if (!!props.jwt) {
     return <Redirect from="/login" to="/dashboard" />;
     // so select needs to check if token is valid
