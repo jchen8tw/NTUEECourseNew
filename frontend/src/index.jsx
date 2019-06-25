@@ -7,6 +7,7 @@ import { createHttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 import './index.css';
 import App from './App';
@@ -28,10 +29,23 @@ const client = new ApolloClient({
   connectToDevTools: true
 });
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#263238'
+    },
+    secondary: {
+      main: '#ffa000'
+    }
+  }
+});
+
 const Root = () => (
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </Provider>
   </ApolloProvider>
 );

@@ -12,6 +12,9 @@ const styles = {
   },
   tabs: {
     flexGrow: 1
+  },
+  toolbar: {
+    minHeight: '100%'
   }
 };
 
@@ -23,39 +26,33 @@ const TabStyles = {
 
 const EnlargedTab = withStyles(TabStyles)(Tab);
 function NavBar({ classes, tabIndex, handleTabChange }) {
-  if(!window.location.href.match(/admin$/)){
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar className={classes.toolbar}>
-            <Tabs
-              className={classes.tabs}
-              centered
-              value={tabIndex}
-              onChange={handleTabChange}
-              scrollButtons="auto"
-            >
-              <EnlargedTab label="Home" component={Link} to="/dashboard" />
-              <EnlargedTab label="選課" component={Link} to="/select" />
-              <EnlargedTab label="評價" component={Link} to="/dashboard" />
-              <EnlargedTab
-                label="Sweety Course"
-                component={Link}
-                to="/dashboard"
-              />
-            </Tabs>
-            <IconButton aria-owns="account" aria-haspopup="true" color="inherit">
-              <AccountCircle />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  }
-  else{
-    return <p>you are admin</p>;
-  }
-
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar className={classes.toolbar}>
+          <Tabs
+            className={classes.tabs}
+            centered
+            value={tabIndex}
+            onChange={handleTabChange}
+            scrollButtons="auto"
+          >
+            <EnlargedTab label="Home" component={Link} to="/dashboard" />
+            <EnlargedTab label="選課" component={Link} to="/select" />
+            <EnlargedTab label="評價" component={Link} to="/dashboard" />
+            <EnlargedTab
+              label="Sweety Course"
+              component={Link}
+              to="/dashboard"
+            />
+          </Tabs>
+          <IconButton aria-owns="account" aria-haspopup="true" color="inherit">
+            <AccountCircle />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 }
 
 NavBar.propTypes = {
