@@ -56,8 +56,11 @@ function CourseCard(props) {
           </Typography>
           {choices &&
             choices.map((i, index) => (
-              <Typography component="p" style={{ fontSize: '1rem' }}>{`${index +
-                1}. ${i}`}</Typography>
+              <Typography
+                component="p"
+                style={{ fontSize: '1rem' }}
+                key={`${name}-choice-${index}`}
+              >{`${index + 1}. ${i}`}</Typography>
             ))}
         </CardContent>
       </CardActionArea>

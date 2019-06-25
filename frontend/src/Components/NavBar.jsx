@@ -59,7 +59,7 @@ class NavBar extends React.Component {
             >
               <EnlargedTab label="Home" component={Link} to="/dashboard" />
               <EnlargedTab label="選課" component={Link} to="/select" />
-              <EnlargedTab label="評價" component={Link} to="/dashboard" />
+              <EnlargedTab label="評價" component={Link} to="/admin" />
               <EnlargedTab
                 label="Sweety Course"
                 component={Link}
