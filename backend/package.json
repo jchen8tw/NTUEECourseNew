@@ -12,7 +12,10 @@
     "dependencies": {
         "apollo-server-express": "^2.6.1",
         "bcrypt": "^3.0.6",
+        "csv-parser": "^2.3.0",
+        "csvtojson": "^2.0.8",
         "express": "^4.17.1",
+        "fs": "0.0.1-security",
         "graphql": "^14.3.1",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.5.11"
