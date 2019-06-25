@@ -4,7 +4,7 @@ import Login from './Container/Login';
 import Select from './Container/Select';
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
-import './App.css';
+import style from './App.module.css';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="App">
+        <div className={style.app}>
           {this.props.token && (
             <NavBar
               tabIndex={this.state.tabIndex}
@@ -27,7 +27,7 @@ class App extends Component {
           )}
           <Switch>
             <Route exact path="/login" render={props => <Login {...props} />} />
-            {!this.props.token  && (
+            {!this.props.token && (
               <Redirect
                 from="*"
                 to={{ pathname: '/login', state: { notLogin: true } }}

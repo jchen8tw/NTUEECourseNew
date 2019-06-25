@@ -22,7 +22,7 @@ const data = [
 ];
 
 function Dashboard(props) {
-  console.log(props, style.container, style);
+  console.log(style);
   return (
     <div className={style.container}>
       <section>
