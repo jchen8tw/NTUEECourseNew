@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Login from './Container/Login';
 import Select from './Container/Select';
 import Admin from './Container/Admin';
+import BreadCrumbs from './Components/Breadcrumbs';
 
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
@@ -26,12 +27,13 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={style.app}>
-          {this.props.token &&  (
-            <NavBar
-              tabIndex={this.state.tabIndex}
-              handleTabChange={this.handleTabChange}
-            />
-          )}
+          {this.props.token && (
+              <NavBar
+                tabIndex={this.state.tabIndex}
+                handleTabChange={this.handleTabChange}
+              />
+            )}
+            {this.props.token && <BreadCrumbs />}
           <Switch>
             <Route exact path="/login" render={props => <Login {...props} />} />
             {!this.props.token && (
@@ -41,10 +43,7 @@ class App extends Component {
               />
             )}
             <Route path="/select" render={props => <Select {...props} />} />
-            <Route
-              path="/dashboard"
-              component={Dashboard}
-            />
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>

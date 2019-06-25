@@ -6,10 +6,11 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "@material-ui/lab": "^3.0.0-alpha.30",
     "apollo-boost": "^0.4.0",
-    "babel-polyfill": "^6.26.0",
     "apollo-client": "^2.6.3",
     "apollo-link-context": "^1.0.18",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
