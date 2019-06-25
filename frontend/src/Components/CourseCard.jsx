@@ -43,11 +43,7 @@ function CourseCard(props) {
           />
         </div>
         <CardContent style={{ marginLeft: '12px' }}>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
+          <Typography className={classes.title} color="textSecondary">
             {year}
           </Typography>
           <Typography

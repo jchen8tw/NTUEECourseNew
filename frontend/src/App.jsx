@@ -40,10 +40,8 @@ class App extends Component {
                 to={{ pathname: '/login', state: { notLogin: true } }}
               />
             )}
-            <div id="test">
-              <Route path="/select" render={props => <Select {...props} />} />
-              <Route path="/dashboard" component={Dashboard} />
-            </div>
+            <Route path="/select" render={props => <Select {...props} />} />
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>

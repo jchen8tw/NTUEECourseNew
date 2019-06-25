@@ -1,0 +1,15 @@
+.grid {
+  margin: 5% 10%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 60px;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+}
+
+.category {
+  text-align: center;
+  width: 250px;
+  height: 250px;
+}
