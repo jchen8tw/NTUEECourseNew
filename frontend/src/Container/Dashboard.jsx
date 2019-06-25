@@ -1,8 +1,11 @@
 import React from 'react';
 import CardGroup from '../Components/CardGroup';
-import { Typography, Divider } from '@material-ui/core';
-
+import { Typography, Divider, LinearProgress } from '@material-ui/core';
+import gql from 'graphql-tag';
 import style from './Dashboard.module.css';
+import { Get_course_info } from '../redux/actions';
+import { Query } from 'react-apollo';
+import { connect } from 'react-redux';
 
 const data = [
   {
@@ -20,10 +23,40 @@ const data = [
     choices: ['呂帥', '呂漂亮', '呂醜']
   }
 ];
-
+const COURSE_QUERY = gql`
+  query {
+    allCourseGroups {
+      _id
+      name
+      grade
+      courses {
+        _id
+        teacher
+      }
+    }
+  }
+`;
+const mapDispatchToProps = dispatch => {
+  return { getCourse: data => dispatch(Get_course_info(data)) };
+};
+const mapStateToProps = state => {
+  return { courses: state.courses };
+};
 function Dashboard(props) {
+  console.log(props);
   return (
     <div className={style.container}>
+      <Query query={COURSE_QUERY} skip={!!props.courses} onCompleted={data=>props.getCourse(data)}>
+        {({ loading, error, data }) => {
+          if (loading) {
+            return <LinearProgress color="secondary" />;
+          } else if (!!error) {
+            return <p>{error.message}</p>;
+          } else if (!loading && !error) {
+            return null;
+          }
+        }}
+      </Query>
       <section>
         <div className={style.headingWrapper}>
           <Typography align="left" variant="h3" component="h3">
@@ -44,5 +77,8 @@ function Dashboard(props) {
     </div>
   );
 }
-
-export default Dashboard;
+const connectedDashboard = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);
+export default connectedDashboard;

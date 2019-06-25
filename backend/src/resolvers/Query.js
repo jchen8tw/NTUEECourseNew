@@ -1,13 +1,21 @@
-const { Student, CourseGroup } = require('../model.js');
-
+const { Student, CourseGroup, Course } = require('../model.js');
 
 const Query = {
   async me(_, { student_id }, context) {
-    if (!context.token) return null;
+    if (!context.token) throw new Error('invalid token');
     return await Student.findOne({ id: student_id }).exec();
   },
-  async allCourseGroups() {
-    return await CourseGroup.find({}).exec();
+  async allCourseGroups(_,__,context) {
+    //TODO
+    //need to check token
+    if (!context.token) throw new Error('invalid token');
+    return await CourseGroup.find({}).populate('courses').exec();
+  },
+  async allTeacher(_,__,context) {
+    if (!context.token) throw new Error('invalid token');
+    return await Course.find({})
+      .populate('group')
+      .exec();
   }
 };
 
