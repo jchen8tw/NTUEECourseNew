@@ -52,8 +52,8 @@ class NavBar extends React.Component {
           <Toolbar className={classes.toolbar}>
             <Tabs
               className={classes.tabs}
-              centered
               value={tabIndex}
+              variant="scrollable"
               onChange={handleTabChange}
               scrollButtons="auto"
             >

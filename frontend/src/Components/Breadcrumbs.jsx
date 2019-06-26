@@ -20,10 +20,10 @@ const style = theme => ({
 
 function Breadcrumb({ classes, url }) {
   let categories = url.split('/');
-  categories.splice(0, 1);
+  let pathPrefix = categories.splice(0, 2)[1];
   let currentCategory = categories.splice(-1, 1);
-  let path = '/';
-  if (categories.length === 0 && currentCategory.length === 0) return null;
+  let path = `/${pathPrefix}/`;
+  if (categories.length === 0 && !currentCategory.length) return null;
   return (
     <Grid container className={classes.root}>
       <Breadcrumbs
@@ -47,7 +47,7 @@ function Breadcrumb({ classes, url }) {
           );
         })}
         <Typography color="textPrimary" className={classes.link}>
-          {currentCategory}
+          {currentCategory[0]}
         </Typography>
       </Breadcrumbs>
     </Grid>

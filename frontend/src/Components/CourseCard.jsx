@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -26,44 +27,50 @@ const styles = {
   },
   title: {
     fontSize: '0.9rem'
+  },
+  unstyledLink: {
+    textDecoration: 'inherit',
+    color: 'inherit'
   }
 };
 
 function CourseCard(props) {
-  const { classes, year, name, image, choices } = props;
+  const { classes, year, name, image, choices, url } = props;
   return (
     <Card className={classes.card}>
-      <CardActionArea className={classes.actionArea}>
-        <div style={{ height: '100%' }}>
-          <CardMedia
-            className={classes.media}
-            image={image}
-            title={name}
-            component="img"
-          />
-        </div>
-        <CardContent style={{ marginLeft: '12px' }}>
-          <Typography className={classes.title} color="textSecondary">
-            {year}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="h2"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            {name}
-          </Typography>
-          {choices &&
-            choices.map((i, index) => (
-              <Typography
-                component="p"
-                style={{ fontSize: '1rem' }}
-                key={`${name}-choice-${index}`}
-              >{`${index + 1}. ${i}`}</Typography>
-            ))}
-        </CardContent>
-      </CardActionArea>
+      <Link to={url || ''} className={classes.unstyledLink}>
+        <CardActionArea className={classes.actionArea}>
+          <div style={{ height: '100%' }}>
+            <CardMedia
+              className={classes.media}
+              image={image}
+              title={name}
+              component="img"
+            />
+          </div>
+          <CardContent style={{ marginLeft: '12px' }}>
+            <Typography className={classes.title} color="textSecondary">
+              {year}
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="h2"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              {name}
+            </Typography>
+            {choices &&
+              choices.map((i, index) => (
+                <Typography
+                  component="p"
+                  style={{ fontSize: '1rem' }}
+                  key={`${name}-choice-${index}`}
+                >{`${index + 1}. ${i}`}</Typography>
+              ))}
+          </CardContent>
+        </CardActionArea>
+      </Link>
     </Card>
   );
 }
