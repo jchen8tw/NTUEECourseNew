@@ -1,0 +1,17 @@
+#commentHeader {
+    color: black;
+    background-image: url(../assets/img/EE_old.jpg);
+    background-size: cover;
+    height: 100vh;
+    padding: 0;
+    background-attachment: fixed;
+    /* filter:brightness(.5); */
+    /* line-height: 200px; */
+    /* 垂直置中 */
+}
+
+.commentHeaderWord {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
