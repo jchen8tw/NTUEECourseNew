@@ -9,6 +9,7 @@
     flex-grow: 1;
     /* 垂直置中 */
     display: table;
+    white-space: pre-line;
 }
 
 #header>div {
