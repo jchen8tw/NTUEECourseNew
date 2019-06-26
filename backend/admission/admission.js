@@ -100,10 +100,10 @@ function admission(wish_ref,class_info){
             visited[school_number][class_name] = false;
         }
     }
-    // Per class
+    // Per class / stu init
     let per_class = {};
-    // Per stu
     let per_stu = {};
+    
     for( let class_name in class_info){
         // Initial per_class[classname][teacher]
         per_class[class_name] = {}
@@ -162,6 +162,7 @@ function admission(wish_ref,class_info){
     // data  = { {num:{course_name:[teacher_list] } } }
     return [per_class, per_stu];
 }
+// This is the example class info.
 let class_info = {
     "class 1":
         [ 
