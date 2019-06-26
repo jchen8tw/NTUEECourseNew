@@ -65,7 +65,7 @@ class SubmitForm extends Component {
   }) => {
     const { droparea, activeDroparea, errorDroparea } = this.props.classes;
     let message = isDragReject
-      ? '檔案錯誤\n請檢查檔案內容並再試一次'
+      ? '附檔名錯誤\n請檢查檔案並再試一次'
       : isDragActive
       ? '拖曳至此處'
       : this.props.innerText;
@@ -141,7 +141,7 @@ class SubmitForm extends Component {
       <form onSubmit={this.handleSubmit}>
         <Dropzone
           onDrop={this.onDrop}
-          accept={'.csv, text/csv'} //Only accept csv file. Note: .csv is important.adding text/csv only doesn't work
+          accept={'.csv, text/csv'} //Only accept csv file. Note: .csv is important, adding text/csv only won't work
           multiple={false}
         >
           {this.handleDrag}
