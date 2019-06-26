@@ -1,8 +1,8 @@
 #header {
-    color: black;
+    color: white;
     background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
     background-size: cover;
-    height: 50%;
+    height: 60%;
     /* width: 100%; */
     padding: 0;
     background-attachment: fixed;
@@ -16,4 +16,15 @@
     vertical-align: middle;
 }
 
-.headerWord {}
+.headerTitle {
+    font-size: 70px;
+    /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
+    text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F, 0 0 0.2em #87F
+}
+
+.headerWord {
+    font-size: 35px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    letter-spacing: 10px;
+}
