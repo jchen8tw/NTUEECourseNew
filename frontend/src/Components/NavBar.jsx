@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -44,8 +44,8 @@ class NavBar extends React.Component {
   };
 
   render() {
-    const { classes, tabIndex, handleTabChange, logout } = this.props;
-    if (window.location.href.match(/admin$/)) return <p>you are admin</p>;
+    const { classes, tabIndex, handleTabChange, logout, location } = this.props;
+    if (location.pathname.match(/admin$/)) return <p>you are admin</p>;
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -93,4 +93,6 @@ const connectedNavBar = connect(
   undefined,
   mapDispatchToProps
 )(NavBar);
-export default withStyles(styles)(connectedNavBar);
+
+const StyledNavBar = withStyles(styles)(connectedNavBar);
+export default withRouter(StyledNavBar);
