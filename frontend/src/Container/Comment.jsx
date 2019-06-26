@@ -5,7 +5,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import red from '@material-ui/core/colors/red';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Button } from '@material-ui/core';
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 10 * 3 }}>
@@ -18,6 +21,9 @@ const styles = theme => ({
     flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper
+  },
+  button: {
+    margin: theme.spacing.unit
   }
 });
 class CommentTab extends Component {
@@ -70,7 +76,7 @@ class CommentTab extends Component {
           )}
           {value === 3 && (
             <TabContainer>
-              <CommentList show="tenTotwo" />
+              <CommentList show="tenChooseTwo" />
             </TabContainer>
           )}
           {value === 4 && (
@@ -86,32 +92,54 @@ class CommentTab extends Component {
   }
 }
 const StyledCommentTab = withStyles(styles)(CommentTab);
-class CommentList extends Component {
+
+class CommentListRaw extends Component {
   handleSubmit = e => {
     e.preventDefault();
+    console.log(e);
   };
   render() {
+    const { classes } = this.props;
     return (
       <>
-        <div className="container">
-          <div className="row">
-            <form onSubmit={this.handleSubmit}>
-              <label for="title">課程搜尋</label>
-              <input
-                type="text"
-                name="title"
-                className="form-control"
-                placeholder="輸入欲查詢課程..."
-              />
-            </form>
-          </div>
-        </div>
-
-        <p>安安</p>
+        <form onSubmit={this.handleSubmit} className={style.flexContainer}>
+          <input
+            type="text"
+            name="title"
+            className="form-control col-6"
+            placeholder="輸入關鍵字"
+            style={{ flexGrow: '1' }}
+          />
+          <Button
+            variant="outlined"
+            type="submit"
+            className={classes.button}
+            color="inherit"
+          >
+            課名
+          </Button>
+          <Button
+            variant="outlined"
+            type="submit"
+            className={classes.button}
+            color="inherit"
+          >
+            作者
+          </Button>
+          <Button
+            variant="outlined"
+            type="submit"
+            className={classes.button}
+            color="inherit"
+          >
+            評論數
+          </Button>
+        </form>
       </>
     );
   }
 }
+const CommentList = withStyles(styles)(CommentListRaw);
 class Comment extends Component {
   render() {
     return (

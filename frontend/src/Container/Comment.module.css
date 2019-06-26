@@ -28,3 +28,11 @@
     text-shadow: black 0.1em 0.1em 0.2em;
     letter-spacing: 10px;
 }
+
+.flexContainer {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
