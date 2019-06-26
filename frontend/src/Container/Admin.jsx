@@ -32,12 +32,6 @@ const styles = theme => ({
     borderColor: theme.palette.secondary.main,
     fontSize: '2.5rem'
   },
-  errorDroparea: {
-    color: theme.palette.error.main,
-    backgroundColor: theme.palette.background.default,
-    borderColor: theme.palette.error.dark,
-    fontSize: '1.3rem'
-  },
   button: {
     margin: theme.spacing.unit
   },
@@ -64,20 +58,12 @@ class SubmitForm extends Component {
     isDragReject
   }) => {
     const { droparea, activeDroparea, errorDroparea } = this.props.classes;
-    let message = isDragReject
-      ? '附檔名錯誤\n請檢查檔案並再試一次'
-      : isDragActive
-      ? '拖曳至此處'
-      : this.props.innerText;
+    let message = isDragActive ? '拖曳至此處' : this.props.innerText;
     return (
       <>
         <div
           {...getRootProps({
-            className: classNames(
-              droparea,
-              { [activeDroparea]: isDragActive },
-              { [errorDroparea]: isDragReject }
-            )
+            className: classNames(droparea, { [activeDroparea]: isDragActive })
           })}
         >
           <input {...getInputProps()} />

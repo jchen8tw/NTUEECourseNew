@@ -91,17 +91,26 @@ function Login(props) {
     // if not, select will delete the token
   } else {
     return (
-      <Paper className={style.container}>
-        <h1 className={style.title}>選課系統</h1>
-        <Mutation
-          mutation={LOGIN_MUTATION}
-          onCompleted={data => props.setToken(data.login.raw)}
-        >
-          {(login, { data, loading, error }) => (
-            <LoginForm {...{ login, data, loading, error }} />
-          )}
-        </Mutation>
-      </Paper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          height: '100%'
+        }}
+      >
+        <Paper className={style.container}>
+          <h1 className={style.title}>選課系統</h1>
+          <Mutation
+            mutation={LOGIN_MUTATION}
+            onCompleted={data => props.setToken(data.login.raw)}
+          >
+            {(login, { data, loading, error }) => (
+              <LoginForm {...{ login, data, loading, error }} />
+            )}
+          </Mutation>
+        </Paper>
+      </div>
     );
   }
 }

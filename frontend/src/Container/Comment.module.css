@@ -1,0 +1,19 @@
+#header {
+    color: black;
+    background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
+    background-size: cover;
+    height: 50%;
+    /* width: 100%; */
+    padding: 0;
+    background-attachment: fixed;
+    flex-grow: 1;
+    /* 垂直置中 */
+    display: table;
+}
+
+#header>div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.headerWord {}

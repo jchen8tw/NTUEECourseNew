@@ -26,9 +26,21 @@ const CourseGroupSchema = new mongoose.Schema({
   name: { type: String, required: true },
   grade: { type: Number, required: true }
 });
+const CourseCommentSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  semester: { type: String, required: true },
+  type: { type: String, required: true }, //必修、選修、十選二
+  name: { type: String, required: true },
+  domain: { type: String }, //CS、光電...
+  teacher: { type: String, required: true },
+  studyTogether: { type: String },
+  studyBefore: { type: String },
+  content: [{ type: String }]
+});
 
 const Student = mongoose.model('Student', StudentSchema);
 const Course = mongoose.model('Course', CourseSchema);
 const CourseGroup = mongoose.model('CourseGroup', CourseGroupSchema);
+const CourseComment = mongoose.model('CourseComment', CourseCommentSchema);
 
-module.exports = { Student, Course, CourseGroup };
+module.exports = { Student, Course, CourseGroup, CourseComment };
