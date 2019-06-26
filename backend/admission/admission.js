@@ -14,11 +14,18 @@ input:
         {
             第一門課：［{Name: --, Max: --} ］,
         }
-output:
+output 1:
     ｛第一門課：｛
     老師一:［學生］
     老師二: [], 
     +第二門課：｛｝｝
+output 2:
+    {學號：｛
+        wish + ' ' + 第一門課：［志願序］
+        wish + ' ' + 第二門課：［志願序］
+        第一門課 : 被分發到的老師,
+        第二門課 : 被分發到的老師 (nobe if empty)
+    ｝}
 */
 
 // Random from normal distribution with std & mean
