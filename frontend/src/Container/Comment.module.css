@@ -1,15 +1,19 @@
-#commentHeader {
+#header {
     color: black;
-    background-image: url(../assets/img/EE_old.jpg);
+    background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
     background-size: cover;
-    height: 100vh;
+    height: 50%;
+    /* width: 100%; */
     padding: 0;
     background-attachment: fixed;
+    flex-grow: 1;
     /* 垂直置中 */
+    display: table;
 }
 
-.commentHeaderWord {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+#header>div {
+    display: table-cell;
+    vertical-align: middle;
 }
+
+.headerWord {}
