@@ -5,7 +5,7 @@
   grid-gap: 60px;
   align-items: center;
   justify-items: center;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .category {

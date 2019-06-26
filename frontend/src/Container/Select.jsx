@@ -1,12 +1,20 @@
 import React from 'react';
 import { Card, Typography, CardActionArea } from '@material-ui/core';
+import BreadCrumbs from '../Components/Breadcrumbs';
 
 import style from './Select.module.css';
 let categories = ['大一', '大二', '大三\n大四', '十選二實驗'];
 
 function Select(props) {
   return (
-    <div style={{ display: 'flex' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        backgroundColor: '#fafafa'
+      }}
+    >
+      <BreadCrumbs />
       <div className={style.grid}>
         {categories.map((name, index) => (
           <Card key={`select-category-${index}`} className={style.category}>
