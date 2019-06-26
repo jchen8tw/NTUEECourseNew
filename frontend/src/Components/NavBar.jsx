@@ -9,9 +9,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { logout } from '../redux/actions';
 
 const styles = {
-  root: {
-    flexGrow: 1
-  },
   tabs: {
     flexGrow: 1
   },
@@ -63,11 +60,7 @@ class NavBar extends React.Component {
               <EnlargedTab label="Home" component={Link} to="/dashboard" />
               <EnlargedTab label="選課" component={Link} to="/select" />
               <EnlargedTab label="評價" component={Link} to="/comment" />
-              <EnlargedTab
-                label="Sweety Course"
-                component={Link}
-                to="/dashboard"
-              />
+              <EnlargedTab label="Sweety Course" component={Link} to="/admin" />
             </Tabs>
             <IconButton
               aria-owns="account"

@@ -11,29 +11,56 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = {
   card: {
-    minWidth: 250,
-    margin: '1rem 1.2rem'
+    margin: '1rem 1.2rem',
+    width: '500px'
+  },
+  actionArea: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'flex-start',
+    height: '100%',
+    textAlign: 'left'
   },
   media: {
-    minHeight: 250,
-    backgroundPosition: 'top',
-    backgroundSize: 'cover'
+    width: '100%'
+  },
+  title: {
+    fontSize: '0.9rem'
   }
 };
 
 function CourseCard(props) {
-  const { classes, name, image, choices } = props;
+  const { classes, year, name, image, choices } = props;
   return (
     <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={image} title={name} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+      <CardActionArea className={classes.actionArea}>
+        <div style={{ height: '100%' }}>
+          <CardMedia
+            className={classes.media}
+            image={image}
+            title={name}
+            component="img"
+          />
+        </div>
+        <CardContent style={{ marginLeft: '12px' }}>
+          <Typography className={classes.title} color="textSecondary">
+            {year}
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="h2"
+            style={{ whiteSpace: 'nowrap' }}
+          >
             {name}
           </Typography>
           {choices &&
             choices.map((i, index) => (
-              <Typography component="p">{`${index + 1}. ${i}`}</Typography>
+              <Typography
+                component="p"
+                style={{ fontSize: '1rem' }}
+                key={`${name}-choice-${index}`}
+              >{`${index + 1}. ${i}`}</Typography>
             ))}
         </CardContent>
       </CardActionArea>

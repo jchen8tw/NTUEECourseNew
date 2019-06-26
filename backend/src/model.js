@@ -6,7 +6,7 @@ const StudentSchema = new mongoose.Schema({
   hashedPassword: { type: String, required: true },
   fullname: { type: String, required: true },
   nickname: { type: String },
-  token: { type: String }
+  //token: { type: String } no need to store token
 });
 
 const CourseSchema = new mongoose.Schema({

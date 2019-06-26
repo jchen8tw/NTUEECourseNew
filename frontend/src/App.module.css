@@ -9,4 +9,5 @@
 
 .app > :last-child:not(:first-child) {
   overflow-y: auto;
+  flex-grow: 1;
 }
