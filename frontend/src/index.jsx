@@ -30,6 +30,9 @@ const client = new ApolloClient({
 });
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true
+  },
   palette: {
     primary: {
       main: '#263238'
