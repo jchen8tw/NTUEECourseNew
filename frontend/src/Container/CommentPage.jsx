@@ -30,6 +30,10 @@ class CommentPage extends Component {
           {({ loading, error, data }) => {
             if (loading) return '等一下啦 > <';
             if (error) return `Error! ${error.message}`;
+            let mainComment = data.getComment.content[0];
+            let responseList = data.getComment.content.filter(
+              (_, index) => index !== 0
+            );
             return (
               <>
                 <div className={style.allRoot}>
@@ -52,8 +56,15 @@ class CommentPage extends Component {
                       </>
                     ) : null}
                     <h3>課程評價 : </h3>
-                    <p>{data.getComment.content[0]}</p>
+                    <p>{mainComment}</p>
                   </Paper>
+
+                  {responseList.map(response => (
+                    <Paper className={style.pageRoot}>
+                      <h3>課程評價回應 : </h3>
+                      <p>{response}</p>
+                    </Paper>
+                  ))}
                 </div>
               </>
             );

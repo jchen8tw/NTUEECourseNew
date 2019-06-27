@@ -1,9 +1,9 @@
 .allRoot {
     width: 100%;
     padding-top: 40px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-wrap: nowrap; */
     max-width: 1000px;
     min-width: 450px;
     margin: 0 auto;
