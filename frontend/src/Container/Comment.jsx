@@ -14,7 +14,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import Input from '@material-ui/core/Input';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 10 * 3 }}>
@@ -29,7 +31,6 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   root: {
-    flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper
   },
@@ -42,13 +43,17 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    maxWidth: '1000px'
+    maxWidth: '1000px',
+    minWidth: '450px'
   },
   tableCell: {
     padding: '0 3% 0 2%',
     minWidth: '80px',
-    height: '60px',
+    minHeight: '70px',
     fontSize: '1.2em'
+  },
+  input: {
+    maxWidth: '350px'
   }
 });
 
@@ -92,22 +97,22 @@ class CommentTab extends Component {
           )}
           {value === 1 && (
             <TabContainer>
-              <CommentList show="required" />
+              <CommentList show="必修" />
             </TabContainer>
           )}
           {value === 2 && (
             <TabContainer>
-              <CommentList show="choose" />
+              <CommentList show="選修" />
             </TabContainer>
           )}
           {value === 3 && (
             <TabContainer>
-              <CommentList show="tenChooseTwo" />
+              <CommentList show="十選二" />
             </TabContainer>
           )}
           {value === 4 && (
             <TabContainer>
-              <CommentList show="seminar" />
+              <CommentList show="專題" />
             </TabContainer>
           )}
           {value === 5 && <Route path="/publishComment" />}
@@ -119,113 +124,163 @@ class CommentTab extends Component {
 }
 const StyledCommentTab = withStyles(styles)(CommentTab);
 
+const QUERY_COMMENT_LIST = gql`
+  query($type: String!, $name: String, $teacher: String) {
+    getCommentList(type: $type, name: $name, teacher: $teacher) {
+      semester
+      name
+      _id
+      type
+      domain
+      teacher
+    }
+  }
+`;
+
 class CommentTitleListRaw extends Component {
   constructor(props) {
     super(props);
     let id = 0;
   }
-  createData = (name, type, teacher, score, author) => {
-    id += 1;
-    return { name, type, teacher, score, author };
-  };
   render() {
-    const rows = [
-      this.createData('107-1 電磁學二', '必修', '毛紹綱', '5分', 'ChrisHH'),
-      this.createData('107-1 電磁學二', '必修', '李翔傑', '4分', 'rumrumrum'),
-      this.createData(
-        '107-1 平面顯示與技術通論',
-        '選修',
-        '黃建璋',
-        '5分',
-        'penguin0172'
-      )
-    ];
-
-    const { classes } = this.props;
-
+    const { classes, searchContent, searchType } = this.props;
+    // console.log('searchContent:', searchContent);
+    // console.log('searchType : ', searchType);
+    let searchContentName = '';
+    let searchContentTeacher = '';
+    if (searchType === 'name') {
+      searchContentName = searchContent;
+      searchContentTeacher = '';
+    } else if (searchType === 'teacher') {
+      searchContentName = '';
+      searchContentTeacher = searchContent;
+    } else if (searchType === 'noSearch') {
+      searchContentName = '';
+      searchContentTeacher = '';
+    }
+    // console.log('name : ', searchContentName);
+    // console.log('teacher : ', searchContentTeacher);
     return (
-      <Paper className={classes.CommentTitleListRawRoot}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableCell}>名稱</TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                類別
-              </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                開課教授
-              </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                推薦分數
-              </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                作者
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.id}>
-                <TableCell
-                  component="th"
-                  scope="row"
-                  className={classes.tableCell}
-                >
-                  {row.name}
+      <>
+        <Paper className={classes.CommentTitleListRawRoot}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.tableCell}>名稱</TableCell>
+                <TableCell align="right" className={classes.tableCell}>
+                  類別
                 </TableCell>
                 <TableCell align="right" className={classes.tableCell}>
-                  {row.type}
+                  開課教授
                 </TableCell>
                 <TableCell align="right" className={classes.tableCell}>
-                  {row.teacher}
+                  推薦分數
                 </TableCell>
                 <TableCell align="right" className={classes.tableCell}>
-                  {row.score}
-                </TableCell>
-                <TableCell align="right" className={classes.tableCell}>
-                  {row.author}
+                  作者
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+            </TableHead>
+            <Query
+              query={QUERY_COMMENT_LIST}
+              variables={{
+                type: this.props.show,
+                name: searchContentName,
+                teacher: searchContentTeacher
+              }}
+            >
+              {({ loading, error, data }) => {
+                if (loading)
+                  return (
+                    <TableBody className={style.loadingStyle}>
+                      {'正在查詢中，等一下啦 > <'}
+                    </TableBody>
+                  );
+                if (error) return `Error! ${error.message}`;
+                return (
+                  <TableBody>
+                    {data.getCommentList.map(row => (
+                      <TableRow key={row._id}>
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          className={classes.tableCell}
+                        >
+                          {row.semester + ' ' + row.name}
+                        </TableCell>
+                        <TableCell align="right" className={classes.tableCell}>
+                          {row.domain === '' || row.domain === row.type
+                            ? row.type
+                            : row.type + '/' + row.domain}
+                        </TableCell>
+                        <TableCell align="right" className={classes.tableCell}>
+                          {row.teacher}
+                        </TableCell>
+                        <TableCell align="right" className={classes.tableCell}>
+                          {row.score || ''}
+                        </TableCell>
+                        <TableCell align="right" className={classes.tableCell}>
+                          {row.author || ''}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                );
+              }}
+            </Query>
+          </Table>
+        </Paper>
+      </>
     );
   }
 }
 const CommentTitleList = withStyles(styles)(CommentTitleListRaw);
 class CommentListRaw extends Component {
-  handleCourseClick = e => {
-    e.preventDefault();
-    console.log(this.state.searchContent);
-  };
-  changeValue = e => {
-    this.setState({ searchContent: e.target.value });
-  };
   constructor(props) {
     super(props);
-    this.state = { searchContent: '' };
+    this.state = { searchContent: '', searchType: 'noSearch' };
   }
+  handleNameClick = e => {
+    e.preventDefault();
+    this.setState({
+      searchContent: this.state.searchContent,
+      searchType: 'name'
+    });
+  };
+  handleTeacherClick = e => {
+    e.preventDefault();
+    this.setState({
+      searchContent: this.state.searchContent,
+      searchType: 'teacher'
+    });
+  };
+  changeValue = e => {
+    this.setState({ searchContent: e.target.value, searchType: 'noSearch' });
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.allRoot}>
         <form onSubmit={this.handleSubmit} className={style.flexContainer}>
-          <input
-            type="text"
-            name="title"
-            className="form-control col-6"
+          <Input
             placeholder="輸入關鍵字"
+            className={classes.input}
+            inputProps={{
+              'aria-label': 'Description'
+            }}
             style={{ flexGrow: '1' }}
+            width="300"
             onChange={this.changeValue}
             value={this.state.searchContent}
           />
+
           <Button
             variant="outlined"
             type="submit"
             className={classes.button}
             color="inherit"
-            onClick={this.handleCourseClick}
+            onClick={this.handleNameClick}
           >
             課名
           </Button>
@@ -234,9 +289,9 @@ class CommentListRaw extends Component {
             type="submit"
             className={classes.button}
             color="inherit"
-            // onClick={this.han}
+            onClick={this.handleTeacherClick}
           >
-            作者
+            教授
           </Button>
           <Button
             variant="outlined"
@@ -247,7 +302,11 @@ class CommentListRaw extends Component {
             評論數
           </Button>
         </form>
-        <CommentTitleList show={this.props.show} />
+        <CommentTitleList
+          show={this.props.show}
+          searchContent={this.state.searchContent}
+          searchType={this.state.searchType}
+        />
       </div>
     );
   }

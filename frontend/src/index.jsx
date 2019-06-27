@@ -10,7 +10,6 @@ import store from './redux/store';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 import './index.css';
-import './bootstrap.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

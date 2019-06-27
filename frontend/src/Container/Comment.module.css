@@ -37,3 +37,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.loadingStyle {
+    font-size: 15px;
+    min-height: 70px;
+    display: block;
+}

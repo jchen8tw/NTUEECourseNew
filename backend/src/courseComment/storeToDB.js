@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const { CourseComment } = require('../model.js');
 const fs = require('fs');
-const csv = require('csv-parser');
-const csvtojson = require('csvtojson');
 const semester = ['105-2', '106-1', '106-2', '107-1', '107-2'];
 const type = ['專題', '十選二', '選修', '必修'];
 // let counter = 0;
@@ -45,7 +43,15 @@ mongoose.connection.once('open', () => {
             };
           });
           //   console.log(a);
-          a.map(comment => results.push(comment));
+          a.map(comment => {
+            if (
+              !(
+                comment.domain.includes('範例') ||
+                comment.teacher.includes('範例')
+              )
+            )
+              results.push(comment);
+          });
         }
       }
     );

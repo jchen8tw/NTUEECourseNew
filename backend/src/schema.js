@@ -7,6 +7,7 @@ const schema = gql`
     allCourseGroups: [CourseGroup!]!
     me(student_id: String!): Student
     allTeacher: [Course!]!
+    getCommentList(type: String!, name: String, teacher: String): [Comment]
   }
 
   type Mutation {
@@ -43,6 +44,18 @@ const schema = gql`
     courses: [Course!]!
     name: String!
     grade: Int!
+  }
+  type Comment {
+    _id: ID!
+    semester: String!
+    type: String! #必修、選修、十選二
+    name: String!
+    domain: String #CS、光電...
+    teacher: String!
+    studyTogether: String
+    studyBefore: String
+    content: [String]!
+    score: Int
   }
 
   type Token {
