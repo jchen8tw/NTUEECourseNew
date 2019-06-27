@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import style from './CommentList.module.css';
 import CommentPage from './CommentPage.jsx';
+
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,8 +16,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
+
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 10 * 3 }}>
@@ -105,22 +107,54 @@ class CommentTab extends Component {
         )}
         {value === 1 && (
           <TabContainer>
-            <CommentList show="必修" />
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show="必修" {...props} />}
+            />
           </TabContainer>
         )}
         {value === 2 && (
           <TabContainer>
-            <CommentList show="選修" />
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show="選修" {...props} />}
+            />
           </TabContainer>
         )}
         {value === 3 && (
           <TabContainer>
-            <CommentList show="十選二" />
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show="十選二" {...props} />}
+            />
           </TabContainer>
         )}
         {value === 4 && (
           <TabContainer>
-            <CommentList show="專題" />
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show="專題" {...props} />}
+            />
           </TabContainer>
         )}
         {value === 5 && <Link to="/publishComment" />}

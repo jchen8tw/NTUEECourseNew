@@ -8,6 +8,7 @@ const schema = gql`
     me(student_id: String!): Student
     allTeacher: [Course!]!
     getCommentList(type: String!, name: String, teacher: String): [Comment]
+    getComment(_id: String): Comment
   }
 
   type Mutation {
@@ -56,6 +57,7 @@ const schema = gql`
     studyBefore: String
     content: [String]!
     score: Int
+    author: String
   }
 
   type Token {

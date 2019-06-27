@@ -1,0 +1,32 @@
+.allRoot {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    max-width: 1000px;
+    min-width: 450px;
+}
+
+.pageRoot {
+    /* display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap; */
+    text-align: left;
+}
+
+.pageRoot h2 {
+    max-width: 200px;
+    padding: 0.0% 0 0 4%;
+}
+
+.pageRoot h3 {
+    max-width: 200px;
+    padding: 0.5% 0 0.5% 2%;
+}
+
+.pageRoot p {
+    padding-bottom: 20px;
+    margin: 0 40% 0 4%;
+    font-size: 20px;
+}

@@ -62,6 +62,10 @@ const Query = {
           .exec();
     }
     // return await CourseComment.deleteMany({});
+  },
+  async getComment(_, args, context) {
+    const { _id } = args;
+    return await CourseComment.findById({ _id }).exec();
   }
 };
 
