@@ -10,6 +10,27 @@ import style from './Select.module.css';
 let categories = ['大一', '大二', '大三\n大四', '十選二實驗'];
 
 function Select(props) {
+  const allUrl = categories.map(name => `${props.match.path}/${name}`);
+  let child = null;
+  if (!props.match.isExact)
+    child = allUrl.map(url => (
+      <Route key={url} path={url} component={CourseCategory} />
+    ));
+  else
+    child = categories.map((name, index) => (
+      <Card className={style.category} key={`select-category-${index}`}>
+        <Link to={allUrl[index]} style={{ textDecoration: 'none' }}>
+          <CardActionArea style={{ height: '100%' }}>
+            <Typography
+              variant="h3"
+              style={{ whiteSpace: 'pre', lineHeight: '1.5' }}
+            >
+              {name}
+            </Typography>
+          </CardActionArea>
+        </Link>
+      </Card>
+    ));
   return (
     <div
       style={{
@@ -18,34 +39,8 @@ function Select(props) {
         backgroundColor: '#fafafa'
       }}
     >
-      <BreadCrumbs url={props.location.pathname.replace('/select', '')} />
-      <div className={classNames({ [style.grid]: props.match.isExact })}>
-        {categories.map((name, index) => {
-          let url = `${props.match.url}/${name}`;
-          return (
-            <div key={`select-category-${index}`}>
-              {props.match.isExact && (
-                <Card className={style.category}>
-                  <Link to={url} style={{ textDecoration: 'none' }}>
-                    <CardActionArea style={{ height: '100%' }}>
-                      <Typography
-                        variant="h3"
-                        style={{ whiteSpace: 'pre', lineHeight: '1.5' }}
-                      >
-                        {name}
-                      </Typography>
-                    </CardActionArea>
-                  </Link>
-                </Card>
-              )}
-              <Route
-                path={url}
-                render={props => <CourseCategory {...props} />}
-              />
-            </div>
-          );
-        })}
-      </div>
+      <BreadCrumbs url={props.location.pathname} />{' '}
+      {props.match.isExact ? <div className={style.grid}>{child}</div> : child}
     </div>
   );
 }

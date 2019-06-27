@@ -54,7 +54,11 @@ module.exports = {
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
+    contentBase: path.join(__dirname, 'build'),
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      '/graphql': 'http://localhost:8000'
+    }
   }
 };

@@ -32,24 +32,28 @@ const data = [
 ];
 
 function CourseCategory(props) {
-  return (
-    <div className={style.grid}>
-      {data.map(course => {
-        let url = `${props.location.pathname}/${course.name}`;
-        return (
-          <div key={course.name}>
-            <CourseCard key={course.name} {...course} />
-            <Route
-              path={url}
-              render={props => (
-                <p>{`${props.match.url}, ${url}, ${course.name}`}</p>
-              )}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
+  const allUrl = data.map(course => `${props.match.path}/${course.name}`);
+  console.log(props);
+  if (!props.match.isExact)
+    return (
+      <>
+        {allUrl.map(url => (
+          <Route
+            key={url}
+            path={url}
+            render={props => <p>{`${props.match.url}, ${url}`}</p>}
+          />
+        ))}
+      </>
+    );
+  else
+    return (
+      <div className={style.grid}>
+        {data.map((course, index) => (
+          <CourseCard key={course.name} url={allUrl[index]} {...course} />
+        ))}
+      </div>
+    );
 }
 
 export default CourseCategory;
