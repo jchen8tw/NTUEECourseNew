@@ -34,6 +34,10 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper
   },
+  appBar: {
+    position: 'sticky',
+    top: 0
+  },
   button: {
     margin: theme.spacing.unit
   },
@@ -71,7 +75,7 @@ class CommentTab extends Component {
     const { value } = this.state;
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" color="default" className={classes.appBar}>
           <Tabs
             value={value}
             onChange={this.handleChange}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import Course from '../Container/Course';
 import CourseCard from '../Components/CourseCard';
 import { connect } from 'react-redux';
 
@@ -52,11 +53,7 @@ function CourseCategory(props) {
     return (
       <>
         {allUrl.map(url => (
-          <Route
-            key={url}
-            path={url}
-            render={props => <p>{`${props.match.url}, ${url}`}</p>}
-          />
+          <Route key={url} path={url} component={Course} />
         ))}
       </>
     );
