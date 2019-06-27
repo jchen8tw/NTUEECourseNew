@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Login from './Container/Login';
 import Select from './Container/Select';
 import Admin from './Container/Admin';
-import Comment from './Container/Comment';
+import CommentList from './Container/CommentList';
 
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
@@ -43,7 +43,7 @@ class App extends Component {
             )}
             <Route path="/select" render={props => <Select {...props} />} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/comment" component={Comment} />
+            <Route path="/commentlist" component={CommentList} />
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>

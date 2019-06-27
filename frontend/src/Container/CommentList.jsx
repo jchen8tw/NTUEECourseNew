@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import style from './Comment.module.css';
+import style from './CommentList.module.css';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
