@@ -1,14 +1,18 @@
 import React from 'react';
-import { Card, Typography, CardActionArea,LinearProgress } from '@material-ui/core';
+import {
+  Card,
+  Typography,
+  CardActionArea,
+  LinearProgress
+} from '@material-ui/core';
 import { Query } from 'react-apollo';
-import classNames from 'classnames';
 import BreadCrumbs from '../Components/Breadcrumbs';
 import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { get_course_info,logout } from '../redux/actions';
+import { get_course_info, logout } from '../redux/actions';
 import CourseCategory from './CourseCategory';
 import style from './Select.module.css';
-import COURSE_QUERY from '../graphql/coursequery';
+import COURSE_QUERY from '../graphql/query';
 
 let categories = ['大一', '大二', '大三\n大四', '十選二實驗'];
 const mapDispatchToProps = dispatch => {
@@ -21,8 +25,14 @@ function Select(props) {
   const allUrl = categories.map(name => `${props.match.path}/${name}`);
   let child = null;
   if (!props.match.isExact)
-    child = allUrl.map((url,grademinusone) => (
-      <Route key={url} path={url} component={props => <CourseCategory {...props} grade={grademinusone+1}/>} />
+    child = allUrl.map((url, grademinusone) => (
+      <Route
+        key={url}
+        path={url}
+        component={props => (
+          <CourseCategory {...props} grade={grademinusone + 1} />
+        )}
+      />
     ));
   else
     child = categories.map((name, index) => (
@@ -71,8 +81,16 @@ function Select(props) {
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
             //console.log('called query');
-            return <><BreadCrumbs url={props.location.pathname} />{' '}
-            {props.match.isExact ? <div className={style.grid}>{child}</div> : child}</>;
+            return (
+              <>
+                <BreadCrumbs url={props.location.pathname} />{' '}
+                {props.match.isExact ? (
+                  <div className={style.grid}>{child}</div>
+                ) : (
+                  child
+                )}
+              </>
+            );
           }
         }}
       </Query>

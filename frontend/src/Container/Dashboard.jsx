@@ -1,13 +1,13 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import COURSE_QUERY from '../graphql/coursequery';
+import COURSE_QUERY from '../graphql/query';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
 import { get_course_info, logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
-const data = [
+const data1 = [
   {
     _id: '1',
     image:
@@ -113,7 +113,7 @@ function Dashboard(props) {
                       您已經選的課程
                     </Typography>
                   </div>
-                  <CardGroup data={data} />
+                  <CardGroup data={data1} />
                 </section>
                 <Divider />
                 <section>

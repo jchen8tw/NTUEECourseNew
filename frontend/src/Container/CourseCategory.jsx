@@ -34,15 +34,20 @@ const data = [
 const mapStateToProps = state => {
   return { courses: state.courses };
 };
+
 function CourseCategory(props) {
-  const coursebygrade = props.courses.filter(
-    course => course.grade == props.grade
-  ).map(course => ({...course, image: 'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',year: '108-1'}));
+  const courseByGrade = props.courses
+    .filter(course => course.grade === props.grade)
+    .map(course => ({
+      ...course,
+      image:
+        'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+      year: '108-1'
+    }));
   //TODO temperary add image url and year
   const allUrl = props.courses.map(
     course => `${props.match.path}/${course.name}`
   );
-  //console.log(props);
   if (!props.match.isExact)
     return (
       <>
@@ -57,10 +62,9 @@ function CourseCategory(props) {
     );
   else {
     //need to reder courses depends on grade
-    //console.log(coursebygrade);
     return (
       <div className={style.grid}>
-        {coursebygrade.map((course, index) => (
+        {courseByGrade.map((course, index) => (
           <CourseCard key={course.name} url={allUrl[index]} {...course} />
         ))}
       </div>
