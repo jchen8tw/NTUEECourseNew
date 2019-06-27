@@ -45,7 +45,7 @@ class CommentPage extends Component {
                         <h2>{data.getComment.studyTogether}</h2>
                       </>
                     ) : null}
-                    {data.getComment.studyTogether ? (
+                    {data.getComment.studyBefore ? (
                       <>
                         <h3>推薦預先修的課程 : </h3>
                         <h2>{data.getComment.studyBefore}</h2>
