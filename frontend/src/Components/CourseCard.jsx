@@ -35,7 +35,8 @@ const styles = {
 };
 
 function CourseCard(props) {
-  const { classes, year, name, image, choices, url } = props;
+  const { classes, year, name, image, courses, url } = props;
+  console.log(props);
   return (
     <Card className={classes.card}>
       <Link to={url || ''} className={classes.unstyledLink}>
@@ -60,13 +61,13 @@ function CourseCard(props) {
             >
               {name}
             </Typography>
-            {choices &&
-              choices.map((i, index) => (
+            {courses &&
+              courses.map((i, index) => (
                 <Typography
                   component="p"
                   style={{ fontSize: '1rem' }}
                   key={`${name}-choice-${index}`}
-                >{`${index + 1}. ${i}`}</Typography>
+                >{`${index + 1}. ${i.teacher}`}</Typography>
               ))}
           </CardContent>
         </CardActionArea>

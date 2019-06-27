@@ -39,7 +39,7 @@ function CourseCategory(props) {
     course => course.grade == props.grade
   ).map(course => ({...course, image: 'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',year: '108-1'}));
   //TODO temperary add image url and year
-  const allUrl = coursebygrade.map(
+  const allUrl = props.courses.map(
     course => `${props.match.path}/${course.name}`
   );
   //console.log(props);
@@ -57,7 +57,7 @@ function CourseCategory(props) {
     );
   else {
     //need to reder courses depends on grade
-    console.log(coursebygrade);
+    //console.log(coursebygrade);
     return (
       <div className={style.grid}>
         {coursebygrade.map((course, index) => (
