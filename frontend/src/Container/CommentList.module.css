@@ -3,7 +3,7 @@
     background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
     background-size: cover;
     height: 60%;
-    /* width: 100%; */
+    width: 100%;
     padding: 0;
     background-attachment: fixed;
     flex-grow: 1;

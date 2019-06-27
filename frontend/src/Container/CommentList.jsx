@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import style from './CommentList.module.css';
+import CommentPage from './CommentPage.jsx';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -80,44 +81,50 @@ class CommentTab extends Component {
             variant="scrollable"
             scrollButtons="auto"
           >
-            <Tab label="全部顯示" />
-            <Tab label="必修" />
-            <Tab label="選修" />
-            <Tab label="十選二" />
-            <Tab label="專題" />
+            <Tab label="全部顯示" component={Link} to={'/commentlist'} />
+            <Tab label="必修" component={Link} to={'/commentlist'} />
+            <Tab label="選修" component={Link} to={'/commentlist'} />
+            <Tab label="十選二" component={Link} to={'/commentlist'} />
+            <Tab label="專題" component={Link} to={'/commentlist'} />
             <Tab label="發表評論" />
             <Tab label="文章管理" />
           </Tabs>
         </AppBar>
-        <Switch>
-          {value === 0 && (
-            <TabContainer>
-              <CommentList show="all" />
-            </TabContainer>
-          )}
-          {value === 1 && (
-            <TabContainer>
-              <CommentList show="必修" />
-            </TabContainer>
-          )}
-          {value === 2 && (
-            <TabContainer>
-              <CommentList show="選修" />
-            </TabContainer>
-          )}
-          {value === 3 && (
-            <TabContainer>
-              <CommentList show="十選二" />
-            </TabContainer>
-          )}
-          {value === 4 && (
-            <TabContainer>
-              <CommentList show="專題" />
-            </TabContainer>
-          )}
-          {value === 5 && <Route path="/publishComment" />}
-          {value === 6 && <Route path="/manageComment" />}
-        </Switch>
+        {value === 0 && (
+          <TabContainer>
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show="all" {...props} />}
+            />
+          </TabContainer>
+        )}
+        {value === 1 && (
+          <TabContainer>
+            <CommentList show="必修" />
+          </TabContainer>
+        )}
+        {value === 2 && (
+          <TabContainer>
+            <CommentList show="選修" />
+          </TabContainer>
+        )}
+        {value === 3 && (
+          <TabContainer>
+            <CommentList show="十選二" />
+          </TabContainer>
+        )}
+        {value === 4 && (
+          <TabContainer>
+            <CommentList show="專題" />
+          </TabContainer>
+        )}
+        {value === 5 && <Link to="/publishComment" />}
+        {value === 6 && <Link to="/manageComment" />}
       </div>
     );
   }
@@ -200,29 +207,45 @@ class CommentTitleListRaw extends Component {
                 return (
                   <TableBody>
                     {data.getCommentList.map(row => (
-                      <TableRow key={row._id}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className={classes.tableCell}
-                        >
-                          {row.semester + ' ' + row.name}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.domain === '' || row.domain === row.type
-                            ? row.type
-                            : row.type + '/' + row.domain}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.teacher}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.score || ''}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.author || ''}
-                        </TableCell>
-                      </TableRow>
+                      <>
+                        <TableRow key={row._id}>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            className={classes.tableCell}
+                            component={Link}
+                            to={'/commentlist/' + row._id}
+                          >
+                            {row.semester + ' ' + row.name}
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            className={classes.tableCell}
+                          >
+                            {row.domain === '' || row.domain === row.type
+                              ? row.type
+                              : row.type + '/' + row.domain}
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            className={classes.tableCell}
+                          >
+                            {row.teacher}
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            className={classes.tableCell}
+                          >
+                            {row.score || ''}
+                          </TableCell>
+                          <TableCell
+                            align="right"
+                            className={classes.tableCell}
+                          >
+                            {row.author || ''}
+                          </TableCell>
+                        </TableRow>
+                      </>
                     ))}
                   </TableBody>
                 );
@@ -331,9 +354,8 @@ class Comment extends Component {
             </p>
           </div>
         </div>
-        <div>
-          <StyledCommentTab />
-        </div>
+
+        <StyledCommentTab />
       </div>
     );
   }

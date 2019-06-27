@@ -5,6 +5,7 @@ import Login from './Container/Login';
 import Select from './Container/Select';
 import Admin from './Container/Admin';
 import CommentList from './Container/CommentList';
+import CommentPage from './Container/CommentPage';
 
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
@@ -44,6 +45,7 @@ class App extends Component {
             <Route path="/select" render={props => <Select {...props} />} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/commentlist" component={CommentList} />
+            {/* <Route path="/commentlist/:id?" component={CommentPage} /> */}
             <Route path="/admin" component={Admin} />
             <Redirect from="/" to="/login" />
           </Switch>
