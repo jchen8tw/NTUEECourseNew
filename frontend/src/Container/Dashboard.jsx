@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import COURSE_QUERY from '../graphql/coursequery';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
-import { get_course_info,logout } from '../redux/actions';
+import { get_course_info, logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
@@ -70,8 +70,9 @@ const data2 = [
 ];
 
 const mapDispatchToProps = dispatch => {
-  return { getCourse: data => dispatch(get_course_info(data)),
-    logout : () =>dispatch(logout())
+  return {
+    getCourse: data => dispatch(get_course_info(data)),
+    logout: () => dispatch(logout())
   };
 };
 const mapStateToProps = state => {
@@ -104,27 +105,30 @@ function Dashboard(props) {
             props.logout();
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
-            return null;
+            return (
+              <>
+                <section>
+                  <div className={style.headingWrapper}>
+                    <Typography align="left" variant="h4" component="h3">
+                      您已經選的課程
+                    </Typography>
+                  </div>
+                  <CardGroup data={data} />
+                </section>
+                <Divider />
+                <section>
+                  <div className={style.headingWrapper}>
+                    <Typography align="left" variant="h4" component="h3">
+                      您尚未選的課程
+                    </Typography>
+                  </div>
+                  <CardGroup data={data2} />
+                </section>
+              </>
+            );
           }
         }}
       </Query>
-      <section>
-        <div className={style.headingWrapper}>
-          <Typography align="left" variant="h4" component="h3">
-            您已經選的課程
-          </Typography>
-        </div>
-        <CardGroup data={data} />
-      </section>
-      <Divider />
-      <section>
-        <div className={style.headingWrapper}>
-          <Typography align="left" variant="h4" component="h3">
-            您尚未選的課程
-          </Typography>
-        </div>
-        <CardGroup data={data2} />
-      </section>
     </div>
   );
 }

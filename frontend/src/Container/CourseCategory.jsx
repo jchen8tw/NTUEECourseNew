@@ -57,6 +57,7 @@ function CourseCategory(props) {
     );
   else {
     //need to reder courses depends on grade
+    console.log(coursebygrade);
     return (
       <div className={style.grid}>
         {coursebygrade.map((course, index) => (

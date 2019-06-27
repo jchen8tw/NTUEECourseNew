@@ -70,12 +70,12 @@ function Select(props) {
             props.logout();
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
-            return null;
+            //console.log('called query');
+            return <><BreadCrumbs url={props.location.pathname} />{' '}
+            {props.match.isExact ? <div className={style.grid}>{child}</div> : child}</>;
           }
         }}
       </Query>
-      <BreadCrumbs url={props.location.pathname} />{' '}
-      {props.match.isExact ? <div className={style.grid}>{child}</div> : child}
     </div>
   );
 }
