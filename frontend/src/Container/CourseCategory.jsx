@@ -33,7 +33,6 @@ const data = [
 
 function CourseCategory(props) {
   const allUrl = data.map(course => `${props.match.path}/${course.name}`);
-  console.log(props);
   if (!props.match.isExact)
     return (
       <>

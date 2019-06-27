@@ -146,7 +146,7 @@ class SubmitForm extends Component {
 }
 
 const ADMIN_MUTATION = gql`
-  mutation Submit($title: String, $content: String) {
+  mutation($title: String, $content: String) {
     adminSubmit(data: { title: $title, content: $content }) {
       message
     }

@@ -78,7 +78,7 @@ function LoginForm({ login, data, loading, error }) {
 }
 
 const LOGIN_MUTATION = gql`
-  mutation Login($account: String!, $password: String!) {
+  mutation($account: String!, $password: String!) {
     login(data: { student_id: $account, password: $password }) {
       raw
     }
