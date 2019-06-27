@@ -7,7 +7,7 @@ import { get_course_info, logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
-const data1 = [
+const dumdata = [
   {
     _id: '1',
     image:
@@ -50,7 +50,7 @@ const data1 = [
   }
 ];
 
-const data2 = [
+const dumdata2 = [
   {
     _id: '3',
     image:
@@ -113,7 +113,7 @@ function Dashboard(props) {
                       您已經選的課程
                     </Typography>
                   </div>
-                  <CardGroup data={data1} />
+                  <CardGroup data={dumdata} />
                 </section>
                 <Divider />
                 <section>
@@ -122,7 +122,7 @@ function Dashboard(props) {
                       您尚未選的課程
                     </Typography>
                   </div>
-                  <CardGroup data={data2} />
+                  <CardGroup data={dumdata2} />
                 </section>
               </>
             );
