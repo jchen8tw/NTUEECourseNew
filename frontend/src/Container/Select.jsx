@@ -21,8 +21,8 @@ function Select(props) {
   const allUrl = categories.map(name => `${props.match.path}/${name}`);
   let child = null;
   if (!props.match.isExact)
-    child = allUrl.map(url => (
-      <Route key={url} path={url} component={CourseCategory} />
+    child = allUrl.map((url,grademinusone) => (
+      <Route key={url} path={url} component={props => <CourseCategory {...props} grade={grademinusone+1}/>} />
     ));
   else
     child = categories.map((name, index) => (
