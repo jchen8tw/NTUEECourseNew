@@ -37,11 +37,11 @@ class NavBar extends React.Component {
 
   handleClick = event => {
     this.setState({ anchorEl: event.target });
-  };
+  }
 
   handleClose = _ => {
     this.setState({ anchorEl: null });
-  };
+  }
 
   render() {
     const { classes, tabIndex, handleTabChange, logout, location } = this.props;
@@ -57,10 +57,10 @@ class NavBar extends React.Component {
               onChange={handleTabChange}
               scrollButtons="auto"
             >
-              <EnlargedTab label="Home" component={Link} to="/dashboard" />
-              <EnlargedTab label="選課" component={Link} to="/select" />
-              <EnlargedTab label="評價" component={Link} to="/commentlist" />
-              <EnlargedTab label="Sweety Course" component={Link} to="/admin" />
+              <EnlargedTab label="Home" ref={this.Tab1}component={Link} to="/dashboard" />
+              <EnlargedTab label="選課" ref={this.Tab2} component={Link} to="/select" />
+              <EnlargedTab label="評價" ref={this.Tab3} component={Link} to="/commentlist" />
+              <EnlargedTab label="Sweety Course" ref={this.Tab4}component={Link} to="/admin" />
             </Tabs>
             <IconButton
               aria-owns="account"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import gql from 'graphql-tag';
+import COURSE_QUERY from '../graphql/coursequery';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
 import { get_course_info,logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
@@ -68,20 +68,6 @@ const data2 = [
     choices: null
   }
 ];
-
-const COURSE_QUERY = gql`
-  query {
-    allCourseGroups {
-      _id
-      name
-      grade
-      courses {
-        _id
-        teacher
-      }
-    }
-  }
-`;
 
 const mapDispatchToProps = dispatch => {
   return { getCourse: data => dispatch(get_course_info(data)),
