@@ -11,7 +11,7 @@ function rootReducer(state = initialState, action) {
       localStorage.setItem('jwt', action.payload);
       return { ...state, jwt: action.payload };
     case GET_COURSE_INFO:
-      return { ...state, courses: action.payload };
+      return { ...state, courses: action.payload.allCourseGroups };
     case LOGOUT:
       localStorage.removeItem('jwt');
       return { ...initialState };

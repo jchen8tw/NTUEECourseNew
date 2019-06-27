@@ -1,5 +1,6 @@
 const { Student, Course, CourseGroup } = require('../model.js');
 const mongoose = require('mongoose');
+const Buffer = require('buffer').Buffer;
 
 const Mutation = {
   async createStudent(_, { data }, context) {
@@ -18,8 +19,8 @@ const Mutation = {
   },
   async login(_, { data }, context) {
     const { student_id, password } = data;
-
-    const student = await Student.findOne({ id: student_id }).exec();
+    //compare case nonsensitive
+    const student = await Student.findOne({ id: student_id.toUpperCase() }).exec();
     if (!student)
       throw new Error(
         'Authentication failed: User not found, please try again'
@@ -76,7 +77,8 @@ const Mutation = {
       let newCourses = courseList.map(item => {
         const _id = new mongoose.Types.ObjectId();
         const [__, _, teacher, name, limit, grade] = item.split(',');
-        return { _id, teacher, name, limit, grade };
+        const id  = new Buffer(name+teacher).toString('base64'); //use base64 name+teacher+grade to prevent duplicate import
+        return { _id, id , teacher, name, limit, grade };
       });
       //courselist without courseGroup
       let nameHash = {};
@@ -97,10 +99,12 @@ const Mutation = {
         name => new CourseGroup({ ...nameHash[name], name })
       );
       console.log(courseGroupList);
-      CourseGroup.insertMany(courseGroupList);
+      await CourseGroup.remove(); //remove old courses before importing
+      await CourseGroup.insertMany(courseGroupList);
       newCourses.forEach(course => (course.group = nameHash[course.name]._id));
       console.log(newCourses);
-      Course.insertMany(newCourses, { ordered: false });
+      await Course.remove();
+      await Course.insertMany(newCourses, { ordered: false });
       /*for i in courseList:
         if nameHash[i.name]:
           nameHash[i].push(i.id)
