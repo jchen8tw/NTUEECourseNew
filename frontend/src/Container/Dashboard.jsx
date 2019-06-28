@@ -1,13 +1,13 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import gql from 'graphql-tag';
+import { COURSE_QUERY } from '../graphql/query';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
-import { get_course_info } from '../redux/actions';
+import { get_course_info, logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
-const data = [
+const dumdata = [
   {
     _id: '1',
     image:
@@ -50,7 +50,7 @@ const data = [
   }
 ];
 
-const data2 = [
+const dumdata2 = [
   {
     _id: '3',
     image:
@@ -69,22 +69,11 @@ const data2 = [
   }
 ];
 
-const COURSE_QUERY = gql`
-  query {
-    allCourseGroups {
-      _id
-      name
-      grade
-      courses {
-        _id
-        teacher
-      }
-    }
-  }
-`;
-
 const mapDispatchToProps = dispatch => {
-  return { getCourse: data => dispatch(get_course_info(data)) };
+  return {
+    getCourse: data => dispatch(get_course_info(data)),
+    logout: () => dispatch(logout())
+  };
 };
 const mapStateToProps = state => {
   return { courses: state.courses };
@@ -113,29 +102,33 @@ function Dashboard(props) {
               />
             );
           } else if (!!error) {
+            props.logout();
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
-            return null;
+            return (
+              <>
+                <section>
+                  <div className={style.headingWrapper}>
+                    <Typography align="left" variant="h4" component="h3">
+                      您已經選的課程
+                    </Typography>
+                  </div>
+                  <CardGroup data={dumdata} />
+                </section>
+                <Divider />
+                <section>
+                  <div className={style.headingWrapper}>
+                    <Typography align="left" variant="h4" component="h3">
+                      您尚未選的課程
+                    </Typography>
+                  </div>
+                  <CardGroup data={dumdata2} />
+                </section>
+              </>
+            );
           }
         }}
       </Query>
-      <section>
-        <div className={style.headingWrapper}>
-          <Typography align="left" variant="h4" component="h3">
-            您已經選的課程
-          </Typography>
-        </div>
-        <CardGroup data={data} />
-      </section>
-      <Divider />
-      <section>
-        <div className={style.headingWrapper}>
-          <Typography align="left" variant="h4" component="h3">
-            您尚未選的課程
-          </Typography>
-        </div>
-        <CardGroup data={data2} />
-      </section>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import {
   TextField,
@@ -11,6 +10,7 @@ import {
   Snackbar
 } from '@material-ui/core';
 
+import { LOGIN_MUTATION } from '../graphql/mutation';
 import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
 import { connect } from 'react-redux';
@@ -63,7 +63,7 @@ function LoginForm({ login, data, loading, error }) {
         onChange={e => setPassword(e.target.value)}
       />
       <Button type="submit">Login</Button>
-      {loading && <LinearProgress />}
+      {loading && <LinearProgress color="secondary" />}
       {data && <Redirect from="/login" to="/dashboard" />}
       <ErrorSnackbar
         open={failed && !snackbarTriggered}
@@ -77,13 +77,6 @@ function LoginForm({ login, data, loading, error }) {
   );
 }
 
-const LOGIN_MUTATION = gql`
-  mutation Login($account: String!, $password: String!) {
-    login(data: { student_id: $account, password: $password }) {
-      raw
-    }
-  }
-`;
 function Login(props) {
   if (!!props.jwt) {
     return <Redirect from="/login" to="/dashboard" />;

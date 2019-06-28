@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import Course from '../Container/Course';
 import CourseCard from '../Components/CourseCard';
+import { connect } from 'react-redux';
 
 import style from './CourseCategory.module.css';
 
@@ -30,30 +32,41 @@ const data = [
     choices: null
   }
 ];
+const mapStateToProps = state => {
+  return { courses: state.courses };
+};
 
 function CourseCategory(props) {
-  const allUrl = data.map(course => `${props.match.path}/${course.name}`);
-  console.log(props);
+  const courseByGrade = props.courses
+    .filter(course => course.grade === props.grade)
+    .map(course => ({
+      ...course,
+      image:
+        'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+      year: '108-1'
+    }));
+  //TODO temperary add image url and year
+  const allUrl = props.courses.map(
+    course => `${props.match.path}/${course.name}`
+  );
   if (!props.match.isExact)
     return (
       <>
         {allUrl.map(url => (
-          <Route
-            key={url}
-            path={url}
-            render={props => <p>{`${props.match.url}, ${url}`}</p>}
-          />
+          <Route key={url} path={url} component={Course} />
         ))}
       </>
     );
-  else
+  else {
+    //need to reder courses depends on grade
     return (
       <div className={style.grid}>
-        {data.map((course, index) => (
+        {courseByGrade.map((course, index) => (
           <CourseCard key={course.name} url={allUrl[index]} {...course} />
         ))}
       </div>
     );
+  }
 }
-
-export default CourseCategory;
+const connectedCourseCategory = connect(mapStateToProps)(CourseCategory);
+export default connectedCourseCategory;

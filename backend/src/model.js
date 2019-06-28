@@ -11,6 +11,7 @@ const StudentSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  id: {type: String, required: true,index: true, unique:true}, //use base64 name+teacher+grade to prevent duplicate import
   name: { type: String, required: true },
   limit: { type: Number, required: true },
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseGroup' },

@@ -57,10 +57,30 @@ class NavBar extends React.Component {
               onChange={handleTabChange}
               scrollButtons="auto"
             >
-              <EnlargedTab label="Home" component={Link} to="/dashboard" />
-              <EnlargedTab label="選課" component={Link} to="/select" />
-              <EnlargedTab label="評價" component={Link} to="/commentlist" />
-              <EnlargedTab label="Sweety Course" component={Link} to="/admin" />
+              <EnlargedTab
+                label="Home"
+                ref={this.Tab1}
+                component={Link}
+                to="/dashboard"
+              />
+              <EnlargedTab
+                label="選課"
+                ref={this.Tab2}
+                component={Link}
+                to="/select"
+              />
+              <EnlargedTab
+                label="評價"
+                ref={this.Tab3}
+                component={Link}
+                to="/commentlist"
+              />
+              <EnlargedTab
+                label="Sweety Course"
+                ref={this.Tab4}
+                component={Link}
+                to="/admin"
+              />
             </Tabs>
             <IconButton
               aria-owns="account"
@@ -76,7 +96,7 @@ class NavBar extends React.Component {
               open={!!this.state.anchorEl}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              <MenuItem onClick={logout}>登出</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
