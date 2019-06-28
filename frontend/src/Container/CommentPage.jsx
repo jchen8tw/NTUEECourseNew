@@ -6,7 +6,6 @@ import { CONTENT_QUERY } from '../graphql/query';
 class CommentPage extends Component {
   render() {
     const { id } = this.props.match.params;
-    console.log(id);
     return (
       <Query query={CONTENT_QUERY} variables={{ id }}>
         {({ loading, error, data }) => {
