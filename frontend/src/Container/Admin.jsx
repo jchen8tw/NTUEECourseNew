@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import {
+  LinearProgress,
+  Button,
+  Grid,
+  Paper,
+  Typography,
+  Snackbar
+} from '@material-ui/core';
+import {
+  SUBMIT_STUDENT_MUTATION,
+  SUBMIT_COURSE_MUTATION
+} from '../graphql/mutation';
+import SnackbarContent from '../Components/SnackbarContent';
 
 const styles = theme => ({
   paper: {
@@ -51,13 +62,8 @@ class SubmitForm extends Component {
     };
   }
 
-  handleDrag = ({
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragReject
-  }) => {
-    const { droparea, activeDroparea, errorDroparea } = this.props.classes;
+  handleDrag = ({ getRootProps, getInputProps, isDragActive }) => {
+    const { droparea, activeDroparea } = this.props.classes;
     let message = isDragActive ? '拖曳至此處' : this.props.innerText;
     return (
       <>
@@ -98,11 +104,9 @@ class SubmitForm extends Component {
     }
     this.props.submit({
       variables: {
-        title: this.props.type,
         content: this.state.fileContents
       }
     });
-    console.log('OK');
   };
 
   onDrop = acceptedFiles => {
@@ -121,8 +125,8 @@ class SubmitForm extends Component {
   };
 
   render() {
-    const { data, loading, error, classes } = this.props;
-    const failed = !!error; // Efficiently cast error to bool
+    const { classes, loading } = this.props;
+    if (loading) return <LinearProgress color="secondary" />;
     return (
       <form onSubmit={this.handleSubmit}>
         <Dropzone
@@ -145,87 +149,96 @@ class SubmitForm extends Component {
   }
 }
 
-const ADMIN_MUTATION = gql`
-  mutation Submit($title: String, $content: String) {
-    adminSubmit(data: { title: $title, content: $content }) {
-      message
-    }
-  }
-`;
-
-const Admin = ({ classes }) => (
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-    <Grid container spacing={24} style={{ width: '100%', margin: '0' }}>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>
-          <Typography variant="h4" component="h1" className={classes.title}>
-            學生資料上傳
-          </Typography>
-          <p>
-            檔案須為.csv檔。資料格式須為:
-            <br /> 學號,姓名
-          </p>
-          <Mutation mutation={ADMIN_MUTATION}>
-            {(submit, { data, loading, error }) => (
-              <SubmitForm
-                type="adminStudentData"
-                {...{
-                  submit,
-                  data,
-                  loading,
-                  error,
-                  classes,
-                  innerText:
-                    '拖曳「學生資料」於此區塊，\n或是點擊此區塊上傳「學生資料」'
-                }}
-              />
-            )}
-          </Mutation>
-        </Paper>
+const Admin = ({ classes }) => {
+  const [message, setMessage] = React.useState(null);
+  return (
+    <div
+      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+    >
+      <Grid container spacing={24} style={{ width: '100%', margin: '0' }}>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>
+            <Typography variant="h4" component="h1" className={classes.title}>
+              學生資料上傳
+            </Typography>
+            <p>
+              檔案須為.csv檔。資料格式須為:
+              <br /> 學號,姓名
+            </p>
+            <Mutation
+              mutation={SUBMIT_STUDENT_MUTATION}
+              onCompleted={data => setMessage(data.message)}
+            >
+              {(submit, { loading }) => (
+                <SubmitForm
+                  {...{
+                    submit,
+                    loading,
+                    classes,
+                    innerText:
+                      '拖曳「學生資料」於此區塊，\n或是點擊此區塊上傳「學生資料」'
+                  }}
+                />
+              )}
+            </Mutation>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>
+            <Typography variant="h4" component="h1" className={classes.title}>
+              課程資料上傳
+            </Typography>
+            <p>
+              檔案須為.csv檔。資料格式須為:
+              <br /> 課號,班號,教師姓名,課名,人數上限,年級
+            </p>
+            <Mutation
+              mutation={SUBMIT_COURSE_MUTATION}
+              onCompleted={data => setMessage(data.message)}
+            >
+              {(submit, { loading }) => (
+                <SubmitForm
+                  {...{
+                    submit,
+                    loading,
+                    classes,
+                    innerText:
+                      '拖曳「課程資料」於此區塊，\n或是點擊此區塊上傳「課程資料」'
+                  }}
+                />
+              )}
+            </Mutation>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper}>
+            <Typography variant="h4" component="h1" className={classes.title}>
+              開始選課
+            </Typography>
+            <Button
+              variant="contained"
+              type="submit"
+              color="secondary"
+              className={classes.button}
+            >
+              開始選課啦 GOGOGO
+            </Button>
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>
-          <Typography variant="h4" component="h1" className={classes.title}>
-            課程資料上傳
-          </Typography>
-          <p>
-            檔案須為.csv檔。資料格式須為:
-            <br /> 課號,班號,教師姓名,課名,人數上限,年級
-          </p>
-          <Mutation mutation={ADMIN_MUTATION}>
-            {(submit, { data, loading, error }) => (
-              <SubmitForm
-                type="adminCourseData"
-                {...{
-                  submit,
-                  data,
-                  loading,
-                  error,
-                  classes,
-                  innerText:
-                    '拖曳「課程資料」於此區塊，\n或是點擊此區塊上傳「課程資料」'
-                }}
-              />
-            )}
-          </Mutation>
-        </Paper>
-      </Grid>
-      <Grid item xs={4}>
-        <Paper className={classes.paper}>
-          <Typography variant="h4" component="h1" className={classes.title}>
-            開始選課
-          </Typography>
-          <Button
-            variant="contained"
-            type="submit"
-            color="secondary"
-            className={classes.button}
-          >
-            開始選課啦 GOGOGO
-          </Button>
-        </Paper>
-      </Grid>
-    </Grid>
-  </div>
-);
+      <Snackbar
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        open={!!message}
+        autoHideDuration={2200}
+        onClose={() => setMessage(null)}
+      >
+        <SnackbarContent
+          variant="success"
+          message={message}
+          onClose={() => setMessage(null)}
+        />
+      </Snackbar>
+    </div>
+  );
+};
 export default withStyles(styles)(Admin);

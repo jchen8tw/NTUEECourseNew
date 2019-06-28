@@ -1,5 +1,6 @@
 const { Student, Course, CourseGroup } = require('../model.js');
 const mongoose = require('mongoose');
+const Buffer = require('buffer').Buffer;
 
 const Mutation = {
   async createStudent(_, { data }, context) {
@@ -16,10 +17,13 @@ const Mutation = {
     });
     return await student.save().catch(err => console.log(err.errmsg));
   },
+
   async login(_, { data }, context) {
     const { student_id, password } = data;
-
-    const student = await Student.findOne({ id: student_id }).exec();
+    // compare case insensitive
+    const student = await Student.findOne({
+      id: student_id.toUpperCase()
+    }).exec();
     if (!student)
       throw new Error(
         'Authentication failed: User not found, please try again'
@@ -38,83 +42,83 @@ const Mutation = {
         await student.save().catch(err => console.log(err.errmsg));
         raw = token;
       }
-      /*
-      context.res.cookie('authorization', raw, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 3 // 3 hours
-      });
-      */
       return { raw };
     }
     throw new Error('Authentication failed: Wrong password, please try again');
   },
-  async adminSubmit(_, { data }, context) {
-    const { title, content } = data;
-    if (title === 'adminStudentData') {
-      studentList = content.split(/\r\n|\r|\n/);
-      const test_password = '123';
-      const nickname = '';
-      let newStudents = await Promise.all(
-        studentList.map(async item => {
-          const [student_id, fullname] = item.split(',');
-          const hashedPassword = await context.passwordProcessor.hash(
-            test_password
-          );
-          return { id: student_id, fullname, hashedPassword, nickname };
-        })
-      );
-      console.log(newStudents);
-      //student_id must be unique in db
-      //or otherwise the import will fail
-      try {
-        await Student.insertMany(newStudents, { ordered: false });
-      } catch (_) {
-        throw new Error('import failed');
+
+  async submitCourse(_, { data }, context) {
+    let courseList = data.content.split(/\r\n|\r|\n/);
+    let newCourses = courseList.map(item => {
+      const _id = new mongoose.Types.ObjectId();
+      const [__, _, teacher, name, limit, grade] = item.split(',');
+      const id = new Buffer(name + teacher).toString('base64'); //use base64 name+teacher+grade to prevent duplicate import
+      return { _id, id, teacher, name, limit, grade };
+    });
+
+    /*
+    nameHash = {
+      CourseGroupNameA: {
+        _id: ObjectID,
+        grade: course.grade,
+        courses: [CourseObjectID]
+      },
+      CourseGroupNameB: {
+        _id: ObjectID,
+        grade: course.grade,
+        courses: [CourseObjectID]
       }
-    } else if (title === 'adminCourseData') {
-      courseList = content.split(/\r\n|\r|\n/);
-      let newCourses = courseList.map(item => {
-        const _id = new mongoose.Types.ObjectId();
-        const [__, _, teacher, name, limit, grade] = item.split(',');
-        return { _id, teacher, name, limit, grade };
-      });
-      //courselist without courseGroup
-      let nameHash = {};
-      console.log(newCourses);
-      newCourses.forEach(course => {
-        if (nameHash[course.name]) {
-          nameHash[course.name].courses.push(course._id);
-        } else {
-          nameHash[course.name] = {
-            courses: [course._id],
-            grade: course.grade,
-            _id: new mongoose.Types.ObjectId()
-          };
-        }
-      });
-      const courseNames = Object.keys(nameHash);
-      courseGroupList = courseNames.map(
-        name => new CourseGroup({ ...nameHash[name], name })
-      );
-      console.log(courseGroupList);
-      CourseGroup.insertMany(courseGroupList);
-      newCourses.forEach(course => (course.group = nameHash[course.name]._id));
-      console.log(newCourses);
-      Course.insertMany(newCourses, { ordered: false });
-      /*for i in courseList:
-        if nameHash[i.name]:
-          nameHash[i].push(i.id)
-        else:
-          nameHash[i] = [i.id]
-      for courseName in Object.keys(nameHash):
-        let c = new CourseGroup({_id: new ObjectID(), courses: nameHash[courseName], id, grade})
-      await CourseGroup.insertMnay([]);
-      for i in CourseGroup.selectMany():
-      for j in i.courses:
-        j.courseGroup = i.id
-*/
-    } else
-      throw new Error('The title does not exist,DO NOT POKE API ARBITRARILY');
+    }
+     */
+    let nameHash = {};
+    newCourses.forEach(course => {
+      if (nameHash[course.name]) {
+        nameHash[course.name].courses.push(course._id);
+      } else {
+        nameHash[course.name] = {
+          courses: [course._id],
+          grade: course.grade,
+          _id: new mongoose.Types.ObjectId()
+        };
+      }
+    });
+
+    const courseNames = Object.keys(nameHash);
+    courseGroupList = courseNames.map(
+      name => new CourseGroup({ ...nameHash[name], name })
+    );
+    let groupInsertCount = 0;
+    let courseInsertCount = 0;
+    await CourseGroup.remove(); // Remove old courses before importing
+    await CourseGroup.insertMany(courseGroupList).then(
+      docs => (groupInsertCount = docs.length)
+    );
+    newCourses.forEach(course => (course.group = nameHash[course.name]._id));
+    await Course.remove();
+    await Course.insertMany(newCourses, { ordered: false }).then(
+      docs => (courseInsertCount = docs.length)
+    );
+    return `${courseInsertCount} courses, ${groupInsertCount} groups inserted`;
+  },
+
+  async submitStudent(_, { data }, context) {
+    let studentList = data.content.split(/\r\n|\r|\n/);
+    const defaultPassword = '123';
+    const nickname = '';
+    let newStudents = await Promise.all(
+      studentList.map(async item => {
+        const [id, fullname] = item.split(',');
+        const hashedPassword = await context.passwordProcessor.hash(
+          defaultPassword
+        );
+        return { id, fullname, hashedPassword, nickname };
+      })
+    );
+    // student_id must be unique, otherwise import will fail
+    // ordered: false, emit error on duplicated student_id, but continues to insert the rest
+    return await Student.insertMany(newStudents, { ordered: false }).then(
+      docs => `${docs.length} data inserted`
+    );
   }
 };
 

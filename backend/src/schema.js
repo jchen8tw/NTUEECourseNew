@@ -14,7 +14,8 @@ const schema = gql`
   type Mutation {
     createStudent(data: LoginInput!): Student # Admin only
     login(data: LoginInput!): Token
-    adminSubmit(data: AdminInput!): Message
+    submitStudent(data: AdminInput!): String!
+    submitCourse(data: AdminInput!): String!
   }
 
   input LoginInput {
@@ -62,10 +63,6 @@ const schema = gql`
 
   type Token {
     raw: String!
-  }
-
-  type Message {
-    message: String!
   }
 `;
 
