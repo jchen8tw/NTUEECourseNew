@@ -27,32 +27,46 @@ const style = theme => ({
   drag: {
     opacity: '1',
     backgroundColor: theme.palette.action.hover,
-    boxShadow: theme.shadows[4]
+    boxShadow: theme.shadows[4],
+    '& div::before': {
+      display: 'none'
+    }
   },
   child: {
-    backgroundColor: theme.palette.background.paper
+    opacity: '1',
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.background.paper
+  },
+  list: {
+    counterReset: 'teacher'
+  },
+  text: {
+    '& > *': {
+      display: 'inline-block'
+    },
+    '&::before': {
+      counterIncrement: 'teacher',
+      content: 'counter(teacher)',
+      marginRight: theme.spacing.unit,
+      fontSize: '1.3rem'
+    }
   }
 });
 
-const SortableList = ({ classes }) => {
-  const [items, setItems] = useState([
-    { id: '1', text: 'Item 1' },
-    { id: '2', text: 'Item 2' },
-    { id: '3', text: 'Item 3' },
-    { id: '4', text: 'Item 4' }
-  ]);
+const SortableList = ({ data, classes }) => {
+  const [items, setItems] = useState(data);
 
   const onDrop = e => setItems(applyDrag(items, e));
 
   return (
-    <List>
+    <List className={classes.list}>
       <Container lockAxis="y" onDrop={onDrop} dragClass={classes.drag}>
         {items.map(({ id, text }) => (
           <Draggable key={id}>
-            <ListItem button TouchRippleProps={{ classes }}>
-              <ListItemText primary={text} />
+            <ListItem button TouchRippleProps={{ child: classes.child }}>
+              <ListItemText primary={text} className={classes.text} />
               {/* <ListItemSecondaryAction> */}
-              <ListItemIcon className="drag-handle">
+              <ListItemIcon>
                 <DragHandleIcon />
               </ListItemIcon>
               {/* </ListItemSecondaryAction> */}
