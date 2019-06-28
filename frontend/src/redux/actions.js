@@ -1,4 +1,4 @@
-import { STORE_JWT, GET_COURSE_INFO, LOGOUT } from './action-types';
+import { STORE_JWT, GET_COURSE_INFO, LOGOUT,TAB_CHANGE } from './action-types';
 
 function store_jwt(payload) {
   return { type: STORE_JWT, payload };
@@ -11,5 +11,7 @@ function get_course_info(payload) {
 function logout(payload) {
   return { type: LOGOUT, payload };
 }
-
-export { store_jwt, get_course_info, logout };
+function handleTabChange(payload){
+  return {type: TAB_CHANGE,payload};
+}
+export { store_jwt, get_course_info, logout,handleTabChange };

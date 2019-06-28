@@ -1,8 +1,9 @@
-import { STORE_JWT, GET_COURSE_INFO, LOGOUT } from './action-types';
+import { STORE_JWT, GET_COURSE_INFO, LOGOUT,TAB_CHANGE } from './action-types';
 
 const initialState = {
   jwt: null,
-  courses: null
+  courses: null,
+  tabIndex: 0
 };
 
 function rootReducer(state = initialState, action) {
@@ -15,6 +16,9 @@ function rootReducer(state = initialState, action) {
     case LOGOUT:
       localStorage.removeItem('jwt');
       return { ...initialState };
+    case TAB_CHANGE:
+      console.log(action.payload);
+      return {...state, tabIndex: action.payload};
     default:
       if (!localStorage.getItem('jwt')) {
         return { ...initialState };
