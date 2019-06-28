@@ -22,10 +22,12 @@ const schema = gql`
     student_id: String!
     password: String! # Assume HTTPS is used
   }
+
   input AdminInput {
     title: String
     content: String
   }
+
   type Student {
     _id: ID!
     id: String!
@@ -47,6 +49,7 @@ const schema = gql`
     name: String!
     grade: Int!
   }
+
   type Comment {
     _id: ID!
     semester: String!

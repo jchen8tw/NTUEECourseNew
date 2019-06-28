@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
-import COURSE_QUERY from '../graphql/query';
+import { COURSE_QUERY } from '../graphql/query';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
 import { get_course_info, logout } from '../redux/actions';
 import CardGroup from '../Components/CardGroup';

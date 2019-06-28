@@ -17,8 +17,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { QUERY_COMMENT_LIST } from '../graphql/query';
 
 function TabContainer(props) {
   return (
@@ -117,19 +117,6 @@ class CommentTab extends Component {
   }
 }
 const StyledCommentTab = withStyles(styles)(CommentTab);
-
-const QUERY_COMMENT_LIST = gql`
-  query($type: String!, $name: String, $teacher: String) {
-    getCommentList(type: $type, name: $name, teacher: $teacher) {
-      semester
-      name
-      _id
-      type
-      domain
-      teacher
-    }
-  }
-`;
 
 class CommentTitleListRaw extends Component {
   render() {

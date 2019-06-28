@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const COURSE_QUERY = gql`
+export const COURSE_QUERY = gql`
   query {
     allCourseGroups {
       _id
@@ -13,4 +13,16 @@ const COURSE_QUERY = gql`
     }
   }
 `;
-export default COURSE_QUERY;
+
+export const QUERY_COMMENT_LIST = gql`
+  query($type: String!, $name: String, $teacher: String) {
+    getCommentList(type: $type, name: $name, teacher: $teacher) {
+      semester
+      name
+      _id
+      type
+      domain
+      teacher
+    }
+  }
+`;
