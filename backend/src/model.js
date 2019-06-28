@@ -5,7 +5,7 @@ const StudentSchema = new mongoose.Schema({
   id: { type: String, required: true, index: true, unique: true },
   hashedPassword: { type: String, required: true },
   fullname: { type: String, required: true },
-  nickname: { type: String },
+  nickname: { type: String }
   //token: { type: String } no need to store token
 });
 
@@ -36,7 +36,9 @@ const CourseCommentSchema = new mongoose.Schema({
   teacher: { type: String, required: true },
   studyTogether: { type: String },
   studyBefore: { type: String },
-  content: [{ type: String }]
+  content: [{ type: String }],
+  score: Number,
+  author: String
 });
 
 const Student = mongoose.model('Student', StudentSchema);

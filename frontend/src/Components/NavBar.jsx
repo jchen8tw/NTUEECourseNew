@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import { AppBar, Toolbar, Tabs, Tab, Menu, MenuItem } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { logout } from '../redux/actions';
+import { logout,handleTabChange } from '../redux/actions';
 
 const styles = {
   tabs: {
@@ -26,22 +26,23 @@ const TabStyles = {
 const EnlargedTab = withStyles(TabStyles)(Tab);
 
 const mapDispatchToProps = dispatch => {
-  return { logout: data => dispatch(logout(data)) };
+  return { logout: data => dispatch(logout(data)),handleTabChange : (_,tabIndex) => dispatch(handleTabChange(tabIndex)) };
 };
-
+const mapStateToProps = state =>{
+  return {tabIndex: state.tabIndex};
+}
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { anchorEl: null };
   }
-
   handleClick = event => {
     this.setState({ anchorEl: event.target });
-  }
+  };
 
   handleClose = _ => {
     this.setState({ anchorEl: null });
-  }
+  };
 
   render() {
     const { classes, tabIndex, handleTabChange, logout, location } = this.props;
@@ -57,10 +58,26 @@ class NavBar extends React.Component {
               onChange={handleTabChange}
               scrollButtons="auto"
             >
-              <EnlargedTab label="Home" ref={this.Tab1}component={Link} to="/dashboard" />
-              <EnlargedTab label="選課" ref={this.Tab2} component={Link} to="/select" />
-              <EnlargedTab label="評價" ref={this.Tab3} component={Link} to="/commentlist" />
-              <EnlargedTab label="Sweety Course" ref={this.Tab4}component={Link} to="/admin" />
+              <EnlargedTab
+                label="Home"
+                component={Link}
+                to="/dashboard"
+              />
+              <EnlargedTab
+                label="選課"
+                component={Link}
+                to="/select"
+              />
+              <EnlargedTab
+                label="評價"
+                component={Link}
+                to="/commentlist"
+              />
+              <EnlargedTab
+                label="Sweety Course"
+                component={Link}
+                to="/admin"
+              />
             </Tabs>
             <IconButton
               aria-owns="account"
@@ -76,7 +93,7 @@ class NavBar extends React.Component {
               open={!!this.state.anchorEl}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              <MenuItem onClick={logout}>登出</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
@@ -90,7 +107,7 @@ NavBar.propTypes = {
 };
 
 const connectedNavBar = connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(NavBar);
 

@@ -1,22 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import style from './CommentList.module.css';
+import CommentPage from './CommentPage.jsx';
+
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import red from '@material-ui/core/colors/red';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { Button } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
-import gql from 'graphql-tag';
+import {AppBar,Tabs,Tab,Typography,Table,TableBody,TableCell,TableHead,TableRow,Paper,Input,Button } from '@material-ui/core';
+import { Route, Link } from 'react-router-dom';
+
+import { handleTabChange } from '../redux/actions';
+import {connect }  from 'react-redux';
+
 import { Query } from 'react-apollo';
+import { QUERY_COMMENT_LIST } from '../graphql/query';
+
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 10 * 3 }}>
@@ -50,102 +45,74 @@ const styles = theme => ({
     padding: '0 3% 0 2%',
     minWidth: '80px',
     minHeight: '70px',
-    fontSize: '1.2em'
+    fontSize: '1.2em',
+    '& > a': {
+      color: 'inherit'
+    }
   },
   input: {
     maxWidth: '350px'
   }
 });
 
+const tabs = ['all', '必修', '選修', '十選二', '專題'];
+
 class CommentTab extends Component {
   state = {
-    value: 0
+    tabIndex: 0
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleChange = (event, tabIndex) => {
+    this.setState({ tabIndex });
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    const { tabIndex } = this.state;
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="sticky" color="default">
           <Tabs
-            value={value}
+            value={tabIndex}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
             variant="scrollable"
             scrollButtons="auto"
           >
-            <Tab label="全部顯示" />
-            <Tab label="必修" />
-            <Tab label="選修" />
-            <Tab label="十選二" />
-            <Tab label="專題" />
+            <Tab label="全部顯示" component={Link} to={'/commentlist'} />
+            <Tab label="必修" component={Link} to={'/commentlist'} />
+            <Tab label="選修" component={Link} to={'/commentlist'} />
+            <Tab label="十選二" component={Link} to={'/commentlist'} />
+            <Tab label="專題" component={Link} to={'/commentlist'} />
             <Tab label="發表評論" />
             <Tab label="文章管理" />
           </Tabs>
         </AppBar>
-        <Switch>
-          {value === 0 && (
-            <TabContainer>
-              <CommentList show="all" />
-            </TabContainer>
-          )}
-          {value === 1 && (
-            <TabContainer>
-              <CommentList show="必修" />
-            </TabContainer>
-          )}
-          {value === 2 && (
-            <TabContainer>
-              <CommentList show="選修" />
-            </TabContainer>
-          )}
-          {value === 3 && (
-            <TabContainer>
-              <CommentList show="十選二" />
-            </TabContainer>
-          )}
-          {value === 4 && (
-            <TabContainer>
-              <CommentList show="專題" />
-            </TabContainer>
-          )}
-          {value === 5 && <Route path="/publishComment" />}
-          {value === 6 && <Route path="/manageComment" />}
-        </Switch>
+        {tabIndex < tabs.length && (
+          <TabContainer>
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentPage {...props} />}
+            />
+            <Route
+              exact
+              path={'/commentlist'}
+              render={props => <CommentList show={tabs[tabIndex]} {...props} />}
+            />
+          </TabContainer>
+        )}
+        {tabIndex === 5 && <Link to="/publishComment" />}
+        {tabIndex === 6 && <Link to="/manageComment" />}
       </div>
     );
   }
 }
 const StyledCommentTab = withStyles(styles)(CommentTab);
 
-const QUERY_COMMENT_LIST = gql`
-  query($type: String!, $name: String, $teacher: String) {
-    getCommentList(type: $type, name: $name, teacher: $teacher) {
-      semester
-      name
-      _id
-      type
-      domain
-      teacher
-    }
-  }
-`;
-
 class CommentTitleListRaw extends Component {
-  constructor(props) {
-    super(props);
-    let id = 0;
-  }
   render() {
     const { classes, searchContent, searchType } = this.props;
-    // console.log('searchContent:', searchContent);
-    // console.log('searchType : ', searchType);
     let searchContentName = '';
     let searchContentTeacher = '';
     if (searchType === 'name') {
@@ -158,79 +125,75 @@ class CommentTitleListRaw extends Component {
       searchContentName = '';
       searchContentTeacher = '';
     }
-    // console.log('name : ', searchContentName);
-    // console.log('teacher : ', searchContentTeacher);
     return (
-      <>
-        <Paper className={classes.CommentTitleListRawRoot}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.tableCell}>名稱</TableCell>
-                <TableCell align="right" className={classes.tableCell}>
-                  類別
-                </TableCell>
-                <TableCell align="right" className={classes.tableCell}>
-                  開課教授
-                </TableCell>
-                <TableCell align="right" className={classes.tableCell}>
-                  推薦分數
-                </TableCell>
-                <TableCell align="right" className={classes.tableCell}>
-                  作者
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <Query
-              query={QUERY_COMMENT_LIST}
-              variables={{
-                type: this.props.show,
-                name: searchContentName,
-                teacher: searchContentTeacher
-              }}
-            >
-              {({ loading, error, data }) => {
-                if (loading)
-                  return (
-                    <TableBody className={style.loadingStyle}>
-                      {'正在查詢中，等一下啦 > <'}
-                    </TableBody>
-                  );
-                if (error) return `Error! ${error.message}`;
+      <Paper className={classes.CommentTitleListRawRoot}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableCell}>名稱</TableCell>
+              <TableCell align="right" className={classes.tableCell}>
+                類別
+              </TableCell>
+              <TableCell align="right" className={classes.tableCell}>
+                開課教授
+              </TableCell>
+              <TableCell align="right" className={classes.tableCell}>
+                推薦分數
+              </TableCell>
+              <TableCell align="right" className={classes.tableCell}>
+                作者
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <Query
+            query={QUERY_COMMENT_LIST}
+            variables={{
+              type: this.props.show,
+              name: searchContentName,
+              teacher: searchContentTeacher
+            }}
+          >
+            {({ loading, error, data }) => {
+              if (loading)
                 return (
-                  <TableBody>
-                    {data.getCommentList.map(row => (
-                      <TableRow key={row._id}>
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          className={classes.tableCell}
-                        >
-                          {row.semester + ' ' + row.name}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.domain === '' || row.domain === row.type
-                            ? row.type
-                            : row.type + '/' + row.domain}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.teacher}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.score || ''}
-                        </TableCell>
-                        <TableCell align="right" className={classes.tableCell}>
-                          {row.author || ''}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                  <TableBody className={style.loadingStyle}>
+                    <TableRow>
+                      <td rowSpan="5">{'正在查詢中，等一下啦 > <'}</td>
+                    </TableRow>
                   </TableBody>
                 );
-              }}
-            </Query>
-          </Table>
-        </Paper>
-      </>
+              if (error) return `Error! ${error.message}`;
+              return (
+                <TableBody>
+                  {data.getCommentList.map(row => (
+                    <TableRow key={row._id}>
+                      <TableCell scope="row" className={classes.tableCell}>
+                        <Link to={`/commentlist/${row._id}`}>{`${
+                          row.semester
+                        } ${row.name}`}</Link>
+                      </TableCell>
+                      <TableCell align="right" className={classes.tableCell}>
+                        {row.domain === '' || row.domain === row.type
+                          ? row.type
+                          : `${row.type}/${row.domain}`}
+                      </TableCell>
+                      <TableCell align="right" className={classes.tableCell}>
+                        {row.teacher}
+                      </TableCell>
+                      <TableCell align="right" className={classes.tableCell}>
+                        {row.score || ''}
+                      </TableCell>
+                      <TableCell align="right" className={classes.tableCell}>
+                        {row.author || ''}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              );
+            }}
+          </Query>
+        </Table>
+      </Paper>
     );
   }
 }
@@ -313,8 +276,11 @@ class CommentListRaw extends Component {
 }
 const CommentList = withStyles(styles)(CommentListRaw);
 
-class Comment extends Component {
-  render() {
+const mapDisPatchToProps = dispatch =>{
+  return {handleTopTabChange: payload => dispatch(handleTabChange(payload))} ;
+}
+function Comment(props){
+    useEffect(()=>{props.handleTopTabChange(2)});
     return (
       <div
         style={{
@@ -331,11 +297,10 @@ class Comment extends Component {
             </p>
           </div>
         </div>
-        <div>
-          <StyledCommentTab />
-        </div>
+
+        <StyledCommentTab />
       </div>
     );
-  }
 }
-export default Comment;
+const connectedComment = connect(undefined,mapDisPatchToProps)(Comment)
+export default connectedComment;

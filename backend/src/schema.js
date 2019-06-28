@@ -7,23 +7,32 @@ const schema = gql`
     allCourseGroups: [CourseGroup!]!
     me(student_id: String!): Student
     allTeacher: [Course!]!
-    getCommentList(type: String!, name: String, teacher: String): [Comment]
+    getCommentList(type: String!, filter: CommentFilterInput): [Comment]
+    getComment(_id: String): Comment
   }
 
   type Mutation {
     createStudent(data: LoginInput!): Student # Admin only
     login(data: LoginInput!): Token
-    adminSubmit(data: AdminInput!): Message
+    submitStudent(data: AdminInput!): String!
+    submitCourse(data: AdminInput!): String!
   }
 
   input LoginInput {
     student_id: String!
     password: String! # Assume HTTPS is used
   }
+
   input AdminInput {
     title: String
     content: String
   }
+
+  input CommentFilterInput {
+    name: String
+    teacher: String
+  }
+
   type Student {
     _id: ID!
     id: String!
@@ -45,6 +54,7 @@ const schema = gql`
     name: String!
     grade: Int!
   }
+
   type Comment {
     _id: ID!
     semester: String!
@@ -56,14 +66,11 @@ const schema = gql`
     studyBefore: String
     content: [String]!
     score: Int
+    author: String
   }
 
   type Token {
     raw: String!
-  }
-
-  type Message {
-    message: String!
   }
 `;
 

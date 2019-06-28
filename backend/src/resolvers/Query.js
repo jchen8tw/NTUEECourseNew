@@ -6,6 +6,7 @@ const Query = {
       throw new Error('invalid token');
     return await Student.findOne({ id: student_id }).exec();
   },
+
   async allCourseGroups(_, __, context) {
     //TODO
     //need to check token
@@ -15,6 +16,7 @@ const Query = {
       .populate('courses')
       .exec();
   },
+
   async allTeacher(_, __, context) {
     if (!context.passwordProcessor.isValid(context.token))
       throw new Error('invalid token');
@@ -22,46 +24,25 @@ const Query = {
       .populate('group')
       .exec();
   },
+
   async getCommentList(_, args, context) {
-    const { type, name, teacher } = args;
-    if (type === 'all') {
-      if (name)
-        return await CourseComment.find({
-          name: { $regex: name, $options: 'i' }
-        })
-          .sort({ semester: -1 })
-          .exec();
-      else if (teacher)
-        return await CourseComment.find({
-          teacher: { $regex: teacher, $options: 'i' }
-        })
-          .sort({ semester: -1 })
-          .exec();
-      else
-        return await CourseComment.find({})
-          .sort({ semester: -1 })
-          .exec();
-    } else {
-      if (name)
-        return await CourseComment.find({
-          type,
-          name: { $regex: name, $options: 'i' }
-        })
-          .sort({ semester: -1 })
-          .exec();
-      else if (teacher)
-        return await CourseComment.find({
-          type,
-          teacher: { $regex: teacher, $options: 'i' }
-        })
-          .sort({ semester: -1 })
-          .exec();
-      else
-        return await CourseComment.find({ type })
-          .sort({ semester: -1 })
-          .exec();
-    }
+    const { type, filter } = args;
+    let mongooseFilter = {};
+    if (type !== 'all') mongooseFilter.type = type;
+    if (filter.name)
+      mongooseFilter.name = { $regex: filter.name, $options: 'i' };
+    if (filter.teacher)
+      mongooseFilter.teacher = { $regex: filter.teacher, $options: 'i' };
+
+    return await CourseComment.find(mongooseFilter)
+      .sort({ semester: -1 })
+      .exec();
     // return await CourseComment.deleteMany({});
+  },
+
+  async getComment(_, args, context) {
+    const { _id } = args;
+    return await CourseComment.findById({ _id }).exec();
   }
 };
 

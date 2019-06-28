@@ -36,7 +36,6 @@ const styles = {
 
 function CourseCard(props) {
   const { classes, year, name, image, courses, url } = props;
-  console.log(props);
   return (
     <Card className={classes.card}>
       <Link to={url || ''} className={classes.unstyledLink}>
