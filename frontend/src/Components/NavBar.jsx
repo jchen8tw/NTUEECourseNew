@@ -96,10 +96,10 @@ class NavBar extends React.Component {
               open={!!this.state.anchorEl}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={logout}>登出</MenuItem>
               <MenuItem component={Link} to="/profileEditor">
                 編輯個人資料
               </MenuItem>
+              <MenuItem onClick={logout}>登出</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

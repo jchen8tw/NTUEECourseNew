@@ -119,6 +119,24 @@ const Mutation = {
     return await Student.insertMany(newStudents, { ordered: false }).then(
       docs => `${docs.length} data inserted`
     );
+  },
+
+  async changeNickname(_, { student_id, nickname }, context) {
+    const res = await Student.updateOne(
+      { id: student_id },
+      { $set: { nickname: nickname } }
+    );
+    return res.nModified !== 0;
+  },
+
+  async changePassword(_, { student_id, password }, context) {
+    const res = await Student.updateOne(
+      { id: student_id },
+      {
+        $set: { hashedPassword: await context.passwordProcessor.hash(password) }
+      }
+    );
+    return res.nModified !== 0;
   }
 };
 

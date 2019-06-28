@@ -1,6 +1,12 @@
-import { STORE_JWT, GET_COURSE_INFO, LOGOUT } from './action-types';
+import {
+  STORE_JWT,
+  GET_COURSE_INFO,
+  STORE_STUDENT_ID,
+  LOGOUT
+} from './action-types';
 
 const initialState = {
+  student_id: null,
   jwt: null,
   courses: null
 };
@@ -10,6 +16,8 @@ function rootReducer(state = initialState, action) {
     case STORE_JWT:
       localStorage.setItem('jwt', action.payload);
       return { ...state, jwt: action.payload };
+    case STORE_STUDENT_ID:
+      return { ...state, student_id: action.payload };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload.allCourseGroups };
     case LOGOUT:

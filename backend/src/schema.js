@@ -16,6 +16,8 @@ const schema = gql`
     login(data: LoginInput!): Token
     submitStudent(data: AdminInput!): String!
     submitCourse(data: AdminInput!): String!
+    changeNickname(student_id: String!, nickname: String!): Boolean!
+    changePassword(student_id: String!, password: String!): Boolean!
   }
 
   input LoginInput {
