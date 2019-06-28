@@ -3,8 +3,8 @@ import style from './CommentCreate.module.css';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { TextField, MenuItem, Typography } from '@material-ui/core';
+import Rating from '../Components/Rating';
 
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -44,6 +44,9 @@ class CommentCreate extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
+  };
+  handleRateChange = value => {
+    this.setState({ rating: value });
   };
   render() {
     const { classes } = this.props;
@@ -126,10 +129,23 @@ class CommentCreate extends Component {
                 />
               )}
             </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              
+            <Grid
+              container
+              xs={12}
+              sm={6}
+              md={4}
+              className={style.gridStyle}
+              justify="center"
+              alignContent="space-around"
+              direction='column'
+            >
+              <Grid>
+                <Typography color="textSecondary" align='left'>評價</Typography>
+              </Grid>
+              <Grid item>
+              <Rating onChange={this.handleRateChange} />
+              </Grid>
             </Grid>
-
             <Grid xs={12} md={6} className={style.gridStyle}>
               <TextField
                 id="standard-name"
@@ -148,6 +164,7 @@ class CommentCreate extends Component {
             </Grid>
           </Grid>
         </Paper>
+
         {/* </Mutation> */}
       </div>
     );
