@@ -6,7 +6,6 @@ import Select from './Container/Select';
 import Admin from './Container/Admin';
 import CommentList from './Container/CommentList';
 import CommentPage from './Container/CommentPage';
-
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
 import ProfileEditor from './Container/ProfileEditor';
@@ -15,7 +14,9 @@ import style from './App.module.css';
 const mapStateToProps = state => {
   return { token: state.jwt };
 };
+
 class App extends Component {
+  /*
   constructor(props) {
     super(props);
     this.state = { tabIndex: 0 };
@@ -24,17 +25,12 @@ class App extends Component {
   handleTabChange = (_, tabIndex) => {
     this.setState({ tabIndex });
   };
-
+  */
   render() {
     return (
       <BrowserRouter>
         <div className={style.app}>
-          {this.props.token && (
-            <NavBar
-              tabIndex={this.state.tabIndex}
-              handleTabChange={this.handleTabChange}
-            />
-          )}
+          {this.props.token && <NavBar />}
           <Switch>
             <Route exact path="/login" render={props => <Login {...props} />} />
             {!this.props.token && (
