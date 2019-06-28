@@ -1,0 +1,21 @@
+.allRoot {
+    width: 100%;
+    padding-top: 40px;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-wrap: nowrap; */
+    max-width: 1000px;
+    min-width: 400px;
+    margin: 0 auto;
+}
+
+.pageRoot {
+    position: inline-block
+}
+
+
+/* .gridStyle {
+     margin: 0 auto; 
+
+
+}*/

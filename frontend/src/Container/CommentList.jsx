@@ -111,41 +111,10 @@ class CommentTab extends Component {
             />
           </TabContainer>
         )}
-<<<<<<< HEAD
-        {value === 3 && (
-          <TabContainer>
-            <Route
-              path={'/commentlist/:id'}
-              render={props => <CommentPage {...props} />}
-            />
-            <Route
-              exact
-              path={'/commentlist'}
-              render={props => <CommentList show="十選二" {...props} />}
-            />
-          </TabContainer>
-        )}
-        {value === 4 && (
-          <TabContainer>
-            <Route
-              path={'/commentlist/:id'}
-              render={props => <CommentPage {...props} />}
-            />
-            <Route
-              exact
-              path={'/commentlist'}
-              render={props => <CommentList show="專題" {...props} />}
-            />
-          </TabContainer>
-        )}
-        {value === 5 && (
+        {tabIndex === 5 && (
           <Route to="/publishComment" component={CommentCreate} />
         )}
-        {value === 6 && <Link to="/manageComment" />}
-=======
-        {tabIndex === 5 && <Link to="/publishComment" />}
         {tabIndex === 6 && <Link to="/manageComment" />}
->>>>>>> 1d07209bdfbb01d6515cd1240a2d3e31e4cc4f70
       </div>
     );
   }
