@@ -126,6 +126,9 @@ class CommentCreate extends Component {
                 />
               )}
             </Grid>
+            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
+              
+            </Grid>
 
             <Grid xs={12} md={6} className={style.gridStyle}>
               <TextField
