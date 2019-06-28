@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => {
     handleTabChange: (data) => dispatch(handleTabChange(data))
   };
 };
+
 function Select(props) {
   const allUrl = categories.map(name => `${props.match.path}/${name}`);
   let child = null;
@@ -82,7 +83,6 @@ function Select(props) {
             props.logout();
             return <p>{error.message}</p>;
           } else if (!loading && !error) {
-            //console.log('called query');
             return (
               <>
                 <BreadCrumbs url={props.location.pathname} />{' '}
