@@ -26,3 +26,21 @@ export const QUERY_COMMENT_LIST = gql`
     }
   }
 `;
+
+export const CONTENT_QUERY = gql`
+  query($id: String) {
+    getComment(_id: $id) {
+      _id
+      semester
+      type
+      name
+      domain
+      teacher
+      studyTogether
+      studyBefore
+      content
+      score
+      author
+    }
+  }
+`;

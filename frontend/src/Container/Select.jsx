@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { get_course_info, logout } from '../redux/actions';
 import CourseCategory from './CourseCategory';
 import style from './Select.module.css';
-import COURSE_QUERY from '../graphql/query';
+import { COURSE_QUERY } from '../graphql/query';
 
 let categories = ['大一', '大二', '大三\n大四', '十選二實驗'];
 const mapDispatchToProps = dispatch => {
