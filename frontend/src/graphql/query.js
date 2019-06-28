@@ -16,11 +16,11 @@ export const COURSE_QUERY = gql`
 
 export const QUERY_COMMENT_LIST = gql`
   query($type: String!, $name: String, $teacher: String) {
-    getCommentList(type: $type, name: $name, teacher: $teacher) {
-      semester
-      name
+    getCommentList(type: $type, filter: { name: $name, teacher: $teacher }) {
       _id
+      semester
       type
+      name
       domain
       teacher
     }

@@ -7,7 +7,7 @@ const schema = gql`
     allCourseGroups: [CourseGroup!]!
     me(student_id: String!): Student
     allTeacher: [Course!]!
-    getCommentList(type: String!, name: String, teacher: String): [Comment]
+    getCommentList(type: String!, filter: CommentFilterInput): [Comment]
     getComment(_id: String): Comment
   }
 
@@ -26,6 +26,11 @@ const schema = gql`
   input AdminInput {
     title: String
     content: String
+  }
+
+  input CommentFilterInput {
+    name: String
+    teacher: String
   }
 
   type Student {
