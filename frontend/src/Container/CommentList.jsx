@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import style from './CommentList.module.css';
 import CommentPage from './CommentPage.jsx';
+import CommentCreate from './CommentCreate.jsx';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -157,7 +158,9 @@ class CommentTab extends Component {
             />
           </TabContainer>
         )}
-        {value === 5 && <Link to="/publishComment" />}
+        {value === 5 && (
+          <Route to="/publishComment" component={CommentCreate} />
+        )}
         {value === 6 && <Link to="/manageComment" />}
       </div>
     );
