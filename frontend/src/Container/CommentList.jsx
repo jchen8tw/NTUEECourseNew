@@ -1,21 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import style from './CommentList.module.css';
 import CommentPage from './CommentPage.jsx';
 
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import {AppBar,Tabs,Tab,Typography,Table,TableBody,TableCell,TableHead,TableRow,Paper,Input,Button } from '@material-ui/core';
 import { Route, Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
+
+import { handleTabChange } from '../redux/actions';
+import {connect }  from 'react-redux';
 
 import { Query } from 'react-apollo';
 import { QUERY_COMMENT_LIST } from '../graphql/query';
@@ -284,8 +276,11 @@ class CommentListRaw extends Component {
 }
 const CommentList = withStyles(styles)(CommentListRaw);
 
-class Comment extends Component {
-  render() {
+const mapDisPatchToProps = dispatch =>{
+  return {handleTopTabChange: payload => dispatch(handleTabChange(payload))} ;
+}
+function Comment(props){
+    useEffect(()=>{props.handleTopTabChange(2)});
     return (
       <div
         style={{
@@ -306,6 +301,6 @@ class Comment extends Component {
         <StyledCommentTab />
       </div>
     );
-  }
 }
-export default Comment;
+const connectedComment = connect(undefined,mapDisPatchToProps)(Comment)
+export default connectedComment;

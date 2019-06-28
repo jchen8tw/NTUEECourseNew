@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Card,
   Typography,
@@ -9,7 +9,7 @@ import { Query } from 'react-apollo';
 import BreadCrumbs from '../Components/Breadcrumbs';
 import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { get_course_info, logout } from '../redux/actions';
+import { get_course_info, logout,handleTabChange } from '../redux/actions';
 import CourseCategory from './CourseCategory';
 import style from './Select.module.css';
 import { COURSE_QUERY } from '../graphql/query';
@@ -18,12 +18,14 @@ let categories = ['大一', '大二', '大三\n大四', '十選二實驗'];
 const mapDispatchToProps = dispatch => {
   return {
     getCourse: data => dispatch(get_course_info(data)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    handleTabChange: (data) => dispatch(handleTabChange(data))
   };
 };
 function Select(props) {
   const allUrl = categories.map(name => `${props.match.path}/${name}`);
   let child = null;
+  useEffect(() => {props.handleTabChange(1)});
   if (!props.match.isExact)
     child = allUrl.map((url, grademinusone) => (
       <Route
