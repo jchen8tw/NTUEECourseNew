@@ -1,5 +1,5 @@
 .allRoot {
-    width: 100%;
+    width: 90%;
     padding-top: 40px;
     /* display: flex; */
     /* justify-content: center; */
@@ -7,15 +7,23 @@
     max-width: 1000px;
     min-width: 400px;
     margin: 0 auto;
+    padding-bottom: 60px;
 }
 
 .pageRoot {
     position: inline-block
 }
 
+.buttonBox {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    color: red;
+    padding-right: 10%
+}
 
-/* .gridStyle {
-     margin: 0 auto; 
 
-
-}*/
+/* .gridStyleStudy {
+     text-align: left; 
+     padding-left: 3% 
+} */

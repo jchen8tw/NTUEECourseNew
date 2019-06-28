@@ -112,7 +112,7 @@ class CommentTab extends Component {
           </TabContainer>
         )}
         {tabIndex === 5 && (
-          <Route to="/publishComment" component={CommentCreate} />
+          <Route path="/commentlist" component={CommentCreate} />
         )}
         {tabIndex === 6 && <Link to="/manageComment" />}
       </div>

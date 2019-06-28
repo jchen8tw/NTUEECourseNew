@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -29,17 +30,28 @@ const styles = theme => ({
     width: 340,
     paddingLeft: '0.1%'
   },
+  textFieldComment: {
+    maxWidth: '950px',
+    minWidth: '350px',
+    width: '85%',
+    marginTop: '30px',
+    marginBottom: '30px'
+  },
   dense: {
     marginTop: 19
   },
   menu: {
     width: 200
+  },
+  button: {
+    margin: theme.spacing.unit
   }
 });
 
 class CommentCreate extends Component {
   state = {
-    type: '必修'
+    type: '必修',
+    score: 0
   };
 
   handleChange = name => event => {
@@ -113,21 +125,35 @@ class CommentCreate extends Component {
                 <TextField
                   id="standard-name"
                   disabled
-                  label="領域(必修不用填)"
+                  label="領域(光電、CS...等，必修不填)"
                   className={classes.textField}
                   margin="normal"
                 />
               ) : (
                 <TextField
                   id="standard-name"
-                  label="領域(必修不用填)"
+                  label="領域"
                   className={classes.textField}
                   margin="normal"
                 />
               )}
             </Grid>
-
-            <Grid xs={12} md={6} className={style.gridStyle}>
+            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
+              <TextField
+                id="standard-number"
+                label="私心推薦指數"
+                value={this.state.score}
+                max={5}
+                onChange={this.handleChange('score')}
+                type="number"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                margin="normal"
+              />
+            </Grid>
+            <Grid xs={12} md={6} className={style.gridStyleStudy}>
               <TextField
                 id="standard-name"
                 label="推薦預先修的課程"
@@ -135,13 +161,41 @@ class CommentCreate extends Component {
                 margin="normal"
               />
             </Grid>
-            <Grid xs={12} md={6} className={style.gridStyle}>
+            <Grid xs={12} md={6} className={style.gridStyleStudy}>
               <TextField
                 id="standard-name"
                 label="推薦一起修的課程"
                 className={classes.textFieldStudy}
                 margin="normal"
               />
+            </Grid>
+            <Grid md={12} sm={12} xs={12} className={style.gridStyle}>
+              <TextField
+                id="outlined-name"
+                fullWidth={true}
+                label="課程小卦"
+                className={classes.textFieldComment}
+                multiline
+                rows="10"
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid md={12} sm={12} xs={12} className={style.buttonBox}>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+              >
+                載入模板
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.button}
+              >
+                確認送出
+              </Button>
             </Grid>
           </Grid>
         </Paper>
