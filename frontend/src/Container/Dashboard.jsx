@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { COURSE_QUERY } from '../graphql/query';
 import { Typography, Divider, LinearProgress } from '@material-ui/core';
-import { get_course_info, logout } from '../redux/actions';
+import { get_course_info, logout ,handleTabChange} from '../redux/actions';
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
@@ -72,7 +72,8 @@ const dumdata2 = [
 const mapDispatchToProps = dispatch => {
   return {
     getCourse: data => dispatch(get_course_info(data)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    handleTabChange: () => dispatch(handleTabChange(0))
   };
 };
 const mapStateToProps = state => {
@@ -80,6 +81,7 @@ const mapStateToProps = state => {
 };
 
 function Dashboard(props) {
+  useEffect(()=>{props.handleTabChange()})
   return (
     <div className={style.container}>
       <Query

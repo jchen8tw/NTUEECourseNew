@@ -3,9 +3,10 @@ import style from './CommentCreate.module.css';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import { TextField, MenuItem, Typography } from '@material-ui/core';
+import Rating from '../Components/Rating';
+import { contentTemplate } from '../Components/contentTemplate';
 
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -47,16 +48,44 @@ const styles = theme => ({
     margin: theme.spacing.unit
   }
 });
+let rateValue = 0;
+function UseStateRating() {
+  const [rate, setRate] = React.useState(0);
+  return (
+    <>
+      <p>{rate}</p>
+      <Rating
+        emptySymbol="far fa-star fa-2x"
+        fullSymbol="fas fa-star fa-2x"
+        onClick={setRate}
+        initialRating={rate}
+      />
+    </>
+  );
+}
 
 class CommentCreate extends Component {
-  state = {
-    type: '必修',
-    score: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: '必修',
+      rating: 0,
+      content: ''
+    };
+  }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
+  handleRateChange = value => {
+    console.log(value);
+    console.log(this.state.rating);
+    this.setState({ rating: value });
+  };
+  loadTemplate = () => {
+    this.setState({ content: contentTemplate });
+  };
+  handleCommentSubmit = () => {};
   render() {
     const { classes } = this.props;
     const types = ['必修', '選修', '十選二', '專題'];
@@ -138,20 +167,31 @@ class CommentCreate extends Component {
                 />
               )}
             </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              <TextField
-                id="standard-number"
-                label="私心推薦指數"
-                value={this.state.score}
-                max={5}
-                onChange={this.handleChange('score')}
-                type="number"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true
-                }}
-                margin="normal"
-              />
+            <Grid
+              container
+              xs={12}
+              sm={6}
+              md={4}
+              className={style.gridStyle}
+              justify="center"
+              alignContent="space-around"
+              direction="column"
+            >
+              <Grid>
+                <Typography color="textSecondary" align="left">
+                  推薦分數
+                </Typography>
+              </Grid>
+              <Grid>
+                <p>{this.state.rating}</p>
+                <Rating
+                  emptySymbol="far fa-star fa-2x"
+                  fullSymbol="fas fa-star fa-2x"
+                  onClick={this.handleRateChange}
+                  initialRating={this.state.rating}
+                />
+                {/* <UseStateRating /> */}
+              </Grid>
             </Grid>
             <Grid xs={12} md={6} className={style.gridStyleStudy}>
               <TextField
@@ -176,8 +216,10 @@ class CommentCreate extends Component {
                 label="課程小卦"
                 className={classes.textFieldComment}
                 multiline
-                rows="10"
+                rows="15"
+                onChange={this.handleChange('content')}
                 margin="normal"
+                value={this.state.content}
                 variant="outlined"
               />
             </Grid>
@@ -186,6 +228,7 @@ class CommentCreate extends Component {
                 variant="outlined"
                 color="primary"
                 className={classes.button}
+                onClick={this.loadTemplate}
               >
                 載入模板
               </Button>
@@ -193,12 +236,14 @@ class CommentCreate extends Component {
                 variant="outlined"
                 color="primary"
                 className={classes.button}
+                onClick={this.handleCommentSubmit}
               >
                 確認送出
               </Button>
             </Grid>
           </Grid>
         </Paper>
+
         {/* </Mutation> */}
       </div>
     );
