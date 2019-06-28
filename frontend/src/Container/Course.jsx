@@ -9,11 +9,18 @@ let data = [
   { id: '4', text: '劉志文' }
 ];
 
-export default ({ match }) => (
-  <>
-    <Typography variant="h3" style={{ textAlign: 'left', paddingLeft: '2rem' }}>
-      {match.path.split('/').pop()}
-    </Typography>
-    <SotableList data={data} />
-  </>
-);
+export default (props) => {
+  console.log(props);
+  const { match } = props
+  return (
+    <>
+      <Typography
+        variant="h3"
+        style={{ textAlign: 'left', paddingLeft: '2rem' }}
+      >
+        {match.path.split('/').pop()}
+      </Typography>
+      <SotableList data={data} />
+    </>
+  );
+};

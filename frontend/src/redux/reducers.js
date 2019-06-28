@@ -17,7 +17,6 @@ function rootReducer(state = initialState, action) {
       localStorage.removeItem('jwt');
       return { ...initialState };
     case TAB_CHANGE:
-      console.log(action.payload);
       return {...state, tabIndex: action.payload};
     default:
       if (!localStorage.getItem('jwt')) {

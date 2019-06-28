@@ -18,14 +18,14 @@ function CourseCategory(props) {
       'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
     year: '108-1'
   }));
-  const allUrl = courses.map(course => `${props.match.path}/${course.name}`);
+  const allUrl = courses.map(course => `${props.match.path}/${course.name.replace(/\(/g,'').replace(/\)/g,'')}`);
   if (!props.match.isExact)
     return (
-      <>
+      <React.Fragment>
         {allUrl.map(url => (
           <Route key={url} path={url} component={Course} />
         ))}
-      </>
+      </React.Fragment>
     );
   else {
     //need to reder courses depends on grade
