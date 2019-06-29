@@ -53,19 +53,40 @@ const styles = theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     maxWidth: '1000px',
-    minWidth: '450px'
+    minWidth: '400px'
   },
   tableCell: {
     padding: '0 3% 0 2%',
-    minWidth: '80px',
+    minWidth: '70px',
     minHeight: '70px',
     fontSize: '1.2em',
+    width: '20%',
     '& > a': {
       color: 'inherit'
     }
   },
   input: {
     maxWidth: '350px'
+  },
+  tableCellType: {
+    padding: '0 3% 0 2%',
+    minWidth: '30px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    '& > a': {
+      color: 'inherit'
+    },
+    width: '15%'
+  },
+  tableCellScore: {
+    padding: '0 3% 0 2%',
+    minWidth: '20px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    width: '10%',
+    '& > a': {
+      color: 'inherit'
+    }
   }
 });
 
@@ -146,17 +167,39 @@ class CommentTitleListRaw extends Component {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>名稱</TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell className={classes.tableCell} item md={3}>
+                名稱
+              </TableCell>
+              <TableCell
+                align="right"
+                className={classes.tableCellType}
+                item
+                md={3}
+              >
                 類別
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell
+                align="right"
+                className={classes.tableCell}
+                item
+                md={2}
+              >
                 開課教授
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                推薦分數
+              <TableCell
+                align="right"
+                className={classes.tableCellScore}
+                item
+                md={1}
+              >
+                分數
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell
+                align="right"
+                className={classes.tableCell}
+                item
+                md={3}
+              >
                 作者
               </TableCell>
             </TableRow>
@@ -174,7 +217,7 @@ class CommentTitleListRaw extends Component {
                 return (
                   <TableBody className={style.loadingStyle}>
                     <TableRow>
-                      <td rowSpan="5">{'正在查詢中，等一下啦 > <'}</td>
+                      <td row="5">{'正在查詢中，等一下啦 > <'}</td>
                     </TableRow>
                   </TableBody>
                 );
@@ -188,7 +231,10 @@ class CommentTitleListRaw extends Component {
                           row.semester
                         } ${row.name}`}</Link>
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellType}
+                      >
                         {row.domain === '' || row.domain === row.type
                           ? row.type
                           : `${row.type}/${row.domain}`}
@@ -196,7 +242,10 @@ class CommentTitleListRaw extends Component {
                       <TableCell align="right" className={classes.tableCell}>
                         {row.teacher}
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellScore}
+                      >
                         {row.score || ''}
                       </TableCell>
                       <TableCell align="right" className={classes.tableCell}>

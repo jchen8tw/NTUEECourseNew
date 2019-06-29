@@ -17,7 +17,7 @@ class CommentPage extends Component {
           return (
             <div className={style.allRoot}>
               <Paper className={style.pageRoot}>
-                <UserAvatar />
+                <UserAvatar author={data.getComment.author} />
                 <h3>課程學期 :</h3> <h2>{data.getComment.semester}</h2>
                 <h3>課程名稱 : </h3>
                 <h2>{data.getComment.name}</h2>
