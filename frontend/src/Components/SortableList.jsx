@@ -62,7 +62,7 @@ const style = theme => ({
 class SortableList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { selected: [], notSelected: [...props.data] };
+    this.state = { selected: props.selected, notSelected: props.notSelected };
   }
 
   componentWillUnmount() {

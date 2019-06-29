@@ -159,11 +159,17 @@ const Mutation = {
   async updateWish(_, { data }, context) {
     const { course_name, priority } = data;
     const student_id = context.passwordProcessor.getStudentID(context.token);
+    if (!priority)
+      // Set priority to empty array => remove from priority
+      return await Wish.findOneAndRemove({
+        student_ids: student_id,
+        course_name
+      });
     let wish = await Wish.findOne({ student_ids: student_id, course_name });
     if (wish === null)
       wish = new Wish({ student_ids: [student_id], course_name, priority });
     else wish.priority = priority;
-    return await wish.save().catch(console.log);
+    return await wish.save().catch(err => console.log(err.errmsg));
   }
 };
 

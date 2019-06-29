@@ -6,6 +6,10 @@ import SotableList from '../Components/SortableList';
 import { UPDATE_WISH } from '../graphql/mutation';
 import { send_success } from '../redux/actions';
 
+const mapStateToProps = state => ({
+  getSelected: name => state.wishes && state.wishes.find(i => i.name === name)
+});
+
 const mapDispatchToProps = dispatch => ({
   sendSuccess: data => dispatch(send_success(data))
 });
@@ -13,7 +17,16 @@ const mapDispatchToProps = dispatch => ({
 const Course = props => {
   const { match, courses, name, sendSuccess } = props;
   //need to add a dummy list item to default not selecting any course
-  let data = courses.map(course => ({ id: course._id, text: course.teacher }));
+  let selected = [],
+    notSelected = [];
+  let priority = props.getSelected(name).priority;
+  courses.forEach(course => {
+    let res = { id: course._id, text: course.teacher };
+    if (priority && priority.indexOf(course.teacher) !== -1)
+      // in wishes, i.e. selected
+      selected.push(res);
+    else notSelected.push(res);
+  });
   return (
     <>
       <Typography
@@ -33,14 +46,17 @@ const Course = props => {
         <Mutation
           mutation={UPDATE_WISH}
           onCompleted={data =>
-            data.course_name &&
-            sendSuccess(`已更新「${data.course_name}」的志願序`)
+            data.updateWish.course_name &&
+            sendSuccess(`已更新「${data.updateWish.course_name}」的志願序`)
           }
         >
           {(updateWish, result) => {
             if (result.loading) return <LinearProgress color="secondary" />;
             else if (result.error) return <p>{result.error.message}</p>;
-            else return <SotableList {...{ data, name, updateWish }} />;
+            else
+              return (
+                <SotableList {...{ selected, notSelected, name, updateWish }} />
+              );
           }}
         </Mutation>
       </Paper>
@@ -49,6 +65,6 @@ const Course = props => {
 };
 
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(Course);
