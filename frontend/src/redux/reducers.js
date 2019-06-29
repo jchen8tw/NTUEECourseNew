@@ -3,7 +3,8 @@ import {
   GET_COURSE_INFO,
   GET_WISHES,
   LOGOUT,
-  TAB_CHANGE
+  TAB_CHANGE,
+  SEND_SUCCESS
 } from './action-types';
 import { getStudentID, getGrade } from '../util';
 
@@ -12,7 +13,8 @@ const initialState = {
   courses: null,
   wishes: null,
   unselected: null,
-  tabIndex: 0
+  tabIndex: 0,
+  successMessage: null
 };
 
 function rootReducer(state = initialState, action) {
@@ -29,7 +31,6 @@ function rootReducer(state = initialState, action) {
           group.grade === grade &&
           !action.payload.find(i => i.course_name === group.name) // not in wishes
       );
-      console.log(action.payload, unselected);
       return { ...state, wishes: action.payload, unselected };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
@@ -38,6 +39,8 @@ function rootReducer(state = initialState, action) {
       return { ...initialState };
     case TAB_CHANGE:
       return { ...state, tabIndex: action.payload };
+    case SEND_SUCCESS:
+      return { ...state, successMessage: action.payload };
     default:
       if (!localStorage.getItem('jwt')) {
         return { ...initialState };

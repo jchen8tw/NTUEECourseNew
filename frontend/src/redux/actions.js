@@ -3,7 +3,8 @@ import {
   GET_COURSE_INFO,
   GET_WISHES,
   LOGOUT,
-  TAB_CHANGE
+  TAB_CHANGE,
+  SEND_SUCCESS
 } from './action-types';
 
 export function store_jwt(payload) {
@@ -24,4 +25,8 @@ export function logout(payload) {
 
 export function handleTabChange(payload) {
   return { type: TAB_CHANGE, payload };
+}
+
+export function send_success(payload) {
+  return { type: SEND_SUCCESS, payload };
 }

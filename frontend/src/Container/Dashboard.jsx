@@ -12,47 +12,6 @@ import {
 import CardGroup from '../Components/CardGroup';
 import style from './Dashboard.module.css';
 
-const dumdata = [
-  {
-    _id: '1',
-    name: '電子學一',
-    choices: ['呂帥', '呂漂亮', '呂醜']
-  },
-  {
-    _id: '2',
-    name: '電工實驗(網路與多媒體)',
-    choices: ['呂帥', '呂漂亮', '呂醜']
-  },
-  {
-    _id: '3',
-    name: '交換電路與邏輯設計',
-    choices: ['呂帥', '呂漂亮', '呂醜']
-  },
-  {
-    _id: '4',
-    name: '交換電路與邏輯設計',
-    choices: ['呂帥', '呂漂亮', '呂醜']
-  },
-  {
-    _id: '5',
-    name: '交換電路與邏輯設計',
-    choices: ['呂帥', '呂漂亮', '呂醜', '呂漂亮', '呂醜']
-  }
-];
-
-const dumdata2 = [
-  {
-    _id: '3',
-    name: '線性代數',
-    choices: null
-  },
-  {
-    _id: '4',
-    name: '微分方程',
-    choices: null
-  }
-];
-
 const mapDispatchToProps = dispatch => {
   return {
     getCourse: data => dispatch(get_course_info(data)),

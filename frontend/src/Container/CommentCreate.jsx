@@ -99,8 +99,6 @@ class CommentCreate extends Component {
     this.setState({ [name]: event.target.value });
   };
   handleRateChange = value => {
-    console.log(value);
-    console.log(this.state.rating);
     this.setState({ rating: value });
   };
   loadTemplate = () => {
@@ -108,7 +106,6 @@ class CommentCreate extends Component {
   };
   handleCommentSubmit = () => {};
   getValue = idName => {
-    console.log(document.getElementById(idName).value);
     return document.getElementById(idName).value;
   };
   render() {

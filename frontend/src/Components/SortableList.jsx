@@ -73,7 +73,7 @@ const SortableList = ({ data, classes }) => {
               <ListItemText primary={text} className={classes.text} />
               {/* <ListItemSecondaryAction> */}
               <ListItemIcon>
-                <DragHandleIcon />
+                <DragHandleIcon fontSize="large" />
               </ListItemIcon>
               {/* </ListItemSecondaryAction> */}
             </ListItem>
