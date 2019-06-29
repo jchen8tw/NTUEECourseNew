@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from './CommentCreate.module.css';
 
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { TextField, MenuItem, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  Grid,
+  MenuItem,
+  Paper,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import deepPurple from '@material-ui/core/colors/deepPurple';
-import Avatar from '@material-ui/core/Avatar';
 
 import { contentTemplate } from '../Components/contentTemplate';
 import Rating from '../Components/Rating';

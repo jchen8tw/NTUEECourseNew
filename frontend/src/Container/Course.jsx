@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import SotableList from '../Components/SortableList';
 /*
 let data = [
@@ -9,10 +9,10 @@ let data = [
   { id: '4', text: '劉志文' }
 ];
 */
-export default (props) => {
+export default props => {
   //console.log(props);
-  const { match ,teachers} = props
-  let data = teachers.map((teacher,id) => ({id: id,text: teacher.teacher}));
+  const { match, teachers } = props;
+  let data = teachers.map((teacher, id) => ({ id: id, text: teacher.teacher }));
   return (
     <>
       <Typography
@@ -21,7 +21,12 @@ export default (props) => {
       >
         {match.path.split('/').pop()}
       </Typography>
-      <SotableList data={data} />
+      <Paper
+        square
+        style={{ margin: '0 auto', minWidth: '80%', marginTop: '10%' }}
+      >
+        <SotableList data={data} />
+      </Paper>
     </>
   );
 };

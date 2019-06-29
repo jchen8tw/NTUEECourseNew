@@ -42,13 +42,14 @@ const style = theme => ({
   },
   text: {
     '& > *': {
+      fontSize: '1.8rem',
       display: 'inline-block'
     },
     '&::before': {
       counterIncrement: 'teacher',
-      content: 'counter(teacher)',
+      content: 'counter(teacher) "."',
       marginRight: theme.spacing.unit,
-      fontSize: '1.3rem'
+      fontSize: '1.8rem'
     }
   }
 });
@@ -60,7 +61,12 @@ const SortableList = ({ data, classes }) => {
 
   return (
     <List className={classes.list}>
-      <Container lockAxis="y" onDrop={onDrop} dragClass={classes.drag}>
+      <Container
+        lockAxis="y"
+        onDrop={onDrop}
+        dragClass={classes.drag}
+        behaviour="contain"
+      >
         {items.map(({ id, text }) => (
           <Draggable key={id}>
             <ListItem button TouchRippleProps={{ child: classes.child }}>
