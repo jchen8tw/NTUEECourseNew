@@ -51,8 +51,8 @@ const style = theme => ({
 class SortableList extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.data);
-    this.state = { items: props.data };
+    //console.log(props.data);
+    this.state = { items: [{id:-1,text:'我不想選課啦(這欄以下的課不會被選)'},...props.data] };
   }
 
   componentWillUnmount() {
