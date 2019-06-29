@@ -5,10 +5,11 @@ const schema = gql`
   # _id is MongoDB ObjectID, can be use as key of React lists
   type Query {
     allCourseGroups: [CourseGroup!]!
-    me(student_id: String!): Student
+    me: Student
     allTeacher: [Course!]!
     getCommentList(type: String!, filter: CommentFilterInput): [Comment]
     getComment(_id: String): Comment
+    allWishes: [Wish!] # Only gets wishes associated to token
   }
 
   type Mutation {
@@ -16,6 +17,7 @@ const schema = gql`
     login(data: LoginInput!): Token
     submitStudent(data: AdminInput!): String!
     submitCourse(data: AdminInput!): String!
+    updateWish(data: WishUpdateInput!): String!
   }
 
   input LoginInput {
@@ -31,6 +33,10 @@ const schema = gql`
   input CommentFilterInput {
     name: String
     teacher: String
+  }
+
+  input WishUpdateInput {
+    priority: [String!]!
   }
 
   type Student {
@@ -67,6 +73,12 @@ const schema = gql`
     content: [String]!
     score: Int
     author: String
+  }
+
+  type Wish {
+    _id: ID!
+    student_ids: [String!]
+    priority: [String!]
   }
 
   type Token {

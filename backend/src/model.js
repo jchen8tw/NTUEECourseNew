@@ -11,7 +11,7 @@ const StudentSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
-  id: {type: String, required: true,index: true, unique:true}, //use base64 name+teacher+grade to prevent duplicate import
+  id: { type: String, required: true, index: true, unique: true }, //use base64 name+teacher+grade to prevent duplicate import
   name: { type: String, required: true },
   limit: { type: Number, required: true },
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseGroup' },
@@ -27,6 +27,7 @@ const CourseGroupSchema = new mongoose.Schema({
   name: { type: String, required: true },
   grade: { type: Number, required: true }
 });
+
 const CourseCommentSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
   semester: { type: String, required: true },
@@ -41,9 +42,20 @@ const CourseCommentSchema = new mongoose.Schema({
   author: String
 });
 
+const WishSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  student_ids: {
+    type: [{ type: String, required: true, unique: true }],
+    required: true
+  },
+  course_name: { type: String, required: true },
+  priority: [{ type: String, unique: true }]
+});
+
 const Student = mongoose.model('Student', StudentSchema);
 const Course = mongoose.model('Course', CourseSchema);
 const CourseGroup = mongoose.model('CourseGroup', CourseGroupSchema);
 const CourseComment = mongoose.model('CourseComment', CourseCommentSchema);
+const Wish = mongoose.model('Wish', WishSchema);
 
-module.exports = { Student, Course, CourseGroup, CourseComment };
+module.exports = { Student, Course, CourseGroup, CourseComment, Wish };
