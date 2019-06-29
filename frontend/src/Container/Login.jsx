@@ -14,12 +14,11 @@ import { LOGIN_MUTATION } from '../graphql/mutation';
 import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
 import { connect } from 'react-redux';
-import { store_jwt, store_student_id } from '../redux/actions';
+import { store_jwt } from '../redux/actions';
 
 const mapDispatchToProps = dispatch => {
   return {
-    setToken: jwt => dispatch(store_jwt(jwt)),
-    setStudentID: studentID => dispatch(store_student_id(studentID))
+    setToken: jwt => dispatch(store_jwt(jwt))
   };
 };
 const mapStateToProps = state => {
@@ -37,7 +36,7 @@ const ErrorSnackbar = ({ open, onClose, message }) => (
   </Snackbar>
 );
 
-function LoginForm({ login, data, loading, error, setStudentID }) {
+function LoginForm({ login, data, loading, error }) {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [snackbarTriggered, setSnackbarTriggered] = useState(false);
@@ -48,7 +47,6 @@ function LoginForm({ login, data, loading, error, setStudentID }) {
         e.preventDefault(); // Prevent the page from refreshing
         setSnackbarTriggered(false);
         login({ variables: { account, password } });
-        setStudentID(account);
       }}
     >
       <TextField
@@ -83,7 +81,6 @@ function LoginForm({ login, data, loading, error, setStudentID }) {
 }
 
 function Login(props) {
-  const [studentID, setStudentID] = React.useState('');
   if (!!props.jwt) {
     return <Redirect from="/login" to="/dashboard" />;
     // so select needs to check if token is valid
@@ -102,9 +99,7 @@ function Login(props) {
           <h1 className={style.title}>選課系統</h1>
           <Mutation
             mutation={LOGIN_MUTATION}
-            onCompleted={data =>
-              props.setToken(data.login.raw) && props.setStudentID(studentID)
-            }
+            onCompleted={data => props.setToken(data.login.raw)}
           >
             {(login, { data, loading, error }) => (
               <LoginForm
@@ -112,8 +107,7 @@ function Login(props) {
                   login,
                   data,
                   loading,
-                  error,
-                  setStudentID
+                  error
                 }}
               />
             )}
