@@ -1,15 +1,17 @@
 import {
   STORE_JWT,
   GET_COURSE_INFO,
-  STORE_STUDENT_ID,
+  GET_WISHES,
   LOGOUT,
   TAB_CHANGE
 } from './action-types';
+import { getStudentID, getGrade } from '../util';
 
 const initialState = {
-  student_id: null,
   jwt: null,
   courses: null,
+  wishes: null,
+  unselected: null,
   tabIndex: 0
 };
 
@@ -18,10 +20,19 @@ function rootReducer(state = initialState, action) {
     case STORE_JWT:
       localStorage.setItem('jwt', action.payload);
       return { ...state, jwt: action.payload };
-    case STORE_STUDENT_ID:
-      return { ...state, student_id: action.payload };
+    case GET_WISHES:
+      // assume GET_COURSE_INFO is called before
+      // unselected = courses of user grade - wishes
+      let grade = getGrade(getStudentID(state.jwt));
+      let unselected = state.courses.filter(
+        group =>
+          group.grade === grade &&
+          !action.payload.find(i => i.course_name === group.name) // not in wishes
+      );
+      console.log(action.payload, unselected);
+      return { ...state, wishes: action.payload, unselected };
     case GET_COURSE_INFO:
-      return { ...state, courses: action.payload.allCourseGroups };
+      return { ...state, courses: action.payload };
     case LOGOUT:
       localStorage.removeItem('jwt');
       return { ...initialState };

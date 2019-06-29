@@ -9,7 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 // import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { getSemester } from '../util';
 
+const semester = getSemester();
 const styles = {
   card: {
     margin: '1rem 1.2rem',
@@ -35,7 +37,13 @@ const styles = {
 };
 
 function CourseCard(props) {
-  const { classes, year, name, image, courses, url } = props;
+  const {
+    classes,
+    name,
+    image = 'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
+    priority,
+    url
+  } = props;
   return (
     <Card className={classes.card}>
       <Link to={url || ''} className={classes.unstyledLink}>
@@ -50,7 +58,7 @@ function CourseCard(props) {
           </div>
           <CardContent style={{ marginLeft: '12px' }}>
             <Typography className={classes.title} color="textSecondary">
-              {year}
+              {semester}
             </Typography>
             <Typography
               gutterBottom
@@ -60,13 +68,13 @@ function CourseCard(props) {
             >
               {name}
             </Typography>
-            {courses &&
-              courses.map((i, index) => (
+            {priority &&
+              priority.map((i, index) => (
                 <Typography
                   component="p"
                   style={{ fontSize: '1rem' }}
                   key={`${name}-choice-${index}`}
-                >{`${index + 1}. ${i.teacher}`}</Typography>
+                >{`${index + 1}. ${i}`}</Typography>
               ))}
           </CardContent>
         </CardActionArea>
