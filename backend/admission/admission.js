@@ -72,7 +72,7 @@ function admission(wish_ref,class_info,pre_group_info){
         }
 
         // Per wish
-        for( let wish_order = 0 ; wish_order < 3 ; wish_order ++){
+        for( let wish_order = 0 ; wish_order < 10 ; wish_order ++){
             
             // Join student[wish_order] == this class & teacher and (not OK) to competitors
             class_info[class_name].forEach(({ teacher_name, max, group }) => {
