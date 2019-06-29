@@ -44,3 +44,12 @@ export const CONTENT_QUERY = gql`
     }
   }
 `;
+
+export const NICKNAME_QUERY = gql`
+  query($student_id: String!) {
+    me(student_id: $student_id) {
+      _id
+      nickname
+    }
+  }
+`;

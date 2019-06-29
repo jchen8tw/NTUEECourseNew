@@ -8,6 +8,7 @@ import CommentList from './Container/CommentList';
 import CommentPage from './Container/CommentPage';
 import Dashboard from './Container/Dashboard';
 import NavBar from './Components/NavBar';
+import ProfileEditor from './Container/ProfileEditor';
 import style from './App.module.css';
 
 const mapStateToProps = state => {
@@ -43,6 +44,7 @@ class App extends Component {
             <Route path="/commentlist" component={CommentList} />
             {/* <Route path="/commentlist/:id?" component={CommentPage} /> */}
             <Route path="/admin" component={Admin} />
+            <Route path="/profileEditor" component={ProfileEditor} />
             <Redirect from="/" to="/login" />
           </Switch>
         </div>

@@ -127,6 +127,24 @@ const Mutation = {
       ...data
     });
     return await courseComment.save().catch(err => console.log(err.errmsg));
+  },
+
+  async changeNickname(_, { student_id, nickname }, context) {
+    const res = await Student.updateOne(
+      { id: student_id },
+      { $set: { nickname: nickname } }
+    );
+    return res.nModified !== 0;
+  },
+
+  async changePassword(_, { student_id, password }, context) {
+    const res = await Student.updateOne(
+      { id: student_id },
+      {
+        $set: { hashedPassword: await context.passwordProcessor.hash(password) }
+      }
+    );
+    return res.nModified !== 0;
   }
 };
 

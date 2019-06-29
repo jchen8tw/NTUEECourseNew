@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import style from './CommentCreate.module.css';
+
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { TextField, MenuItem, Typography } from '@material-ui/core';
-import Rating from '../Components/Rating';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import Avatar from '@material-ui/core/Avatar';
+
 import { contentTemplate } from '../Components/contentTemplate';
+import Rating from '../Components/Rating';
 
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
+import { NICKNAME_QUERY } from '../graphql/query';
+
+const mapStateToProps = state => {
+  return { student_id: state.student_id };
+};
 
 const styles = theme => ({
   container: {
@@ -46,6 +55,14 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit
+  },
+  purpleAvatar: {
+    margin: 10,
+    color: '#fff',
+    backgroundColor: deepPurple[500]
+  },
+  avatar: {
+    margin: 10
   }
 });
 let rateValue = 0;
@@ -117,6 +134,31 @@ class CommentCreate extends Component {
           >
             <Paper className={style.pageRoot}>
               <Grid container spacing={24}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  className={style.gridStyleAvater}
+                >
+                  <Query
+                    query={NICKNAME_QUERY}
+                    variables={{ student_id: this.props.student_id }}
+                  >
+                    {({ loading, error, data }) => {
+                      if (loading) return null;
+                      if (error) return `error!${error.message}`;
+                      return (
+                        <>
+                          <Avatar className={classes.purpleAvatar}>
+                            {data.me.nickname[0]}
+                          </Avatar>
+                          <h2>{data.me.nickname}</h2>
+                        </>
+                      );
+                    }}
+                  </Query>
+                </Grid>
                 <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
                   <TextField
                     required
@@ -287,4 +329,10 @@ class CommentCreate extends Component {
     );
   }
 }
-export default withStyles(styles)(CommentCreate);
+
+const connectedCommentCreate = connect(
+  mapStateToProps,
+  undefined
+)(CommentCreate);
+
+export default withStyles(styles)(connectedCommentCreate);

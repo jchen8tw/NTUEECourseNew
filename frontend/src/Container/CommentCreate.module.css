@@ -22,6 +22,12 @@
     padding-right: 10%
 }
 
+.gridStyleAvater {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
 
 /* .gridStyleStudy {
      text-align: left; 
