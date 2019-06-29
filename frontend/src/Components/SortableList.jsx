@@ -71,11 +71,9 @@ const SortableList = ({ data, classes }) => {
           <Draggable key={id}>
             <ListItem button TouchRippleProps={{ child: classes.child }}>
               <ListItemText primary={text} className={classes.text} />
-              {/* <ListItemSecondaryAction> */}
               <ListItemIcon>
                 <DragHandleIcon fontSize="large" />
               </ListItemIcon>
-              {/* </ListItemSecondaryAction> */}
             </ListItem>
           </Draggable>
         ))}
