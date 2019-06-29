@@ -19,7 +19,7 @@ const CourseSchema = new mongoose.Schema({
 });
 
 const CourseGroupSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true,auto: true },
   courses: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     required: true
@@ -42,10 +42,11 @@ const CourseCommentSchema = new mongoose.Schema({
   author: String
 });
 
+ // ["b06901048"] for normal course, ["b06901048","b06901049","b06901050"] for 十選二
 const WishSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true},
-  student_ids: { // ["b06901048"] for normal course, ["b06901048","b06901049","b06901050"] for 十選二
-    type: [ {type: String,require:true} ],
+  student_ids: {
+    type: [ {type: String,required:true} ],
     required: true
   },
   course_name: { type: String, required: true }, //course name e.g 電磁學一

@@ -120,7 +120,7 @@ function to_Wish() {
     for (course in student_wishes[student]) {
       Wish.push({
         _id: new mongoose.Types.ObjectId(),
-        students_ids: [student],
+        student_ids: [student],
         course_name: course,
         priority: student_wishes[student][course]
       });
@@ -129,23 +129,21 @@ function to_Wish() {
   return Wish;
 }
 const wishes = to_Wish();
-//console.log(wishes);
-console.log(coursegroups);
+console.log(wishes);
+//console.log(coursegroups);
 //console.log(courses,coursegroups,wishes);
-async function insert_to_db(){
-    await Course.remove();
-    await CourseGroup.remove();
-    await Wish.remove();
-    console.log('removed');
-    try{
-        await Course.insertMany(courses);
-        await CourseGroup.insertMany(coursegroups);
-        await Wish.insertMany(wishes);
-    }
-    catch(e){
-        console.log(e.message);
-    }
-    console.log('added');
+async function insert_to_db() {
+  await Course.deleteMany({});
+  await CourseGroup.deleteMany({});
+  await Wish.deleteMany({});
+  console.log('removed');
+  await Course.insertMany(courses);
+  await CourseGroup.insertMany(coursegroups);
+  await Wish.insertMany(wishes)
+    .catch(err => console.log(err.message))
+    .then(doc => console.log(doc));
+
+  console.log('added');
 }
 function connect_to_db() {
   mongoose.connect(
@@ -157,7 +155,7 @@ function connect_to_db() {
   );
   mongoose.connection.once('open', () => {
     console.log('Successfully connected to MongoDB');
-    //insert_to_db();
+    insert_to_db();
   });
 }
 connect_to_db();
