@@ -1,6 +1,14 @@
 import React from 'react';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from '@material-ui/core';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
@@ -32,18 +40,21 @@ const style = theme => ({
     color: theme.palette.background.paper
   },
   list: {
-    counterReset: 'teacher'
+    counterReset: 'teacher',
+    padding: '2%'
   },
   text: {
     '& > *': {
-      fontSize: '1.8rem',
+      fontSize: '1.7rem',
       display: 'inline-block'
-    },
+    }
+  },
+  orderedText: {
     '&::before': {
       counterIncrement: 'teacher',
       content: 'counter(teacher) "."',
       marginRight: theme.spacing.unit,
-      fontSize: '1.8rem'
+      fontSize: '1.7rem'
     }
   }
 });
@@ -51,43 +62,76 @@ const style = theme => ({
 class SortableList extends React.Component {
   constructor(props) {
     super(props);
-    //console.log(props.data);
-    this.state = { items: [{id:-1,text:'我不想選課啦(這欄以下的課不會被選)'},...props.data] };
+    this.state = { selected: [], notSelected: [...props.data] };
   }
 
   componentWillUnmount() {
     this.props.updateWish({
       variables: {
         course_name: this.props.name,
-        priority: this.state.items.map(i => i.text)
+        priority: this.state.selected.map(i => i.text)
       }
     });
   }
 
-  onDrop = e => this.setState({ items: applyDrag(this.state.items, e) });
+  onSelectedDrop = e =>
+    this.setState({ selected: applyDrag(this.state.selected, e) });
+  onNotSelectedDrop = e =>
+    this.setState({ notSelected: applyDrag(this.state.notSelected, e) });
 
   render() {
     const { classes } = this.props;
     return (
-      <List className={classes.list}>
-        <Container
-          lockAxis="y"
-          onDrop={this.onDrop}
-          dragClass={classes.drag}
-          behaviour="contain"
-        >
-          {this.state.items.map(({ id, text }) => (
-            <Draggable key={id}>
-              <ListItem button TouchRippleProps={{ child: classes.child }}>
-                <ListItemText primary={text} className={classes.text} />
-                <ListItemIcon>
-                  <DragHandleIcon fontSize="large" />
-                </ListItemIcon>
-              </ListItem>
-            </Draggable>
-          ))}
-        </Container>
-      </List>
+      <div style={{ width: '100%', height: '100%' }}>
+        <List className={classes.list}>
+          <Typography variant="h4" align="left">
+            已加入志願序
+          </Typography>
+          <Container
+            groupName="1"
+            getChildPayload={i => this.state.selected[i]}
+            onDrop={this.onSelectedDrop}
+            dragClass={classes.drag}
+          >
+            {this.state.selected.map(({ id, text }) => (
+              <Draggable key={id}>
+                <ListItem button TouchRippleProps={{ child: classes.child }}>
+                  <ListItemText
+                    primary={text}
+                    className={classNames(classes.text, classes.orderedText)}
+                  />
+                  <ListItemIcon>
+                    <DragHandleIcon fontSize="large" />
+                  </ListItemIcon>
+                </ListItem>
+              </Draggable>
+            ))}
+          </Container>
+        </List>
+        <Divider />
+        <List className={classes.list}>
+          <Typography variant="h4" align="left">
+            未加入志願序
+          </Typography>
+          <Container
+            groupName="1"
+            getChildPayload={i => this.state.notSelected[i]}
+            onDrop={this.onNotSelectedDrop}
+            dragClass={classes.drag}
+          >
+            {this.state.notSelected.map(({ id, text }) => (
+              <Draggable key={id}>
+                <ListItem button TouchRippleProps={{ child: classes.child }}>
+                  <ListItemText primary={text} className={classes.text} />
+                  <ListItemIcon>
+                    <DragHandleIcon fontSize="large" />
+                  </ListItemIcon>
+                </ListItem>
+              </Draggable>
+            ))}
+          </Container>
+        </List>
+      </div>
     );
   }
 }

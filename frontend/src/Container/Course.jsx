@@ -12,10 +12,8 @@ const mapDispatchToProps = dispatch => ({
 
 const Course = props => {
   const { match, courses, name, sendSuccess } = props;
-  console.log(courses);
   //need to add a dummy list item to default not selecting any course
-  let data = courses.map((course, id) => ({ id: id, text: course.teacher }));
-  //data = [{id:0,text: '我不想選課啦(這欄以下的課不會被選)'},...data]
+  let data = courses.map((course, id) => ({ id: _id, text: course.teacher }));
   return (
     <>
       <Typography
@@ -26,7 +24,11 @@ const Course = props => {
       </Typography>
       <Paper
         square
-        style={{ margin: '0 auto', minWidth: '80%', marginTop: '10%' }}
+        style={{
+          margin: 'auto',
+          minWidth: '80%',
+          display: 'table'
+        }}
       >
         <Mutation
           mutation={UPDATE_WISH}
