@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Draggable } from 'react-smooth-dnd';
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemSecondaryAction
-} from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
@@ -54,32 +48,47 @@ const style = theme => ({
   }
 });
 
-const SortableList = ({ data, classes }) => {
-  const [items, setItems] = useState(data);
+class SortableList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { items: props.data };
+  }
 
-  const onDrop = e => setItems(applyDrag(items, e));
+  componentWillUnmount() {
+    this.props.updateWish({
+      variables: {
+        course_name: this.props.name,
+        priority: this.state.items.map(i => i.text)
+      }
+    });
+  }
 
-  return (
-    <List className={classes.list}>
-      <Container
-        lockAxis="y"
-        onDrop={onDrop}
-        dragClass={classes.drag}
-        behaviour="contain"
-      >
-        {items.map(({ id, text }) => (
-          <Draggable key={id}>
-            <ListItem button TouchRippleProps={{ child: classes.child }}>
-              <ListItemText primary={text} className={classes.text} />
-              <ListItemIcon>
-                <DragHandleIcon fontSize="large" />
-              </ListItemIcon>
-            </ListItem>
-          </Draggable>
-        ))}
-      </Container>
-    </List>
-  );
-};
+  onDrop = e => this.setState({ items: applyDrag(this.state.items, e) });
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <List className={classes.list}>
+        <Container
+          lockAxis="y"
+          onDrop={this.onDrop}
+          dragClass={classes.drag}
+          behaviour="contain"
+        >
+          {this.state.items.map(({ id, text }) => (
+            <Draggable key={id}>
+              <ListItem button TouchRippleProps={{ child: classes.child }}>
+                <ListItemText primary={text} className={classes.text} />
+                <ListItemIcon>
+                  <DragHandleIcon fontSize="large" />
+                </ListItemIcon>
+              </ListItem>
+            </Draggable>
+          ))}
+        </Container>
+      </List>
+    );
+  }
+}
 
 export default withStyles(style)(SortableList);

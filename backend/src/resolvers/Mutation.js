@@ -1,4 +1,10 @@
-const { Student, Course, CourseGroup, CourseComment } = require('../model.js');
+const {
+  Student,
+  Course,
+  CourseGroup,
+  CourseComment,
+  Wish
+} = require('../model.js');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
 
@@ -153,7 +159,7 @@ const Mutation = {
   async updateWish(_, { data }, context) {
     const { course_name, priority } = data;
     const student_id = context.passwordProcessor.getStudentID(context.token);
-    let wish = await Wish.find({ student_ids: student_id, course_name });
+    let wish = await Wish.findOne({ student_ids: student_id, course_name });
     if (wish === null)
       wish = new Wish({ student_ids: [student_id], course_name, priority });
     else wish.priority = priority;

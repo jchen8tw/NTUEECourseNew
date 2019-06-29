@@ -30,7 +30,11 @@ function CourseCategory(props) {
             key={url}
             path={url}
             component={props => (
-              <Course {...props} teachers={courseGroup[id].courses} />
+              <Course
+                {...props}
+                courses={courseGroup[id].courses}
+                name={courseGroup[id].name}
+              />
             )}
           />
         ))}

@@ -1,10 +1,18 @@
 import React from 'react';
-import { Paper, Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Paper, Typography, LinearProgress } from '@material-ui/core';
+import { Mutation } from 'react-apollo';
 import SotableList from '../Components/SortableList';
+import { UPDATE_WISH } from '../graphql/mutation';
+import { send_success } from '../redux/actions';
 
-export default props => {
-  const { match, teachers } = props;
-  let data = teachers.map((teacher, id) => ({ id: id, text: teacher.teacher }));
+const mapDispatchToProps = dispatch => ({
+  sendSuccess: data => dispatch(send_success(data))
+});
+
+const Course = props => {
+  const { match, courses, name, sendSuccess } = props;
+  let data = courses.map((course, id) => ({ id: id, text: course.teacher }));
   return (
     <>
       <Typography
@@ -17,8 +25,25 @@ export default props => {
         square
         style={{ margin: '0 auto', minWidth: '80%', marginTop: '10%' }}
       >
-        <SotableList data={data} />
+        <Mutation
+          mutation={UPDATE_WISH}
+          onCompleted={data =>
+            data.course_name &&
+            sendSuccess(`已更新「${data.course_name}」的志願序`)
+          }
+        >
+          {(updateWish, result) => {
+            if (result.loading) return <LinearProgress color="secondary" />;
+            else if (result.error) return <p>{result.error.message}</p>;
+            else return <SotableList {...{ data, name, updateWish }} />;
+          }}
+        </Mutation>
       </Paper>
     </>
   );
 };
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Course);
