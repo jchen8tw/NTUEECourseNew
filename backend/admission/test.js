@@ -16,14 +16,13 @@ input:
 
     class_info:
         {
-            第一門課：［{Name: --, Max: --, Group: true/false} ］,
+            第一門課：［{name: --, max: --, group: true/false} ］,
         }
     
     group_info:
         ｛
-            第一門課：｛
-                老師一: ［[學生1,學生2,學生3]］
-            第二門課：｛｝
+            第一門課： [[學生1,學生2,學生3]]
+            第二門課:  [[學生1,學生2,學生3]]
         ｝
 
     output 1 (per_class_result):
@@ -51,32 +50,34 @@ let class_info = {
             {teacher_name : 'T1-2', max: 50},
             {teacher_name : 'T1-3', max: 1000},
         ],
-    // "class 2":
-    //     [ 
-    //         {teacher_name : 'T2-1', max: 10},
-    //         {teacher_name : 'T2-2', max: 50},
-    //         {teacher_name : 'T2-3', max: 110},
-    //     ],
-    // "class 3-group":
-    //     [ 
-    //         {teacher_name : 'T3-1', max: 20, group: true},
-    //         {teacher_name : 'T3-2', max: 50, group: true},
-    //         {teacher_name : 'T3-3', max: 110, group: true},
-    //     ]
+    "class 2":
+        [ 
+            {teacher_name : 'T2-1', max: 10},
+            {teacher_name : 'T2-2', max: 50},
+            {teacher_name : 'T2-3', max: 110},
+        ],
+    "class 3-group":
+        [ 
+            {teacher_name : 'T3-1', max: 20,  group: true},
+            {teacher_name : 'T3-2', max: 50,  group: true},
+            {teacher_name : 'T3-3', max: 110, group: true},
+        ]
 };
 
-let wish = test.random_testcase2(class_info);
-let [per_class_result, per_stu_result] = admission(wish,class_info);
+let [wish, group_info] = test.random_testcase3(class_info);
+console.log(group_info['class 3-group']);
+console.log("=====");
+let [per_class_result, per_stu_result] = admission(wish,class_info,group_info);
 const ordered = {};
 Object.keys(per_stu_result).sort().forEach(function(key) {
   ordered[key] = per_stu_result[key];
 });
 per_stu_result = ordered;
 
+console.log(per_class_result);
 // Testing Output
-console.log(per_stu_result);
-console.log(per_class_result['class 1']['T1-1']);
-
+// console.log(per_stu_result);
+// console.log(per_class_result['class 1']['T1-1']);
 
 var fs = require('fs');
 var stream = fs.createWriteStream("result.json");
