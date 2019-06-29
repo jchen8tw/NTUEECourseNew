@@ -95,12 +95,12 @@ const Mutation = {
     );
     let groupInsertCount = 0;
     let courseInsertCount = 0;
-    await CourseGroup.remove(); // Remove old courses before importing
+    await CourseGroup.deleteMany({}); // Remove old courses before importing
     await CourseGroup.insertMany(courseGroupList).then(
       docs => (groupInsertCount = docs.length)
     );
     newCourses.forEach(course => (course.group = nameHash[course.name]._id));
-    await Course.remove();
+    await Course.deleteMany({});
     await Course.insertMany(newCourses, { ordered: false }).then(
       docs => (courseInsertCount = docs.length)
     );
