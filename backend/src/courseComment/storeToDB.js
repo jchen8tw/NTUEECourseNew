@@ -37,9 +37,20 @@ mongoose.connection.once('open', () => {
                 comment['推薦同時修習的課程'] ||
                 '',
               studyBefore: comment['推薦預先修習的課程'] || '',
-              content: Object.keys(comment)
-                .filter(key => key.includes('課程小卦') && comment[key])
-                .map(key => comment[key])
+              content:
+                comment[
+                  Object.keys(comment).filter(
+                    key => key.includes('課程小卦') && comment[key]
+                  )[0]
+                ],
+              responses: Object.keys(comment)
+                .filter(
+                  key =>
+                    !key.includes('課程小卦1') &&
+                    key.includes('課程小卦') &&
+                    comment[key]
+                )
+                .map(key => ({ author: null, content: comment[key] }))
             };
           });
           //   console.log(a);
