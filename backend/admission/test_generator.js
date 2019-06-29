@@ -79,7 +79,7 @@ function random_testcase3(class_info){
                     group_list.push(shuffle_student.slice(i,i+now_group_length));
                     i = i + now_group_length;
                 }
-                group_info[now_class_info][each_class_info['teacher_name']] = group_list;
+                group_info[now_class_info] = group_list;
             }
         });
     }
