@@ -1,4 +1,4 @@
-const { Student, Course, CourseGroup } = require('../model.js');
+const { Student, Course, CourseGroup, CourseComment } = require('../model.js');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
 
@@ -119,6 +119,14 @@ const Mutation = {
     return await Student.insertMany(newStudents, { ordered: false }).then(
       docs => `${docs.length} data inserted`
     );
+  },
+  async createComment(_, { data }, context) {
+    const _id = new mongoose.Types.ObjectId();
+    let courseComment = new CourseComment({
+      _id,
+      ...data
+    });
+    return await courseComment.save().catch(err => console.log(err.errmsg));
   }
 };
 

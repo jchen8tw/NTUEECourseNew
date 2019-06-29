@@ -11,7 +11,7 @@ import { contentTemplate } from '../Components/contentTemplate';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { COMMENT_CREATE_MUTATION } from '../graphql/mutation.js';
+import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
 
 const styles = theme => ({
   container: {
@@ -86,166 +86,204 @@ class CommentCreate extends Component {
     this.setState({ content: contentTemplate });
   };
   handleCommentSubmit = () => {};
+  getValue = idName => {
+    console.log(document.getElementById(idName).value);
+    return document.getElementById(idName).value;
+  };
   render() {
     const { classes } = this.props;
     const types = ['必修', '選修', '十選二', '專題'];
     return (
-      <div className={style.allRoot}>
-        {/* <Mutation mutation={COMMENT_CREATE_MUTATION}> */}
-        <Paper className={style.pageRoot}>
-          <Grid container spacing={24}>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              <TextField
-                required
-                id="standard-required"
-                label="學期"
-                defaultValue="107-2"
-                className={classes.textField}
-                margin="normal"
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              <TextField
-                required
-                id="standard-required"
-                label="課名"
-                defaultValue=""
-                className={classes.textField}
-                margin="normal"
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              <TextField
-                required
-                id="standard-required"
-                label="開課教授"
-                defaultValue=""
-                className={classes.textField}
-                margin="normal"
-              />
-            </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              <>
-                <TextField
-                  id="standard-select-type"
-                  select
-                  label="類別"
-                  className={classes.textField}
-                  value={this.state.type}
-                  onChange={this.handleChange('type')}
-                  SelectProps={{
-                    MenuProps: {
-                      className: classes.menu
-                    }
-                  }}
-                  helperText="選擇課程類別"
-                  margin="normal"
+      <Mutation mutation={CREATE_COMMENT_MUTATION}>
+        {(createComment, { data }) => (
+          <form
+            className={style.allRoot}
+            onSubmit={e => {
+              e.preventDefault();
+              createComment({
+                variables: {
+                  type: this.getValue('type'),
+                  name: this.getValue('name'),
+                  teacher: this.getValue('teacher'),
+                  semester: this.getValue('semester'),
+                  domain: this.getValue('domain'),
+                  score: parseInt(this.getValue('score')),
+                  studyBefore: this.getValue('studyBefore'),
+                  studyTogether: this.getValue('studyTogether'),
+                  content: this.getValue('content')
+                }
+              });
+            }}
+          >
+            <Paper className={style.pageRoot}>
+              <Grid container spacing={24}>
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  <TextField
+                    required
+                    id="semester"
+                    label="學期"
+                    defaultValue="107-2"
+                    className={classes.textField}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  <TextField
+                    required
+                    id="name"
+                    label="課名"
+                    defaultValue=""
+                    className={classes.textField}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  <TextField
+                    required
+                    id="teacher"
+                    label="開課教授"
+                    defaultValue=""
+                    className={classes.textField}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  <>
+                    <TextField
+                      id="type"
+                      select
+                      label="類別"
+                      className={classes.textField}
+                      value={this.state.type}
+                      onChange={this.handleChange('type')}
+                      SelectProps={{
+                        MenuProps: {
+                          className: classes.menu
+                        }
+                      }}
+                      helperText="選擇課程類別"
+                      margin="normal"
+                    >
+                      {types.map(type => (
+                        <MenuItem key={type} value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  {this.state.type === '必修' ? (
+                    <TextField
+                      id="domain"
+                      disabled
+                      label="領域(光電、CS...等，必修不填)"
+                      className={classes.textField}
+                      margin="normal"
+                    />
+                  ) : (
+                    <TextField
+                      id="domain"
+                      label="領域"
+                      className={classes.textField}
+                      margin="normal"
+                    />
+                  )}
+                </Grid>
+                {/*<Grid item
+                  container
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  className={style.gridStyle}
+                  justify="center"
+                  alignContent="space-around"
+                  direction="column"
                 >
-                  {types.map(type => (
-                    <MenuItem key={type} value={type}>
-                      {type}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </>
-            </Grid>
-            <Grid xs={12} sm={6} md={4} className={style.gridStyle}>
-              {this.state.type === '必修' ? (
-                <TextField
-                  id="standard-name"
-                  disabled
-                  label="領域(光電、CS...等，必修不填)"
-                  className={classes.textField}
-                  margin="normal"
-                />
-              ) : (
-                <TextField
-                  id="standard-name"
-                  label="領域"
-                  className={classes.textField}
-                  margin="normal"
-                />
-              )}
-            </Grid>
-            <Grid
-              container
-              xs={12}
-              sm={6}
-              md={4}
-              className={style.gridStyle}
-              justify="center"
-              alignContent="space-around"
-              direction="column"
-            >
-              <Grid>
-                <Typography color="textSecondary" align="left">
-                  推薦分數
-                </Typography>
+                   <Grid item id="score">
+                    <Typography color="textSecondary" align="left">
+                      推薦分數
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <p>{this.state.rating}</p>
+                    <Rating
+                      onClick={this.handleRateChange}
+                      initialRating={this.state.rating}
+                    />
+                    { <UseStateRating /> }
+                  </Grid> 
+                  
+                </Grid>*/}
+                <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
+                  <TextField
+                    id="score"
+                    label="私心推薦指數(0~5分)"
+                    // value={this.state.score}
+                    // onChange={this.handleChange('score')}
+                    placeholder="超過5分為5分，每0.5分為一等級"
+                    type="number"
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} className={style.gridStyleStudy}>
+                  <TextField
+                    id="studyBefore"
+                    label="推薦預先修的課程"
+                    className={classes.textFieldStudy}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} className={style.gridStyleStudy}>
+                  <TextField
+                    id="studyTogether"
+                    label="推薦一起修的課程"
+                    className={classes.textFieldStudy}
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item md={12} sm={12} xs={12} className={style.gridStyle}>
+                  <TextField
+                    id="content"
+                    fullWidth={true}
+                    label="課程小卦"
+                    className={classes.textFieldComment}
+                    multiline
+                    rows="15"
+                    onChange={this.handleChange('content')}
+                    margin="normal"
+                    value={this.state.content}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item md={12} sm={12} xs={12} className={style.buttonBox}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                    onClick={this.loadTemplate}
+                  >
+                    載入模板
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                    type="submit"
+                    onClick={this.handleCommentSubmit}
+                  >
+                    確認送出
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid>
-                <p>{this.state.rating}</p>
-                <Rating
-                  emptySymbol="far fa-star fa-2x"
-                  fullSymbol="fas fa-star fa-2x"
-                  onClick={this.handleRateChange}
-                  initialRating={this.state.rating}
-                />
-                {/* <UseStateRating /> */}
-              </Grid>
-            </Grid>
-            <Grid xs={12} md={6} className={style.gridStyleStudy}>
-              <TextField
-                id="standard-name"
-                label="推薦預先修的課程"
-                className={classes.textFieldStudy}
-                margin="normal"
-              />
-            </Grid>
-            <Grid xs={12} md={6} className={style.gridStyleStudy}>
-              <TextField
-                id="standard-name"
-                label="推薦一起修的課程"
-                className={classes.textFieldStudy}
-                margin="normal"
-              />
-            </Grid>
-            <Grid md={12} sm={12} xs={12} className={style.gridStyle}>
-              <TextField
-                id="outlined-name"
-                fullWidth={true}
-                label="課程小卦"
-                className={classes.textFieldComment}
-                multiline
-                rows="15"
-                onChange={this.handleChange('content')}
-                margin="normal"
-                value={this.state.content}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid md={12} sm={12} xs={12} className={style.buttonBox}>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                onClick={this.loadTemplate}
-              >
-                載入模板
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                onClick={this.handleCommentSubmit}
-              >
-                確認送出
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-
-        {/* </Mutation> */}
-      </div>
+            </Paper>
+          </form>
+        )}
+      </Mutation>
     );
   }
 }

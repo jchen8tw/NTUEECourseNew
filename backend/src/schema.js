@@ -16,7 +16,7 @@ const schema = gql`
     login(data: LoginInput!): Token
     submitStudent(data: AdminInput!): String!
     submitCourse(data: AdminInput!): String!
-    # createComment(data: CommentInput!): String
+    createComment(data: CommentInput!): Comment
   }
 
   input LoginInput {
@@ -27,6 +27,18 @@ const schema = gql`
   input AdminInput {
     title: String
     content: String
+  }
+  input CommentInput {
+    semester: String!
+    type: String! #必修、選修、十選二
+    name: String!
+    domain: String #CS、光電...
+    teacher: String!
+    studyTogether: String
+    studyBefore: String
+    content: [String]!
+    score: Int
+    author: String
   }
 
   input CommentFilterInput {
