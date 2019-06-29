@@ -47,7 +47,7 @@ function App(props) {
       {props.successMessage && (
         <Snackbar
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          open={open}
+          open={props.open}
           autoHideDuration={2200}
           onClose={props.resetSuccess}
         >

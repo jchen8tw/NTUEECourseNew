@@ -51,6 +51,7 @@ const style = theme => ({
 class SortableList extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.data);
     this.state = { items: props.data };
   }
 
