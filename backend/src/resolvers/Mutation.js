@@ -58,7 +58,7 @@ const Mutation = {
     let newCourses = courseList.map(item => {
       const _id = new mongoose.Types.ObjectId();
       const [__, _, teacher, name, limit, grade] = item.split(',');
-      const id = new Buffer(name + teacher).toString('base64'); //use base64 name+teacher+grade to prevent duplicate import
+      const id = Buffer.from(name + teacher).toString('base64'); //use base64 name+teacher to prevent duplicate import
       return { _id, id, teacher, name, limit, grade };
     });
 

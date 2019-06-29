@@ -11,7 +11,7 @@ const StudentSchema = new mongoose.Schema({
 
 const CourseSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
-  id: { type: String, required: true, index: true, unique: true }, //use base64 name+teacher+grade to prevent duplicate import
+  id: { type: String, required: true, index: true, unique: true }, //use base64 name+teacher to prevent duplicate import
   name: { type: String, required: true },
   limit: { type: Number, required: true },
   group: { type: mongoose.Schema.Types.ObjectId, ref: 'CourseGroup' },
@@ -19,7 +19,7 @@ const CourseSchema = new mongoose.Schema({
 });
 
 const CourseGroupSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true,auto: true },
   courses: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     required: true
@@ -42,14 +42,15 @@ const CourseCommentSchema = new mongoose.Schema({
   author: String
 });
 
+ // ["b06901048"] for normal course, ["b06901048","b06901049","b06901050"] for 十選二
 const WishSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true},
   student_ids: {
-    type: [{ type: String, required: true }],
+    type: [ {type: String,required:true} ],
     required: true
   },
-  course_name: { type: String, required: true },
-  priority: [String]
+  course_name: { type: String, required: true }, //course name e.g 電磁學一
+  priority: [String] //teacher's name
 });
 
 const Student = mongoose.model('Student', StudentSchema);
