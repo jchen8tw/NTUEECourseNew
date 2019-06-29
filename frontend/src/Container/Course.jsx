@@ -12,7 +12,9 @@ const mapDispatchToProps = dispatch => ({
 
 const Course = props => {
   const { match, courses, name, sendSuccess } = props;
-  let data = courses.map((course, id) => ({ id: id, text: course.teacher }));
+  //need to add a dummy list item to default not selecting any course
+  let data = courses.map((course, id) => ({ id: id+1, text: course.teacher }));
+  data = [{id:0,text: '我不想選課啦(這欄以下的課不會被選)'},...data]
   return (
     <>
       <Typography
