@@ -44,3 +44,12 @@ export const CONTENT_QUERY = gql`
     }
   }
 `;
+
+export const NICKNAME_QUERY = gql`
+  query {
+    me {
+      _id
+      nickname
+    }
+  }
+`;

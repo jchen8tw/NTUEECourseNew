@@ -36,8 +36,8 @@ class CommentPage extends Component {
                 <p style={{ whiteSpace: 'pre-line' }}>{mainComment}</p>
               </Paper>
 
-              {responseList.map(response => (
-                <Paper className={style.pageRoot}>
+              {responseList.map((response, index) => (
+                <Paper className={style.pageRoot} key={index}>
                   <h3>課程評價回應 : </h3>
                   <p style={{ whiteSpace: 'pre-line' }}>{response}</p>
                 </Paper>

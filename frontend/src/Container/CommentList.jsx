@@ -1,6 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import style from './CommentList.module.css';
 import CommentPage from './CommentPage.jsx';
+import CommentCreate from './CommentCreate.jsx';
 
 import { withStyles } from '@material-ui/core/styles';
 import {AppBar,Tabs,Tab,Typography,Table,TableBody,TableCell,TableHead,TableRow,Paper,Input,Button } from '@material-ui/core';
@@ -102,7 +103,9 @@ class CommentTab extends Component {
             />
           </TabContainer>
         )}
-        {tabIndex === 5 && <Link to="/publishComment" />}
+        {tabIndex === 5 && (
+          <Route path="/commentlist" component={CommentCreate} />
+        )}
         {tabIndex === 6 && <Link to="/manageComment" />}
       </div>
     );

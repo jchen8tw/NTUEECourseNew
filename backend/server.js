@@ -25,8 +25,7 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req, res }) => {
     let auth = req.headers.authorization || null;
-    if(auth)
-      auth = auth.split(' ')[1];
+    if (auth) auth = auth.split(' ')[1];
     const token = auth && passwordProcessor.isValid(auth) ? auth : null;
     // Assume user is valid if the token is valid
     // The context is regenerated upon each request

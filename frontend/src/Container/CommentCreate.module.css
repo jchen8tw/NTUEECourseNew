@@ -1,0 +1,35 @@
+.allRoot {
+    width: 90%;
+    padding-top: 40px;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-wrap: nowrap; */
+    max-width: 1000px;
+    min-width: 400px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+.pageRoot {
+    position: inline-block
+}
+
+.buttonBox {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    color: red;
+    padding-right: 10%
+}
+
+.gridStyleAvater {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+
+/* .gridStyleStudy {
+     text-align: left; 
+     padding-left: 3% 
+} */

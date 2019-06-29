@@ -1,4 +1,4 @@
-const { Student, Course, CourseGroup } = require('../model.js');
+const { Student, Course, CourseGroup, CourseComment } = require('../model.js');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
 
@@ -119,6 +119,35 @@ const Mutation = {
     return await Student.insertMany(newStudents, { ordered: false }).then(
       docs => `${docs.length} data inserted`
     );
+  },
+
+  async createComment(_, { data }, context) {
+    const _id = new mongoose.Types.ObjectId();
+    let courseComment = new CourseComment({
+      _id,
+      ...data
+    });
+    return await courseComment.save().catch(err => console.log(err.errmsg));
+  },
+
+  async changeNickname(_, { nickname }, context) {
+    const student_id = context.passwordProcessor.getStudentID(context.token);
+    const res = await Student.updateOne(
+      { id: student_id },
+      { $set: { nickname: nickname } }
+    );
+    return res.nModified !== 0;
+  },
+
+  async changePassword(_, { password }, context) {
+    const student_id = context.passwordProcessor.getStudentID(context.token);
+    const res = await Student.updateOne(
+      { id: student_id },
+      {
+        $set: { hashedPassword: await context.passwordProcessor.hash(password) }
+      }
+    );
+    return res.nModified !== 0;
   }
 };
 
