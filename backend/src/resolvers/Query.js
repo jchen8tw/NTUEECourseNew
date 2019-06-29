@@ -1,9 +1,16 @@
-const { Student, CourseGroup, Course, CourseComment } = require('../model.js');
+const {
+  Student,
+  CourseGroup,
+  Course,
+  CourseComment,
+  Wish
+} = require('../model.js');
 
 const Query = {
-  async me(_, { student_id }, context) {
+  async me(_, __, context) {
     if (!context.passwordProcessor.isValid(context.token))
       throw new Error('invalid token');
+    const student_id = context.passwordProcessor.getStudentID(context.token);
     return await Student.findOne({ id: student_id }).exec();
   },
 
@@ -43,6 +50,11 @@ const Query = {
   async getComment(_, args, context) {
     const { _id } = args;
     return await CourseComment.findById({ _id }).exec();
+  },
+
+  async allWishes(_, __, context) {
+    const student_id = context.passwordProcessor.getStudentID(context.token);
+    return await Wish.find({ student_ids: student_id }).exec();
   }
 };
 

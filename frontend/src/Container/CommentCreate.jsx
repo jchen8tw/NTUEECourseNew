@@ -141,10 +141,7 @@ class CommentCreate extends Component {
                   md={12}
                   className={style.gridStyleAvater}
                 >
-                  <Query
-                    query={NICKNAME_QUERY}
-                    variables={{ student_id: this.props.student_id }}
-                  >
+                  <Query query={NICKNAME_QUERY} fetchPolicy="network-only">
                     {({ loading, error, data }) => {
                       if (loading) return null;
                       if (error) return `error!${error.message}`;

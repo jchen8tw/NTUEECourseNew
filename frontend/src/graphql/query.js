@@ -46,8 +46,8 @@ export const CONTENT_QUERY = gql`
 `;
 
 export const NICKNAME_QUERY = gql`
-  query($student_id: String!) {
-    me(student_id: $student_id) {
+  query {
+    me {
       _id
       nickname
     }

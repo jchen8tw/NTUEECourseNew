@@ -120,6 +120,7 @@ const Mutation = {
       docs => `${docs.length} data inserted`
     );
   },
+
   async createComment(_, { data }, context) {
     const _id = new mongoose.Types.ObjectId();
     let courseComment = new CourseComment({
@@ -129,7 +130,8 @@ const Mutation = {
     return await courseComment.save().catch(err => console.log(err.errmsg));
   },
 
-  async changeNickname(_, { student_id, nickname }, context) {
+  async changeNickname(_, { nickname }, context) {
+    const student_id = context.passwordProcessor.getStudentID(context.token);
     const res = await Student.updateOne(
       { id: student_id },
       { $set: { nickname: nickname } }
@@ -137,7 +139,8 @@ const Mutation = {
     return res.nModified !== 0;
   },
 
-  async changePassword(_, { student_id, password }, context) {
+  async changePassword(_, { password }, context) {
+    const student_id = context.passwordProcessor.getStudentID(context.token);
     const res = await Student.updateOne(
       { id: student_id },
       {

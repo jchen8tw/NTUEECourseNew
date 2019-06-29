@@ -44,7 +44,7 @@ class PasswordProcessor {
    */
   //check if jwt is valid
   //if expired or id doesn't equal to the id in payload return false
-  isValid(token){
+  isValid(token) {
     try {
       jwt.verify(token, this.secret);
       return true;
@@ -54,10 +54,18 @@ class PasswordProcessor {
   }
   /**
    * @param {String!} token
-   * @returns {String} username
+   * @returns {Object} {id: String, iat: Number, exp: Number}
    */
-  decode(token){
+  decode(token) {
     return jwt.decode(token);
+  }
+
+  /**
+   * @param {String!} token
+   * @returns {String} student_id
+   */
+  getStudentID(token) {
+    return this.decode(token).id;
   }
 }
 

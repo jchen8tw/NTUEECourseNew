@@ -52,13 +52,13 @@ export const CREATE_COMMENT_MUTATION = gql`
 `;
 
 export const CHANGE_NICKNAME = gql`
-  mutation($student_id: String!, $nickname: String!) {
-    success: changeNickname(student_id: $student_id, nickname: $nickname)
+  mutation($nickname: String!) {
+    success: changeNickname(nickname: $nickname)
   }
 `;
 
 export const CHANGE_PASSWORD = gql`
-  mutation($student_id: String!, $password: String!) {
-    success: changePassword(student_id: $student_id, password: $password)
+  mutation($password: String!) {
+    success: changePassword(password: $password)
   }
 `;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   Button,
   FormControl,
@@ -14,10 +13,6 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import { Mutation } from 'react-apollo';
 import { CHANGE_NICKNAME, CHANGE_PASSWORD } from '../graphql/mutation';
-
-const mapStateToProps = state => {
-  return { student_id: state.student_id };
-};
 
 const style = theme => ({
   formPaper: {
@@ -40,7 +35,7 @@ const style = theme => ({
   }
 });
 
-const ProfileEditor = ({ student_id, classes }) => {
+const ProfileEditor = ({ classes }) => {
   const [nickname, setNickname] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordConfirm, setPasswordConfirm] = React.useState('');
@@ -59,7 +54,7 @@ const ProfileEditor = ({ student_id, classes }) => {
                 className={classes.formPaper}
                 onSubmit={e => {
                   e.preventDefault();
-                  changeNickname({ variables: { student_id, nickname } });
+                  changeNickname({ variables: { nickname } });
                 }}
               >
                 <TextField
@@ -87,7 +82,7 @@ const ProfileEditor = ({ student_id, classes }) => {
                 square
                 onSubmit={e => {
                   e.preventDefault();
-                  changePassword({ variables: { student_id, password } });
+                  changePassword({ variables: { password } });
                 }}
               >
                 <FormControl
@@ -142,8 +137,4 @@ const ProfileEditor = ({ student_id, classes }) => {
   );
 };
 
-const connectedProfileEditor = connect(
-  mapStateToProps,
-  undefined
-)(ProfileEditor);
-export default withStyles(style)(connectedProfileEditor);
+export default withStyles(style)(ProfileEditor);
