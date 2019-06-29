@@ -26,11 +26,17 @@ function rootReducer(state = initialState, action) {
       // assume GET_COURSE_INFO is called before
       // unselected = courses of user grade - wishes
       let grade = getGrade(getStudentID(state.jwt));
-      let unselected = state.courses.filter(
-        group =>
-          group.grade === grade &&
-          !action.payload.find(i => i.course_name === group.name) // not in wishes
-      );
+      let unselected = state.courses.filter(group => {
+        if (group.grade === grade) {
+          let ind = action.payload.findIndex(i => i.name === group.name);
+          if (ind !== -1) {
+            // in wishes
+            action.payload[ind].grade = grade;
+            return false;
+          }
+          return true;
+        }
+      });
       return { ...state, wishes: action.payload, unselected };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
