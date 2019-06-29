@@ -20,7 +20,8 @@ export function getGrade(studentID) {
 
 const grades = ['大一', '大二', '大三\n大四', '十選二實驗'];
 export function courseToURL(course) {
-  return `/select/${grades[course.grade - 1]}/${course.name.replace(
+  console.log(course);
+  return `/select/${grades[course.grade - 1]}/${course.course_name.replace(
     /[()]/g,
     ''
   )}`;
