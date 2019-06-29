@@ -37,10 +37,49 @@ const style = theme => ({
   }
 });
 
+const EEgroupList = [
+  '電波',
+  '光電',
+  '奈電',
+  '電力',
+  '生醫',
+  '控制組',
+  'CS',
+  '通訊',
+  'ICS',
+  'EDA'
+];
+const nicknameList = [
+  '最後希望',
+  '金城武',
+  '未來之光',
+  '肥宅',
+  '狂瀾勇士',
+  '烈焰巫師',
+  '奧米加咆哮獸',
+  '學渣',
+  '電神',
+  '乂萬佛卍朝宗乂',
+  '卍滅龍乂帝天尊卍',
+  '乂戀空卍弒魂者乂',
+  '卍弒魔煞乂嵐月卍',
+  '破卍忍乂天殺卍滅',
+  '卍乂真龍傲天乂卍',
+  '墮卍戩屮刃天卍翼',
+  '韓國瑜',
+  '卍無滅卍'
+];
+
 const ProfileEditor = ({ oldNickname = '', classes }) => {
   const [nickname, setNickname] = React.useState(oldNickname);
   const [password, setPassword] = React.useState('');
   const [passwordConfirm, setPasswordConfirm] = React.useState('');
+  const handleRandomGen = () => {
+    setNickname(
+      EEgroupList[Math.floor(Math.random() * EEgroupList.length)] +
+        nicknameList[Math.floor(Math.random() * nicknameList.length)]
+    );
+  };
   return (
     <div style={{ padding: '10% 5%' }}>
       <Typography variant="h3" align="left">
@@ -61,17 +100,32 @@ const ProfileEditor = ({ oldNickname = '', classes }) => {
               >
                 <TextField
                   label="更改暱稱"
-                  placeholder="請輸入暱稱"
+                  placeholder="請輸入暱稱(長度最多12個字)"
                   value={nickname}
-                  onChange={e => setNickname(e.target.value)}
+                  onChange={e => {
+                    if (e.target.value.length > 12) {
+                      alert('暱稱不可超過12個字');
+                    } else setNickname(e.target.value);
+                  }}
                 />
-                <Button
-                  variant="outlined"
-                  style={{ alignSelf: 'flex-end' }}
-                  type="submit"
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-end'
+                  }}
                 >
-                  送出
-                </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={handleRandomGen}
+                    style={{ margin: '0 2%' }}
+                  >
+                    隨機生成暱稱
+                  </Button>
+                  <Button variant="outlined" type="submit">
+                    送出
+                  </Button>
+                </div>
               </Paper>
             )}
           </Mutation>
@@ -101,14 +155,22 @@ const ProfileEditor = ({ oldNickname = '', classes }) => {
                     placeholder="請輸入密碼"
                     type="password"
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => {
+                      if (e.target.value.length > 50) {
+                        alert('密碼過長!不可超過50個字');
+                      } else setPassword(e.target.value);
+                    }}
                   />
                   <TextField
                     label="確認密碼"
                     placeholder="請再次輸入密碼"
                     type="password"
                     value={passwordConfirm}
-                    onChange={e => setPasswordConfirm(e.target.value)}
+                    onChange={e => {
+                      if (e.target.value.length > 50) {
+                        alert('密碼過長!不可超過50個字');
+                      } else setPasswordConfirm(e.target.value);
+                    }}
                   />
                   <FormHelperText
                     classes={{

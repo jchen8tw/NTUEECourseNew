@@ -19,7 +19,7 @@ import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
 import { NICKNAME_QUERY } from '../graphql/query';
 
 const mapStateToProps = state => {
-  return { student_id: state.student_id };
+  return { student_id: state.student_id, token: state.jwt };
 };
 
 const styles = theme => ({
@@ -127,7 +127,8 @@ class CommentCreate extends Component {
                   score: parseInt(this.getValue('score')),
                   studyBefore: this.getValue('studyBefore'),
                   studyTogether: this.getValue('studyTogether'),
-                  content: this.getValue('content')
+                  content: this.getValue('content'),
+                  author: JSON.parse(atob(this.props.token.split('.')[1])).id
                 }
               });
             }}

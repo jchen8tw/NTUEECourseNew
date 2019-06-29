@@ -3,6 +3,8 @@ import style from './CommentPage.module.css';
 import { Query } from 'react-apollo';
 import { Paper, CircularProgress } from '@material-ui/core';
 import { CONTENT_QUERY } from '../graphql/query';
+import UserAvatar from '../Components/Avatar';
+
 class CommentPage extends Component {
   render() {
     const { id } = this.props.match.params;
@@ -15,6 +17,7 @@ class CommentPage extends Component {
           return (
             <div className={style.allRoot}>
               <Paper className={style.pageRoot}>
+                <UserAvatar />
                 <h3>課程學期 :</h3> <h2>{data.getComment.semester}</h2>
                 <h3>課程名稱 : </h3>
                 <h2>{data.getComment.name}</h2>

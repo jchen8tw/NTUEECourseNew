@@ -126,6 +126,7 @@ const Mutation = {
       _id,
       ...data
     });
+    console.log(data);
     return await courseComment.save().catch(err => console.log(err.errmsg));
   },
 

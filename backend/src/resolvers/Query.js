@@ -13,6 +13,7 @@ const Query = {
     const student_id = context.passwordProcessor.getStudentID(context.token);
     return await Student.findOne({ id: student_id }).exec();
   },
+  async getAuthor(_, __, context) {},
 
   async allCourseGroups(_, __, context) {
     //TODO
@@ -41,15 +42,31 @@ const Query = {
     if (filter.teacher)
       mongooseFilter.teacher = { $regex: filter.teacher, $options: 'i' };
 
-    return await CourseComment.find(mongooseFilter)
+    let list = await CourseComment.find(mongooseFilter)
       .sort({ semester: -1 })
       .exec();
+    return list.map(async comment => {
+      if (comment['author']) {
+        let authorInfo = await Student.findOne({
+          id: comment.author
+        }).exec();
+        comment['author'] = authorInfo.nickname;
+      }
+      return comment;
+    });
     // return await CourseComment.deleteMany({});
   },
 
   async getComment(_, args, context) {
     const { _id } = args;
-    return await CourseComment.findById({ _id }).exec();
+    let commentRaw = await CourseComment.findById({ _id }).exec();
+    if (commentRaw['author']) {
+      let authorInfo = await Student.findOne({
+        id: commentRaw.author
+      }).exec();
+      commentRaw['author'] = authorInfo.nickname;
+    }
+    return commentRaw;
   },
 
   async allWishes(_, __, context) {

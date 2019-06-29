@@ -9,6 +9,7 @@ const schema = gql`
     allTeacher: [Course!]!
     getCommentList(type: String!, filter: CommentFilterInput): [Comment]
     getComment(_id: String): Comment
+    getAuthor: Student
     allWishes: [Wish!] # Only gets wishes associated to token
   }
 

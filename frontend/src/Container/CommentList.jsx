@@ -4,11 +4,24 @@ import CommentPage from './CommentPage.jsx';
 import CommentCreate from './CommentCreate.jsx';
 
 import { withStyles } from '@material-ui/core/styles';
-import {AppBar,Tabs,Tab,Typography,Table,TableBody,TableCell,TableHead,TableRow,Paper,Input,Button } from '@material-ui/core';
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  Input,
+  Button
+} from '@material-ui/core';
 import { Route, Link } from 'react-router-dom';
 
 import { handleTabChange } from '../redux/actions';
-import {connect }  from 'react-redux';
+import { connect } from 'react-redux';
 
 import { Query } from 'react-apollo';
 import { QUERY_COMMENT_LIST } from '../graphql/query';
@@ -279,31 +292,36 @@ class CommentListRaw extends Component {
 }
 const CommentList = withStyles(styles)(CommentListRaw);
 
-const mapDisPatchToProps = dispatch =>{
-  return {handleTopTabChange: payload => dispatch(handleTabChange(payload))} ;
-}
-function Comment(props){
-    useEffect(()=>{props.handleTopTabChange(2)});
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexFlow: 'column nowrap'
-        }}
-      >
-        <div id={style.header}>
-          <div className="text-center wow fadeInUp">
-            <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
-            <br />
-            <p className={style.headerWord}>
-              {'肥宅出得去\n學妹進得來\n電機發大財'}
-            </p>
-          </div>
+const mapDisPatchToProps = dispatch => {
+  return { handleTopTabChange: payload => dispatch(handleTabChange(payload)) };
+};
+function Comment(props) {
+  useEffect(() => {
+    props.handleTopTabChange(2);
+  });
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexFlow: 'column nowrap'
+      }}
+    >
+      <div id={style.header}>
+        <div className="text-center wow fadeInUp">
+          <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
+          <br />
+          <p className={style.headerWord}>
+            {'肥宅出得去\n學妹進得來\n電機發大財'}
+          </p>
         </div>
-
-        <StyledCommentTab />
       </div>
-    );
+
+      <StyledCommentTab />
+    </div>
+  );
 }
-const connectedComment = connect(undefined,mapDisPatchToProps)(Comment)
+const connectedComment = connect(
+  undefined,
+  mapDisPatchToProps
+)(Comment);
 export default connectedComment;

@@ -23,6 +23,8 @@ export const QUERY_COMMENT_LIST = gql`
       name
       domain
       teacher
+      score
+      author
     }
   }
 `;
