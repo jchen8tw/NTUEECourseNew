@@ -68,7 +68,7 @@ export const WISHES_AND_COURSE_QUERY = gql`
     allWishes {
       _id
       student_ids
-      course_name
+      name: course_name
       priority
     }
   }
