@@ -148,6 +148,16 @@ const Mutation = {
       }
     );
     return res.nModified !== 0;
+  },
+
+  async updateWish(_, { data }, context) {
+    const { course_name, priority } = data;
+    const student_id = context.passwordProcessor.getStudentID(context.token);
+    let wish = await Wish.find({ student_ids: student_id, course_name });
+    if (wish === null)
+      wish = new Wish({ student_ids: [student_id], course_name, priority });
+    else wish.priority = priority;
+    return await wish.save().catch(console.log);
   }
 };
 

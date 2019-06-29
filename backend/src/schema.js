@@ -20,7 +20,7 @@ const schema = gql`
     createComment(data: CommentInput!): Comment
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
-    updateWish(data: WishUpdateInput!): String!
+    updateWish(data: WishUpdateInput!): Wish # Normal course without teammate
   }
 
   input LoginInput {
@@ -32,6 +32,7 @@ const schema = gql`
     title: String
     content: String
   }
+
   input CommentInput {
     semester: String!
     type: String! #必修、選修、十選二
@@ -51,6 +52,7 @@ const schema = gql`
   }
 
   input WishUpdateInput {
+    course_name: String!
     priority: [String!]!
   }
 
@@ -93,6 +95,7 @@ const schema = gql`
   type Wish {
     _id: ID!
     student_ids: [String!]
+    course_name: String!
     priority: [String!]
   }
 
