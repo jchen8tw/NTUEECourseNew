@@ -8,11 +8,13 @@ import {
   Grid,
   TextField,
   Paper,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Mutation } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import { CHANGE_NICKNAME, CHANGE_PASSWORD } from '../graphql/mutation';
+import { NICKNAME_QUERY } from '../graphql/query';
 
 const style = theme => ({
   formPaper: {
@@ -35,8 +37,8 @@ const style = theme => ({
   }
 });
 
-const ProfileEditor = ({ classes }) => {
-  const [nickname, setNickname] = React.useState('');
+const ProfileEditor = ({ oldNickname = '', classes }) => {
+  const [nickname, setNickname] = React.useState(oldNickname);
   const [password, setPassword] = React.useState('');
   const [passwordConfirm, setPasswordConfirm] = React.useState('');
   return (
@@ -137,4 +139,16 @@ const ProfileEditor = ({ classes }) => {
   );
 };
 
-export default withStyles(style)(ProfileEditor);
+const StyledProfileEditor = withStyles(style)(ProfileEditor);
+
+const ProfileEditorWithUserData = () => (
+  <Query query={NICKNAME_QUERY} fetchPolicy="no-cache">
+    {({ data, loading, error }) => {
+      if (loading) return <CircularProgress color="secondary" />;
+      if (error) return 'Error!';
+      return <StyledProfileEditor oldNickname={data.me.nickname} />;
+    }}
+  </Query>
+);
+
+export default ProfileEditorWithUserData;

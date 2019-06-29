@@ -19,11 +19,10 @@ const Mutation = {
   },
 
   async login(_, { data }, context) {
-    const { student_id, password } = data;
-    // compare case insensitive
-    const student = await Student.findOne({
-      id: student_id.toUpperCase()
-    }).exec();
+    const password = data.password;
+    const student_id = data.student_id.toUpperCase();
+
+    const student = await Student.findOne({ id: student_id }).exec();
     if (!student)
       throw new Error(
         'Authentication failed: User not found, please try again'

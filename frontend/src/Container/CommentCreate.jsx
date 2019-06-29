@@ -148,9 +148,9 @@ class CommentCreate extends Component {
                       return (
                         <>
                           <Avatar className={classes.purpleAvatar}>
-                            {data.me.nickname[0]}
+                            {data.me.nickname[0] || 'A'}
                           </Avatar>
-                          <h2>{data.me.nickname}</h2>
+                          <h3>{data.me.nickname || 'Anonymous'}</h3>
                         </>
                       );
                     }}
