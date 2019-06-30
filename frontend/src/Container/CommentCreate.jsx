@@ -15,16 +15,18 @@ import {
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
 import { contentTemplate } from '../Components/contentTemplate';
-import Rating from '../Components/Rating';
-
 import { Mutation } from 'react-apollo';
 import { Query } from 'react-apollo';
 import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
 import { NICKNAME_QUERY } from '../graphql/query';
+import { send_success } from '../redux/actions';
 
 const mapStateToProps = state => {
   return { student_id: state.student_id, token: state.jwt };
 };
+const mapDispatchToProps = dispatch => ({
+  sendSuccess: data => dispatch(send_success(data))
+});
 
 const styles = theme => ({
   container: {
@@ -78,10 +80,6 @@ class CommentCreate extends Component {
       message: ''
     };
   }
-  setMessage = things => {
-    this.setState({ message: things });
-    alert(things);
-  };
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
@@ -106,7 +104,7 @@ class CommentCreate extends Component {
     return (
       <Mutation
         mutation={CREATE_COMMENT_MUTATION}
-        onCompleted={data => this.setMessage(data.message)}
+        onCompleted={data => this.props.sendSuccess(data.message)}
       >
         {(createComment, { data }) => (
           <form
@@ -327,7 +325,7 @@ class CommentCreate extends Component {
 
 const connectedCommentCreate = connect(
   mapStateToProps,
-  undefined
+  mapDispatchToProps
 )(CommentCreate);
 
 export default withStyles(styles)(connectedCommentCreate);

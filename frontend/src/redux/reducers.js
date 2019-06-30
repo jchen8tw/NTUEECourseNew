@@ -5,7 +5,8 @@ import {
   UPDATE_WISHES,
   LOGOUT,
   TAB_CHANGE,
-  SEND_SUCCESS
+  SEND_SUCCESS,
+  SEND_ERROR
 } from './action-types';
 import { getStudentID, getGrade } from '../util';
 
@@ -15,7 +16,8 @@ const initialState = {
   wishes: null,
   unselected: null,
   tabIndex: 0,
-  successMessage: null
+  successMessage: null,
+  errorMessage: null
 };
 
 function rootReducer(state = initialState, action) {
@@ -60,6 +62,8 @@ function rootReducer(state = initialState, action) {
       return { ...state, tabIndex: action.payload };
     case SEND_SUCCESS:
       return { ...state, successMessage: action.payload };
+    case SEND_ERROR:
+      return { ...state, errorMessage: action.payload };
     default:
       if (!localStorage.getItem('jwt')) {
         return { ...initialState };

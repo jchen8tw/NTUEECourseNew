@@ -4,7 +4,7 @@ import { Paper, Typography, LinearProgress } from '@material-ui/core';
 import { Mutation } from 'react-apollo';
 import SotableList from '../Components/SortableList';
 import { UPDATE_WISH } from '../graphql/mutation';
-import { send_success, update_wishes } from '../redux/actions';
+import { send_success, send_error, update_wishes } from '../redux/actions';
 
 const mapStateToProps = state => ({
   getSelected: name =>
@@ -13,11 +13,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   sendSuccess: data => dispatch(send_success(data)),
+  sendError: data => dispatch(send_error(data)),
   updateWish: data => dispatch(update_wishes(data))
 });
 
 const Course = props => {
-  const { match, courses, name, sendSuccess, updateWish } = props;
+  const { match, courses, name, sendSuccess, sendError, updateWish } = props;
   //need to add a dummy list item to default not selecting any course
   let selected = [],
     notSelected = [];
@@ -52,6 +53,7 @@ const Course = props => {
             sendSuccess(`已更新「${data.wish.name}」的志願序`) &&
             updateWish(data.wish)
           }
+          onError={error => sendError(error.message)}
         >
           {(updateWish, result) => {
             if (result.loading) return <LinearProgress color="secondary" />;
