@@ -53,6 +53,10 @@ const Mutation = {
   },
 
   async submitCourse(_, { data }, context) {
+    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+      throw new Error('invalid token');
+    }
+    
     let courseList = data.content.split(/\r\n|\r|\n/);
     let newCourses = courseList.map(item => {
       const _id = new mongoose.Types.ObjectId();
@@ -107,6 +111,9 @@ const Mutation = {
   },
 
   async submitStudent(_, { data }, context) {
+    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+      throw new Error('invalid token');
+    }
     let studentList = data.content.split(/\r\n|\r|\n/);
     const defaultPassword = '123';
     const nickname = '';
