@@ -13,9 +13,11 @@ import {
 } from '@material-ui/core';
 import {
   SUBMIT_STUDENT_MUTATION,
-  SUBMIT_COURSE_MUTATION
+  SUBMIT_COURSE_MUTATION,
+  STARTADMISSION_MUTATION
 } from '../graphql/mutation';
 import SnackbarContent from '../Components/SnackbarContent';
+import fileDownload from 'js-file-download';
 
 const styles = theme => ({
   paper: {
@@ -215,14 +217,22 @@ const Admin = ({ classes }) => {
             <Typography variant="h4" component="h1" className={classes.title}>
               開始選課
             </Typography>
-            <Button
-              variant="contained"
-              type="submit"
-              color="secondary"
-              className={classes.button}
-            >
-              開始選課啦 GOGOGO
-            </Button>
+            <Mutation mutation={STARTADMISSION_MUTATION}>
+              {(login, { data, loading }) => {
+                return (
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    color="secondary"
+                    className={classes.button}
+                    disabled={loading}
+                    onClick={data => fileDownload(data, 'result.csv')}
+                  >
+                    開始選課啦 GOGOGO
+                  </Button>
+                );
+              }}
+            </Mutation>
           </Paper>
         </Grid>
       </Grid>

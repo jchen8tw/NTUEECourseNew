@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import { AppBar, Toolbar, Tabs, Tab, Menu, MenuItem } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { logout,handleTabChange } from '../redux/actions';
+import { logout, handleTabChange } from '../redux/actions';
 
 const styles = {
   tabs: {
@@ -26,11 +26,14 @@ const TabStyles = {
 const EnlargedTab = withStyles(TabStyles)(Tab);
 
 const mapDispatchToProps = dispatch => {
-  return { logout: data => dispatch(logout(data)),handleTabChange : (_,tabIndex) => dispatch(handleTabChange(tabIndex)) };
+  return {
+    logout: data => dispatch(logout(data)),
+    handleTabChange: (_, tabIndex) => dispatch(handleTabChange(tabIndex))
+  };
 };
-const mapStateToProps = state =>{
-  return {tabIndex: state.tabIndex};
-}
+const mapStateToProps = state => {
+  return { tabIndex: state.tabIndex };
+};
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -58,26 +61,15 @@ class NavBar extends React.Component {
               onChange={handleTabChange}
               scrollButtons="auto"
             >
-              <EnlargedTab
-                label="Home"
-                component={Link}
-                to="/dashboard"
-              />
-              <EnlargedTab
-                label="選課"
-                component={Link}
-                to="/select"
-              />
-              <EnlargedTab
-                label="評價"
-                component={Link}
-                to="/commentlist"
-              />
-              <EnlargedTab
+              <EnlargedTab label="Home" component={Link} to="/dashboard" />
+              <EnlargedTab label="選課" component={Link} to="/select" />
+              <EnlargedTab label="評價" component={Link} to="/commentlist" />
+
+              {/* <EnlargedTab
                 label="Sweety Course"
                 component={Link}
                 to="/admin"
-              />
+              /> */}
             </Tabs>
             <IconButton
               aria-owns="account"

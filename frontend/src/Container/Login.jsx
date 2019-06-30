@@ -59,7 +59,7 @@ function Login(props) {
   if (!!props.jwt) {
     return <Redirect from="/login" to="/dashboard" />;
     // so select needs to check if token is valid
-    // if not, select will delete the token
+    // if not, dashboard will delete the token
   } else {
     return (
       <div
