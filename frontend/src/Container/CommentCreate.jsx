@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import style from './CommentCreate.module.css';
+import UserAvatar from '../Components/Avatar';
 
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -18,7 +19,7 @@ import { contentTemplate } from '../Components/contentTemplate';
 import { Mutation } from 'react-apollo';
 import { Query } from 'react-apollo';
 import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
-import { NICKNAME_QUERY } from '../graphql/query';
+import { CONTENT_QUERY } from '../graphql/query';
 import { send_success } from '../redux/actions';
 
 const mapStateToProps = state => {
@@ -101,6 +102,7 @@ class CommentCreate extends Component {
   render() {
     const { classes } = this.props;
     const types = ['必修', '選修', '十選二', '專題'];
+    // if (this.props.modify === true)
     return (
       <Mutation
         mutation={CREATE_COMMENT_MUTATION}
@@ -136,20 +138,7 @@ class CommentCreate extends Component {
                   md={12}
                   className={style.gridStyleAvater}
                 >
-                  <Query query={NICKNAME_QUERY} fetchPolicy="network-only">
-                    {({ loading, error, data }) => {
-                      if (loading) return null;
-                      if (error) return `error!${error.message}`;
-                      return (
-                        <>
-                          <Avatar className={classes.purpleAvatar}>
-                            {data.me.nickname[0] || 'A'}
-                          </Avatar>
-                          <h3>{data.me.nickname || 'Anonymous'}</h3>
-                        </>
-                      );
-                    }}
-                  </Query>
+                  <UserAvatar query={true} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} className={style.gridStyle}>
                   <TextField

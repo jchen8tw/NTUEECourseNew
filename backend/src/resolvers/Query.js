@@ -35,13 +35,15 @@ const Query = {
 
   async getCommentList(_, args, context) {
     const { type, filter } = args;
+    console.log(filter);
     let mongooseFilter = {};
     if (type !== 'all') mongooseFilter.type = type;
     if (filter.name)
       mongooseFilter.name = { $regex: filter.name, $options: 'i' };
     if (filter.teacher)
       mongooseFilter.teacher = { $regex: filter.teacher, $options: 'i' };
-
+    if (filter.author)
+      mongooseFilter.author = { $regex: filter.author, $options: 'i' };
     let list = await CourseComment.find(mongooseFilter)
       .sort({ semester: -1 })
       .exec();

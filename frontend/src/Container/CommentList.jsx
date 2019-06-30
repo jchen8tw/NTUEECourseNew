@@ -2,6 +2,8 @@ import React, { Component, useEffect } from 'react';
 import style from './CommentList.module.css';
 import CommentPage from './CommentPage.jsx';
 import CommentCreate from './CommentCreate.jsx';
+import CommentManage from './CommentManage';
+import CommentModify from './CommentModify';
 
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -135,7 +137,7 @@ class CommentTab extends Component {
             <Tab label="十選二" component={Link} to={'/commentlist'} />
             <Tab label="專題" component={Link} to={'/commentlist'} />
             <Tab label="發表評論" component={Link} to={'/commentlist'} />
-            <Tab label="文章管理" />
+            <Tab label="文章管理" component={Link} to={'/commentlist'} />
           </Tabs>
         </AppBar>
         {tabIndex < tabs.length && (
@@ -154,7 +156,19 @@ class CommentTab extends Component {
         {tabIndex === 5 && (
           <Route exact path="/commentlist" component={CommentCreate} />
         )}
-        {tabIndex === 6 && <Link to="/manageComment" />}
+        {tabIndex === 6 && (
+          <TabContainer>
+            <Route
+              exact
+              path="/commentlist"
+              render={props => <CommentManage {...props} />}
+            />
+            <Route
+              path={'/commentlist/:id'}
+              render={props => <CommentModify modify={true} {...props} />}
+            />
+          </TabContainer>
+        )}
       </div>
     );
   }
