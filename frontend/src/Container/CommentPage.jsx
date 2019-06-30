@@ -79,6 +79,7 @@ class CommentPage extends Component {
               {responseList.map((response, index) => (
                 <Paper className={style.pageRoot} key={index}>
                   <UserAvatar author={response.author} />
+                  <h5>{index + 1 + '樓'}</h5>
                   <h3>課程評價回應 : </h3>
                   <p style={{ whiteSpace: 'pre-line' }}>{response.content}</p>
                 </Paper>
