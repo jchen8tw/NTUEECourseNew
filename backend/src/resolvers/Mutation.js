@@ -207,6 +207,7 @@ const Mutation = {
 
   async updateWishWithTeammate(_, { data }, context) {
     const { student_ids, course_name, priority } = data;
+    student_ids = student_ids.map(i => i.toUpperCase());
     await Wish.deleteMany({
       student_ids: { $in: student_ids },
       course_name
