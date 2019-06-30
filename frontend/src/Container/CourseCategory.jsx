@@ -2,8 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Course from '../Container/Course';
 import CourseCard from '../Components/CourseCard';
+import CourseWithTeammate from '../Container/CourseWithTeammate';
 import { connect } from 'react-redux';
-
 import style from './CourseCategory.module.css';
 
 const mapStateToProps = state => {
@@ -29,13 +29,21 @@ function CourseCategory(props) {
           <Route
             key={url}
             path={url}
-            component={props => (
-              <Course
-                {...props}
-                courses={courseGroup[id].courses}
-                name={courseGroup[id].name}
-              />
-            )}
+            component={props =>
+              courseGroup[id].grade === 4 ? (
+                <CourseWithTeammate
+                  {...props}
+                  courses={courseGroup[id].courses}
+                  name={courseGroup[id].name}
+                />
+              ) : (
+                <Course
+                  {...props}
+                  courses={courseGroup[id].courses}
+                  name={courseGroup[id].name}
+                />
+              )
+            }
           />
         ))}
       </React.Fragment>

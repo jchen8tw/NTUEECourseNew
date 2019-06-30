@@ -3,6 +3,7 @@ import {
   GET_COURSE_INFO,
   GET_WISHES,
   UPDATE_WISHES,
+  UPDATE_WISHES_WITH_TEAMMATE,
   LOGOUT,
   TAB_CHANGE,
   SEND_SUCCESS,
@@ -23,6 +24,10 @@ export function get_wishes(payload) {
 
 export function update_wishes(payload) {
   return { type: UPDATE_WISHES, payload };
+}
+
+export function update_wishes_with_teammate(payload) {
+  return { type: UPDATE_WISHES_WITH_TEAMMATE, payload };
 }
 
 export function logout(payload) {

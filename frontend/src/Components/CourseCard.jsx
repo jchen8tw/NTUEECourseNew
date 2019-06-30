@@ -42,6 +42,7 @@ function CourseCard(props) {
     name,
     image = 'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
     priority,
+    student_ids,
     url
   } = props;
   return (
@@ -69,13 +70,33 @@ function CourseCard(props) {
               {name}
             </Typography>
             {priority &&
+              priority.length > 1 &&
               priority.map((i, index) => (
                 <Typography
                   component="p"
                   style={{ fontSize: '1rem' }}
-                  key={`${name}-choice-${index}`}
+                  key={i}
                 >{`${index + 1}. ${i}`}</Typography>
               ))}
+            {priority && priority.length <= 1 && (
+              <>
+                {priority[0] && (
+                  <Typography component="p" style={{ fontSize: '1rem' }}>
+                    {priority[0]}
+                  </Typography>
+                )}
+                {student_ids &&
+                  student_ids.map(i => (
+                    <Typography
+                      component="p"
+                      style={{ fontSize: '1rem' }}
+                      key={i}
+                    >
+                      {i}
+                    </Typography>
+                  ))}
+              </>
+            )}
           </CardContent>
         </CardActionArea>
       </Link>
