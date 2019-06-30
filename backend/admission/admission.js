@@ -8,19 +8,58 @@ function randn(mean,std) {
     num = num * std + mean; // Translate to 0 -> 1
     return num;
 }
-function admission(wish_ref,class_info){
+function admission(wish_ref,class_info,pre_group_info){
     // copy to a new object.
     let wish = Object.assign({}, wish_ref);
 
+    // pre_group_info -> group_info
+    /*
+        pre_group_info:
+        ｛
+            第一門課: [[學生1,學生2,學生3]]
+            第二門課: [[學生1,學生2,學生3]]
+        ｝
+
+        group_info -> ｛
+        第一門課：｛
+            學生1: [學生1,學生2,學生3]
+            學生2: [學生1,學生2,學生3]
+            學生3: [學生1,學生2,學生3]
+            學生4: [學生4,學生5,學生6]
+            學生5: [學生4,學生5,學生6]
+            學生6: [學生4,學生5,學生6]
+        ｝
+    */
+    let group_info = {};
+    for(let class_name in pre_group_info){
+        if(class_info[class_name][0]['group']){        
+            group_info[class_name] = {}
+            pre_group_info[class_name].forEach((group_members) => {
+                group_members.forEach((each_members)=>{
+                    group_info[class_name][each_members] = group_members;
+                });
+            });
+        }
+   }
     // get each student's random generator.
     let visited = {}
     // visited, or has been selected: {number:{class: True/False}}
+    //TODO need to change hardcoded year
     for( let school_number in wish ){
+        let date = new Date();
+        let year = date.getFullYear();
+        let current_school_number = year - 2012;
         wish[school_number]["__generator__"] = 
+        parseInt(school_number.slice(1,3)) == current_school_number ? ()=>randn(0.5,0.12) :
+        parseInt(school_number.slice(1,3)) == current_school_number-1 ? ()=>randn(0.6,0.09) :
+        parseInt(school_number.slice(1,3)) == current_school_number-2 ? ()=>randn(0.7,0.085) :
+        parseInt(school_number.slice(1,3)) == current_school_number-3 ? ()=>randn(0.8,0.05) : ()=>randn(0.8,0.05);
+        /*
         school_number[2] == '3' ? ()=>randn(0.8,0.05) :
         school_number[2] == '4' ? ()=>randn(0.7,0.085) :
         school_number[2] == '5' ? ()=>randn(0.6,0.09) :
         school_number[2] == '6' ? ()=>randn(0.5,0.12) : undefined;
+        */
 
         visited[school_number] = {}
         for( let class_name in class_info){
@@ -28,21 +67,25 @@ function admission(wish_ref,class_info){
         }
     }
     // Per class / stu init
+    // pre : "fake" admit. (only group)
+    let pre_per_class = {};
     let per_class = {};
     let per_stu = {};
     
     for( let class_name in class_info){
         // Initial per_class[classname][teacher]
         per_class[class_name] = {}
+        pre_per_class[class_name] = {}
         for( let teach_info_idx in class_info[class_name]){
             per_class[class_name][class_info[class_name][teach_info_idx]['teacher_name']] = []
+            pre_per_class[class_name][class_info[class_name][teach_info_idx]['teacher_name']] = []
         }
 
         // Per wish
-        for( let wish_order = 0 ; wish_order < 3 ; wish_order ++){
+        for( let wish_order = 0 ; wish_order < 10 ; wish_order ++){
             
             // Join student[wish_order] == this class & teacher and (not OK) to competitors
-            class_info[class_name].forEach(({ teacher_name, max }) => {
+            class_info[class_name].forEach(({ teacher_name, max, group }) => {
                 let competitors = [];
                 for( let school_number in wish ){
                     // if stu select this class & if not chosen & if wish match this teacher
@@ -57,17 +100,37 @@ function admission(wish_ref,class_info){
                 // sort with priority
                 competitors.sort((a,b) => (b[0]-a[0]));
                 // choose selected students
-                let selected = competitors.slice(0,max-per_class[class_name][teacher_name].length);
-                // add to per_class
-                per_class[class_name][teacher_name].push(...selected.map((elem)=>(elem[1])));
-
-                // set to visit & set the chosen class name in wish
-                selected.forEach((elem)=>{
-                    visited[elem[1]][class_name] = true;
-                    if(!(elem[1] in per_stu))
-                        per_stu[elem[1]] = {};
-                    per_stu[elem[1]][class_name] = teacher_name;
-                });
+                for(let i = 0; i<competitors.length ; i++){
+                    let now_chosen_student = competitors[i][1];
+                    // add to pre_per_class
+                    if(group){
+                        // if is group -> add to pre_per_class
+                        pre_per_class[class_name][teacher_name].push(now_chosen_student);
+                        group_members = group_info[class_name][now_chosen_student]
+                        // if all memebers in pre_per, all members are passed.
+                        let is_ok = true;
+                        group_members.forEach((each_member) => {
+                            // a member not in pre_per or visited
+                            if(!pre_per_class[class_name][teacher_name].includes(each_member) ||
+                                visited[now_chosen_student][class_name]){
+                                is_ok = false;
+                            }
+                        });
+                        // check quota exceed after added.
+                        if(is_ok && group_members.length + per_class[class_name][teacher_name].length <= max ){
+                            // push all to per_class
+                            per_class[class_name][teacher_name].push(...group_members);
+                            visited[now_chosen_student][class_name] = true;
+                        }
+                    }else{
+                        per_class[class_name][teacher_name].push(now_chosen_student);
+                        if(!(now_chosen_student in per_stu))
+                            per_stu[now_chosen_student] = {};
+                        per_stu[now_chosen_student][class_name] = teacher_name;
+                        visited[now_chosen_student][class_name] = true;
+                    }
+        
+                }
                 
                 
             });

@@ -7,6 +7,8 @@ const {
 } = require('../model.js');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
+const { admission } = require('../../admission/admission');
+const { class_info_db2backend, wish_db2backend } = require('../../admission/converter');
 
 const Mutation = {
   async createStudent(_, { data }, context) {
@@ -231,6 +233,23 @@ const Mutation = {
     ) {
       throw new Error('invalid token');
     }
+    let course = await Course.find({})
+      .populate('group')
+      .exec()
+      .catch(err => new Error(err));
+    let wish = await Wish.find({}).catch(err => new Error(err));
+    //console.log(course);
+    let class_info = class_info_db2backend(course);
+    //console.log(class_info);
+    let [wishes, group_info] = wish_db2backend(wish, class_info);
+    //console.log(wishes,group_info);
+    let [per_class_result, per_stu_result] = admission(
+      wishes,
+      class_info,
+      group_info
+    );
+    //console.log(per_stu_result);
+    return { raw: JSON.stringify(per_stu_result)};
   },
 
   async updateWishWithTeammate(_, { data }, context) {

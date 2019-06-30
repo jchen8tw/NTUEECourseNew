@@ -1,6 +1,5 @@
 const { random_testcase2 } = require('./test_generator');
 const { Course, CourseGroup, Wish } = require('../src/model');
-const util = require('util');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
 /**
@@ -43,9 +42,9 @@ function generate_course() {
   return course_info;
 }
 const courses_info = generate_course();
-const student_wishes = random_testcase2(courses_info);
+const [student_wishes,und] = random_testcase2(courses_info);
 //console.log(courses_info);
-//console.log(student_wishes);
+//console.log(student_wishes['B06901100']);
 function Grouping() {
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {

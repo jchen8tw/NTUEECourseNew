@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Paper, TextField, Typography } from '@material-ui/core';
+import { Paper, TextField, Typography,LinearProgress } from '@material-ui/core';
 import { Mutation } from 'react-apollo';
 import { getStudentID } from '../util';
 import { UPDATE_WISH_WITH_TEAMMATE } from '../graphql/mutation';
