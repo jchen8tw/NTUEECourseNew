@@ -353,7 +353,6 @@ const mapDisPatchToProps = dispatch => {
 function Comment(props) {
   useEffect(() => {
     props.handleTopTabChange(2);
-    new WOW().init();
   });
   return (
     <div
@@ -366,7 +365,7 @@ function Comment(props) {
         <div className="text-center wow fadeInUp">
           <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
           <br />
-          <p className={classNames(style.headerWord, 'animated', 'slideInUp')}>
+          <p className={classNames(style.headerWord)}>
             {'堅定支持一個電機原則\n反對任何形式的"電機"分裂活動'}
           </p>
         </div>
