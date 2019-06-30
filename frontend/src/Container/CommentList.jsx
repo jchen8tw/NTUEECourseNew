@@ -4,11 +4,24 @@ import CommentPage from './CommentPage.jsx';
 import CommentCreate from './CommentCreate.jsx';
 
 import { withStyles } from '@material-ui/core/styles';
-import {AppBar,Tabs,Tab,Typography,Table,TableBody,TableCell,TableHead,TableRow,Paper,Input,Button } from '@material-ui/core';
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  Input,
+  Button
+} from '@material-ui/core';
 import { Route, Link } from 'react-router-dom';
 
 import { handleTabChange } from '../redux/actions';
-import {connect }  from 'react-redux';
+import { connect } from 'react-redux';
 
 import { Query } from 'react-apollo';
 import { QUERY_COMMENT_LIST } from '../graphql/query';
@@ -40,19 +53,54 @@ const styles = theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     maxWidth: '1000px',
-    minWidth: '450px'
+    minWidth: '400px'
+  },
+  maintable: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3
   },
   tableCell: {
     padding: '0 3% 0 2%',
-    minWidth: '80px',
+    minWidth: '70px',
     minHeight: '70px',
     fontSize: '1.2em',
+    width: '20%',
     '& > a': {
       color: 'inherit'
     }
   },
   input: {
     maxWidth: '350px'
+  },
+  tableCellType: {
+    padding: '0 3% 0 2%',
+    minWidth: '30px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    '& > a': {
+      color: 'inherit'
+    },
+    width: '15%'
+  },
+  tableCellScore: {
+    padding: '0 3% 0 2%',
+    minWidth: '20px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    width: '10%',
+    '& > a': {
+      color: 'inherit'
+    }
+  },
+  tableCellTeacher: {
+    padding: '0 3% 0 2%',
+    minWidth: '20px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    width: '15%',
+    '& > a': {
+      color: 'inherit'
+    }
   }
 });
 
@@ -86,7 +134,7 @@ class CommentTab extends Component {
             <Tab label="選修" component={Link} to={'/commentlist'} />
             <Tab label="十選二" component={Link} to={'/commentlist'} />
             <Tab label="專題" component={Link} to={'/commentlist'} />
-            <Tab label="發表評論" />
+            <Tab label="發表評論" component={Link} to={'/commentlist'} />
             <Tab label="文章管理" />
           </Tabs>
         </AppBar>
@@ -104,7 +152,7 @@ class CommentTab extends Component {
           </TabContainer>
         )}
         {tabIndex === 5 && (
-          <Route path="/commentlist" component={CommentCreate} />
+          <Route exact path="/commentlist" component={CommentCreate} />
         )}
         {tabIndex === 6 && <Link to="/manageComment" />}
       </div>
@@ -130,18 +178,18 @@ class CommentTitleListRaw extends Component {
     }
     return (
       <Paper className={classes.CommentTitleListRawRoot}>
-        <Table className={classes.table}>
+        <Table className={classes.maintable}>
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>名稱</TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell align="right" className={classes.tableCellType}>
                 類別
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell align="right" className={classes.tableCellTeacher}>
                 開課教授
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
-                推薦分數
+              <TableCell align="right" className={classes.tableCellScore}>
+                分數
               </TableCell>
               <TableCell align="right" className={classes.tableCell}>
                 作者
@@ -161,7 +209,7 @@ class CommentTitleListRaw extends Component {
                 return (
                   <TableBody className={style.loadingStyle}>
                     <TableRow>
-                      <td rowSpan="5">{'正在查詢中，等一下啦 > <'}</td>
+                      <td row="5">{'正在查詢中，等一下啦 > <'}</td>
                     </TableRow>
                   </TableBody>
                 );
@@ -175,16 +223,25 @@ class CommentTitleListRaw extends Component {
                           row.semester
                         } ${row.name}`}</Link>
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellType}
+                      >
                         {row.domain === '' || row.domain === row.type
                           ? row.type
                           : `${row.type}/${row.domain}`}
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellTeacher}
+                      >
                         {row.teacher}
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
-                        {row.score || ''}
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellScore}
+                      >
+                        {Number.isFinite(row.score) && row.score}
                       </TableCell>
                       <TableCell align="right" className={classes.tableCell}>
                         {row.author || ''}
@@ -257,15 +314,7 @@ class CommentListRaw extends Component {
             color="inherit"
             onClick={this.handleTeacherClick}
           >
-            教授
-          </Button>
-          <Button
-            variant="outlined"
-            type="submit"
-            className={classes.button}
-            color="inherit"
-          >
-            評論數
+            開課教授
           </Button>
         </form>
         <CommentTitleList
@@ -279,31 +328,36 @@ class CommentListRaw extends Component {
 }
 const CommentList = withStyles(styles)(CommentListRaw);
 
-const mapDisPatchToProps = dispatch =>{
-  return {handleTopTabChange: payload => dispatch(handleTabChange(payload))} ;
-}
-function Comment(props){
-    useEffect(()=>{props.handleTopTabChange(2)});
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexFlow: 'column nowrap'
-        }}
-      >
-        <div id={style.header}>
-          <div className="text-center wow fadeInUp">
-            <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
-            <br />
-            <p className={style.headerWord}>
-              {'肥宅出得去\n學妹進得來\n電機發大財'}
-            </p>
-          </div>
+const mapDisPatchToProps = dispatch => {
+  return { handleTopTabChange: payload => dispatch(handleTabChange(payload)) };
+};
+function Comment(props) {
+  useEffect(() => {
+    props.handleTopTabChange(2);
+  });
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexFlow: 'column nowrap'
+      }}
+    >
+      <div id={style.header}>
+        <div className="text-center wow fadeInUp">
+          <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
+          <br />
+          <p className={style.headerWord}>
+            {'肥宅出得去\n學妹進得來\n電機發大財'}
+          </p>
         </div>
-
-        <StyledCommentTab />
       </div>
-    );
+
+      <StyledCommentTab />
+    </div>
+  );
 }
-const connectedComment = connect(undefined,mapDisPatchToProps)(Comment)
+const connectedComment = connect(
+  undefined,
+  mapDisPatchToProps
+)(Comment);
 export default connectedComment;

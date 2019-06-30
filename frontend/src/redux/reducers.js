@@ -2,9 +2,11 @@ import {
   STORE_JWT,
   GET_COURSE_INFO,
   GET_WISHES,
+  UPDATE_WISHES,
   LOGOUT,
   TAB_CHANGE,
-  SEND_SUCCESS
+  SEND_SUCCESS,
+  SEND_ERROR
 } from './action-types';
 import { getStudentID, getGrade } from '../util';
 
@@ -14,7 +16,8 @@ const initialState = {
   wishes: null,
   unselected: null,
   tabIndex: 0,
-  successMessage: null
+  successMessage: null,
+  errorMessage: null
 };
 
 function rootReducer(state = initialState, action) {
@@ -27,17 +30,29 @@ function rootReducer(state = initialState, action) {
       // unselected = courses of user grade - wishes
       let grade = getGrade(getStudentID(state.jwt));
       let unselected = state.courses.filter(group => {
-        if (group.grade === grade) {
-          let ind = action.payload.findIndex(i => i.name === group.name);
-          if (ind !== -1) {
-            // in wishes
-            action.payload[ind].grade = grade;
-            return false;
-          }
-          return true;
-        }
+        let ind = action.payload.findIndex(i => i.name === group.name);
+        // If `group` in `wishes`, then ind !== -1
+        if (ind !== -1) action.payload[ind].grade = group.grade;
+        return grade === group.grade;
       });
       return { ...state, wishes: action.payload, unselected };
+    case UPDATE_WISHES:
+      let ind = state.wishes.findIndex(
+        wish => wish.name === action.payload.name
+      );
+      let newWishes = state.wishes;
+      if (ind !== -1) {
+        if (!action.payload.priority || action.payload.priority.length === 0)
+          newWishes.splice(ind, 1);
+        // Remove from wishes
+        else newWishes[ind].priority = action.payload.priority; // Replace priority
+      } else {
+        action.payload.grade = state.courses.find(
+          course => course.name === action.payload.name
+        ).grade; // Get and save the grade of newly appended wish
+        newWishes.push(action.payload); // not in wishes, append to wishes
+      }
+      return { ...state, wishes: newWishes };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
     case LOGOUT:
@@ -47,6 +62,8 @@ function rootReducer(state = initialState, action) {
       return { ...state, tabIndex: action.payload };
     case SEND_SUCCESS:
       return { ...state, successMessage: action.payload };
+    case SEND_ERROR:
+      return { ...state, errorMessage: action.payload };
     default:
       if (!localStorage.getItem('jwt')) {
         return { ...initialState };

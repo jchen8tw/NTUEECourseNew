@@ -15,16 +15,18 @@ import {
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
 import { contentTemplate } from '../Components/contentTemplate';
-import Rating from '../Components/Rating';
-
 import { Mutation } from 'react-apollo';
 import { Query } from 'react-apollo';
 import { CREATE_COMMENT_MUTATION } from '../graphql/mutation.js';
 import { NICKNAME_QUERY } from '../graphql/query';
+import { send_success } from '../redux/actions';
 
 const mapStateToProps = state => {
-  return { student_id: state.student_id };
+  return { student_id: state.student_id, token: state.jwt };
 };
+const mapDispatchToProps = dispatch => ({
+  sendSuccess: data => dispatch(send_success(data))
+});
 
 const styles = theme => ({
   container: {
@@ -69,50 +71,41 @@ const styles = theme => ({
     margin: 10
   }
 });
-let rateValue = 0;
-function UseStateRating() {
-  const [rate, setRate] = React.useState(0);
-  return (
-    <>
-      <p>{rate}</p>
-      <Rating
-        emptySymbol="far fa-star fa-2x"
-        fullSymbol="fas fa-star fa-2x"
-        onClick={setRate}
-        initialRating={rate}
-      />
-    </>
-  );
-}
-
 class CommentCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
       type: '必修',
-      rating: 0,
-      content: ''
+      content: '',
+      message: ''
     };
   }
-
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
-  };
-  handleRateChange = value => {
-    this.setState({ rating: value });
   };
   loadTemplate = () => {
     this.setState({ content: contentTemplate });
   };
-  handleCommentSubmit = () => {};
   getValue = idName => {
-    return document.getElementById(idName).value;
+    let temp = document.getElementById(idName).value;
+    if (idName === 'type') {
+      this.setState({ type: '必修' });
+      return temp;
+    } else if (idName === 'content') {
+      this.setState({ content: '' });
+      return temp;
+    } //(idName!=="type"||idName!=="content")
+    else document.getElementById(idName).value = '';
+    return temp;
   };
   render() {
     const { classes } = this.props;
     const types = ['必修', '選修', '十選二', '專題'];
     return (
-      <Mutation mutation={CREATE_COMMENT_MUTATION}>
+      <Mutation
+        mutation={CREATE_COMMENT_MUTATION}
+        onCompleted={data => this.props.sendSuccess(data.message)}
+      >
         {(createComment, { data }) => (
           <form
             className={style.allRoot}
@@ -125,10 +118,11 @@ class CommentCreate extends Component {
                   teacher: this.getValue('teacher'),
                   semester: this.getValue('semester'),
                   domain: this.getValue('domain'),
-                  score: parseInt(this.getValue('score')),
+                  score: parseFloat(this.getValue('score')),
                   studyBefore: this.getValue('studyBefore'),
                   studyTogether: this.getValue('studyTogether'),
-                  content: this.getValue('content')
+                  content: this.getValue('content'),
+                  author: JSON.parse(atob(this.props.token.split('.')[1])).id
                 }
               });
             }}
@@ -149,9 +143,9 @@ class CommentCreate extends Component {
                       return (
                         <>
                           <Avatar className={classes.purpleAvatar}>
-                            {data.me.nickname[0]}
+                            {data.me.nickname[0] || 'A'}
                           </Avatar>
-                          <h2>{data.me.nickname}</h2>
+                          <h3>{data.me.nickname || 'Anonymous'}</h3>
                         </>
                       );
                     }}
@@ -259,8 +253,10 @@ class CommentCreate extends Component {
                   <TextField
                     id="score"
                     label="私心推薦指數(0~5分)"
+                    required
                     // value={this.state.score}
                     // onChange={this.handleChange('score')}
+                    inputProps={{ min: 0, max: 5, step: 0.5 }}
                     placeholder="超過5分為5分，每0.5分為一等級"
                     type="number"
                     className={classes.textField}
@@ -314,7 +310,6 @@ class CommentCreate extends Component {
                     color="primary"
                     className={classes.button}
                     type="submit"
-                    onClick={this.handleCommentSubmit}
                   >
                     確認送出
                   </Button>
@@ -330,7 +325,7 @@ class CommentCreate extends Component {
 
 const connectedCommentCreate = connect(
   mapStateToProps,
-  undefined
+  mapDispatchToProps
 )(CommentCreate);
 
 export default withStyles(styles)(connectedCommentCreate);

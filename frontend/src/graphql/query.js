@@ -23,6 +23,8 @@ export const QUERY_COMMENT_LIST = gql`
       name
       domain
       teacher
+      score
+      author
     }
   }
 `;
@@ -41,6 +43,10 @@ export const CONTENT_QUERY = gql`
       content
       score
       author
+      responses {
+        author
+        content
+      }
     }
   }
 `;

@@ -19,6 +19,7 @@ export const SUBMIT_COURSE_MUTATION = gql`
     message: submitCourse(data: { content: $content })
   }
 `;
+
 export const CREATE_COMMENT_MUTATION = gql`
   mutation(
     $semester: String!
@@ -28,11 +29,11 @@ export const CREATE_COMMENT_MUTATION = gql`
     $teacher: String!
     $studyTogether: String
     $studyBefore: String
-    $content: [String]!
-    $score: Int
+    $content: String!
+    $score: Float
     $author: String
   ) {
-    createComment(
+    message: createComment(
       data: {
         semester: $semester
         type: $type
@@ -45,9 +46,7 @@ export const CREATE_COMMENT_MUTATION = gql`
         score: $score
         author: $author
       }
-    ) {
-      name
-    }
+    )
   }
 `;
 
@@ -65,8 +64,18 @@ export const CHANGE_PASSWORD = gql`
 
 export const UPDATE_WISH = gql`
   mutation($course_name: String!, $priority: [String!]!) {
-    updateWish(data: { course_name: $course_name, priority: $priority }) {
-      course_name
+    wish: updateWish(data: { course_name: $course_name, priority: $priority }) {
+      _id
+      name: course_name
+      priority
     }
+  }
+`;
+
+export const RESPONSE_MUTATION = gql`
+  mutation($author: String, $content: String, $comment_id: String) {
+    message: createResponse(
+      data: { author: $author, content: $content, comment_id: $comment_id }
+    )
   }
 `;

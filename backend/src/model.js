@@ -37,9 +37,10 @@ const CourseCommentSchema = new mongoose.Schema({
   teacher: { type: String, required: true },
   studyTogether: { type: String },
   studyBefore: { type: String },
-  content: [{ type: String }],
+  content: { type: String },
   score: Number,
-  author: String
+  author: String,
+  responses: [{ content: { type: String }, author: { type: String } }]
 });
 
  // ["b06901048"] for normal course, ["b06901048","b06901049","b06901050"] for 十選二

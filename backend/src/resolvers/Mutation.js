@@ -25,11 +25,10 @@ const Mutation = {
   },
 
   async login(_, { data }, context) {
-    const { student_id, password } = data;
-    // compare case insensitive
-    const student = await Student.findOne({
-      id: student_id.toUpperCase()
-    }).exec();
+    const password = data.password;
+    const student_id = data.student_id.toUpperCase();
+
+    const student = await Student.findOne({ id: student_id }).exec();
     if (!student)
       throw new Error(
         'Authentication failed: User not found, please try again'
@@ -129,11 +128,26 @@ const Mutation = {
 
   async createComment(_, { data }, context) {
     const _id = new mongoose.Types.ObjectId();
+    const { score } = data;
+    if (score > 5) return '拎北跟你講過滿分5分聽不懂逆?欠嗆?';
+    if (score < 0) return '阿不是不能低於0分?眼幹逆';
+    if (!Number.isInteger(score * 2)) return '要是0.5分為一等級啦87';
     let courseComment = new CourseComment({
       _id,
       ...data
     });
-    return await courseComment.save().catch(err => console.log(err.errmsg));
+    await courseComment.save().catch(err => err.errmsg);
+    return '成功上傳啦';
+  },
+  async createResponse(_, { data }, context) {
+    const { author, content, comment_id } = data;
+    await CourseComment.updateOne(
+      { _id: comment_id },
+      {
+        $push: { responses: { author, content } }
+      }
+    ).exec();
+    return 'success';
   },
 
   async changeNickname(_, { nickname }, context) {
@@ -159,12 +173,16 @@ const Mutation = {
   async updateWish(_, { data }, context) {
     const { course_name, priority } = data;
     const student_id = context.passwordProcessor.getStudentID(context.token);
-    if (!priority || priority.length === 0)
+    if (!priority || priority.length === 0) {
       // Set priority to empty array => remove from priority
-      return await Wish.findOneAndRemove({
+      let res = await Wish.findOneAndDelete({
         student_ids: student_id,
         course_name
       });
+      res = res.toObject();
+      res.priority = [];
+      return res;
+    }
     let wish = await Wish.findOne({ student_ids: student_id, course_name });
     if (wish === null)
       wish = new Wish({ student_ids: [student_id], course_name, priority });

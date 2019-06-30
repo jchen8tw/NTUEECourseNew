@@ -4,18 +4,21 @@ import { Paper, Typography, LinearProgress } from '@material-ui/core';
 import { Mutation } from 'react-apollo';
 import SotableList from '../Components/SortableList';
 import { UPDATE_WISH } from '../graphql/mutation';
-import { send_success } from '../redux/actions';
+import { send_success, send_error, update_wishes } from '../redux/actions';
 
 const mapStateToProps = state => ({
-  getSelected: name => state.wishes && state.wishes.find(i => i.name === name)
+  getSelected: name =>
+    (state.wishes && state.wishes.find(i => i.name === name)) || []
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendSuccess: data => dispatch(send_success(data))
+  sendSuccess: data => dispatch(send_success(data)),
+  sendError: data => dispatch(send_error(data)),
+  updateWish: data => dispatch(update_wishes(data))
 });
 
 const Course = props => {
-  const { match, courses, name, sendSuccess } = props;
+  const { match, courses, name, sendSuccess, sendError, updateWish } = props;
   //need to add a dummy list item to default not selecting any course
   let selected = [],
     notSelected = [];
@@ -46,9 +49,11 @@ const Course = props => {
         <Mutation
           mutation={UPDATE_WISH}
           onCompleted={data =>
-            data.updateWish.course_name &&
-            sendSuccess(`已更新「${data.updateWish.course_name}」的志願序`)
+            data.wish.name &&
+            sendSuccess(`已更新「${data.wish.name}」的志願序`) &&
+            updateWish(data.wish)
           }
+          onError={error => sendError(error.message)}
         >
           {(updateWish, result) => {
             if (result.loading) return <LinearProgress color="secondary" />;

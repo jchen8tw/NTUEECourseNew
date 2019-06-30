@@ -11,41 +11,24 @@ import {
 } from '@material-ui/core';
 
 import { LOGIN_MUTATION } from '../graphql/mutation';
-import SnackbarContent from '../Components/SnackbarContent';
 import style from './Login.module.css';
 import { connect } from 'react-redux';
-import { store_jwt } from '../redux/actions';
+import { store_jwt, send_error } from '../redux/actions';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setToken: jwt => dispatch(store_jwt(jwt))
-  };
-};
-const mapStateToProps = state => {
-  return { jwt: state.jwt };
-};
-
-const ErrorSnackbar = ({ open, onClose, message }) => (
-  <Snackbar
-    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-    open={open}
-    autoHideDuration={2200}
-    onClose={onClose}
-  >
-    <SnackbarContent variant="error" message={message} onClose={onClose} />
-  </Snackbar>
-);
+const mapDispatchToProps = dispatch => ({
+  setToken: jwt => dispatch(store_jwt(jwt)),
+  sendError: data => dispatch(send_error(data))
+});
+const mapStateToProps = state => ({ jwt: state.jwt });
 
 function LoginForm({ login, data, loading, error }) {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
-  const [snackbarTriggered, setSnackbarTriggered] = useState(false);
   const failed = !!error; // Efficiently cast error to bool
   return (
     <form
       onSubmit={e => {
         e.preventDefault(); // Prevent the page from refreshing
-        setSnackbarTriggered(false);
         login({ variables: { account, password } });
       }}
     >
@@ -68,14 +51,6 @@ function LoginForm({ login, data, loading, error }) {
       <Button type="submit">Login</Button>
       {loading && <LinearProgress color="secondary" />}
       {data && <Redirect from="/login" to="/dashboard" />}
-      <ErrorSnackbar
-        open={failed && !snackbarTriggered}
-        onClose={() => setSnackbarTriggered(true)}
-        message={
-          (error && error.graphQLErrors[0] && error.graphQLErrors[0].message) ||
-          'Authentication Failed'
-        }
-      />
     </form>
   );
 }
@@ -100,14 +75,21 @@ function Login(props) {
           <Mutation
             mutation={LOGIN_MUTATION}
             onCompleted={data => props.setToken(data.login.raw)}
+            onError={error =>
+              props.sendError(
+                (error &&
+                  error.graphQLErrors[0] &&
+                  error.graphQLErrors[0].message) ||
+                  'Authentication Failed'
+              )
+            }
           >
-            {(login, { data, loading, error }) => (
+            {(login, { data, loading }) => (
               <LoginForm
                 {...{
                   login,
                   data,
-                  loading,
-                  error
+                  loading
                 }}
               />
             )}
