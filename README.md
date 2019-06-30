@@ -71,7 +71,7 @@ $ npm run watch
 | jsonwebtoken          | jwt，用來驗證用戶身份                                 |
 | mongoose              | 連接 mongoDB                                          |
 
-## [Demo 影片連結](https://youtu.be/)
+## [Demo 影片連結](https://youtu.be/iA-NK3QdVyY)
 
 ## 每位組員之貢獻 (請詳述)
 
@@ -81,6 +81,7 @@ $ npm run watch
     2. 資料格式設計
     3. 伺服器端的資訊安全架構設計（利用jwt的驗證）
     4. 很多的debug
+    5. 管理員介面與選課系統的連接
 
 ### B06901049 電機二 林泓均
 
