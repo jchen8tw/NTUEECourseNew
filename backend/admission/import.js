@@ -32,7 +32,7 @@ function generate_course() {
 }
 const courses_info = generate_course();
 const student_wishes = random_testcase2(courses_info);
-
+console.log(student_wishes);
 //generate coursegroup and courses from courses_info
 //console.log(courses_info);
 /**
