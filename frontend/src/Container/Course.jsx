@@ -4,7 +4,7 @@ import { Paper, Typography, LinearProgress } from '@material-ui/core';
 import { Mutation } from 'react-apollo';
 import SotableList from '../Components/SortableList';
 import { UPDATE_WISH } from '../graphql/mutation';
-import { send_success } from '../redux/actions';
+import { send_success, update_wishes } from '../redux/actions';
 
 const mapStateToProps = state => ({
   getSelected: name =>
@@ -12,11 +12,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendSuccess: data => dispatch(send_success(data))
+  sendSuccess: data => dispatch(send_success(data)),
+  updateWish: data => dispatch(update_wishes(data))
 });
 
 const Course = props => {
-  const { match, courses, name, sendSuccess } = props;
+  const { match, courses, name, sendSuccess, updateWish } = props;
   //need to add a dummy list item to default not selecting any course
   let selected = [],
     notSelected = [];
@@ -47,8 +48,9 @@ const Course = props => {
         <Mutation
           mutation={UPDATE_WISH}
           onCompleted={data =>
-            data.updateWish.course_name &&
-            sendSuccess(`已更新「${data.updateWish.course_name}」的志願序`)
+            data.wish.name &&
+            sendSuccess(`已更新「${data.wish.name}」的志願序`) &&
+            updateWish(data.wish)
           }
         >
           {(updateWish, result) => {

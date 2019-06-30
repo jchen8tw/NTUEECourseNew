@@ -2,6 +2,7 @@ import {
   STORE_JWT,
   GET_COURSE_INFO,
   GET_WISHES,
+  UPDATE_WISHES,
   LOGOUT,
   TAB_CHANGE,
   SEND_SUCCESS
@@ -17,6 +18,10 @@ export function get_course_info(payload) {
 
 export function get_wishes(payload) {
   return { type: GET_WISHES, payload };
+}
+
+export function update_wishes(payload) {
+  return { type: UPDATE_WISHES, payload };
 }
 
 export function logout(payload) {

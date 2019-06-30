@@ -2,6 +2,7 @@ import {
   STORE_JWT,
   GET_COURSE_INFO,
   GET_WISHES,
+  UPDATE_WISHES,
   LOGOUT,
   TAB_CHANGE,
   SEND_SUCCESS
@@ -33,6 +34,17 @@ function rootReducer(state = initialState, action) {
         return grade === group.grade;
       });
       return { ...state, wishes: action.payload, unselected };
+    case UPDATE_WISHES:
+      let ind = state.wishes.findIndex(
+        wish => wish.course_name === action.payload.course_name
+      );
+      let newWishes = state.wishes;
+      if (ind !== -1)
+        if (!action.payload.priority || action.payload.priority.length === 0)
+          newWishes.splice(ind, 1);
+        // Remove from wishes
+        else newWishes[ind].priority = action.payload.priority; // Replace priority
+      return { ...state, wishes: newWishes };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
     case LOGOUT:
