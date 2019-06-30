@@ -53,3 +53,23 @@ export const NICKNAME_QUERY = gql`
     }
   }
 `;
+
+export const WISHES_AND_COURSE_QUERY = gql`
+  query {
+    allCourseGroups {
+      _id
+      name
+      grade
+      courses {
+        _id
+        teacher
+      }
+    }
+    allWishes {
+      _id
+      student_ids
+      name: course_name
+      priority
+    }
+  }
+`;

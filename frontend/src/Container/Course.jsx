@@ -1,18 +1,34 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Paper, Typography, LinearProgress } from '@material-ui/core';
+import { Mutation } from 'react-apollo';
 import SotableList from '../Components/SortableList';
-/*
-let data = [
-  { id: '1', text: '林茂昭' },
-  { id: '2', text: '蘇柏青' },
-  { id: '3', text: '李宏毅' },
-  { id: '4', text: '劉志文' }
-];
-*/
-export default (props) => {
-  //console.log(props);
-  const { match ,teachers} = props
-  let data = teachers.map((teacher,id) => ({id: id,text: teacher.teacher}));
+import { UPDATE_WISH } from '../graphql/mutation';
+import { send_success, update_wishes } from '../redux/actions';
+
+const mapStateToProps = state => ({
+  getSelected: name =>
+    (state.wishes && state.wishes.find(i => i.name === name)) || []
+});
+
+const mapDispatchToProps = dispatch => ({
+  sendSuccess: data => dispatch(send_success(data)),
+  updateWish: data => dispatch(update_wishes(data))
+});
+
+const Course = props => {
+  const { match, courses, name, sendSuccess, updateWish } = props;
+  //need to add a dummy list item to default not selecting any course
+  let selected = [],
+    notSelected = [];
+  let priority = props.getSelected(name).priority;
+  courses.forEach(course => {
+    let res = { id: course._id, text: course.teacher };
+    if (priority && priority.indexOf(course.teacher) !== -1)
+      // in wishes, i.e. selected
+      selected.push(res);
+    else notSelected.push(res);
+  });
   return (
     <>
       <Typography
@@ -21,7 +37,37 @@ export default (props) => {
       >
         {match.path.split('/').pop()}
       </Typography>
-      <SotableList data={data} />
+      <Paper
+        square
+        style={{
+          margin: 'auto',
+          minWidth: '80%',
+          display: 'table'
+        }}
+      >
+        <Mutation
+          mutation={UPDATE_WISH}
+          onCompleted={data =>
+            data.wish.name &&
+            sendSuccess(`已更新「${data.wish.name}」的志願序`) &&
+            updateWish(data.wish)
+          }
+        >
+          {(updateWish, result) => {
+            if (result.loading) return <LinearProgress color="secondary" />;
+            else if (result.error) return <p>{result.error.message}</p>;
+            else
+              return (
+                <SotableList {...{ selected, notSelected, name, updateWish }} />
+              );
+          }}
+        </Mutation>
+      </Paper>
     </>
   );
 };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Course);

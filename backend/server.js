@@ -10,6 +10,7 @@ const port = process.env.PORT || 8000;
 const saltRounds = 10;
 const secret = 'TODO: replace this with better secret';
 
+mongoose.set('useFindAndModify', false);
 mongoose.connect('mongodb://test:debug1@ds231207.mlab.com:31207/course_test', {
   useNewUrlParser: true,
   useCreateIndex: true // Avoid node DeprecationWarning

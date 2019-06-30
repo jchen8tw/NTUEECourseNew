@@ -11,19 +11,32 @@ const mapStateToProps = state => {
 };
 
 function CourseCategory(props) {
-  const courseGroup = props.courses.filter(course => course.grade === props.grade);
+  const courseGroup = props.courses.filter(
+    course => course.grade === props.grade
+  );
   const courseByGrade = courseGroup.map(course => ({
     ...course,
     image:
-      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg',
-    year: '108-1'
+      'http://global.oup.com/us/companion.websites/fdscontent/uscompanion/us/images/9780199339136/cover.jpg'
   }));
-  const allUrl = courseGroup.map(course => `${props.match.path}/${course.name.replace(/\(/g,'').replace(/\)/g,'')}`);
+  const allUrl = courseGroup.map(
+    course => `${props.match.path}/${course.name.replace(/[()]/g, '')}`
+  );
   if (!props.match.isExact)
     return (
       <React.Fragment>
-        {allUrl.map((url,id) => (
-          <Route key={url} path={url} component={props => <Course {...props} teachers={courseGroup[id].courses}/>} />
+        {allUrl.map((url, id) => (
+          <Route
+            key={url}
+            path={url}
+            component={props => (
+              <Course
+                {...props}
+                courses={courseGroup[id].courses}
+                name={courseGroup[id].name}
+              />
+            )}
+          />
         ))}
       </React.Fragment>
     );

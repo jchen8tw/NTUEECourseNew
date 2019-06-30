@@ -19,6 +19,7 @@ export const SUBMIT_COURSE_MUTATION = gql`
     message: submitCourse(data: { content: $content })
   }
 `;
+
 export const CREATE_COMMENT_MUTATION = gql`
   mutation(
     $semester: String!
@@ -60,5 +61,15 @@ export const CHANGE_NICKNAME = gql`
 export const CHANGE_PASSWORD = gql`
   mutation($password: String!) {
     success: changePassword(password: $password)
+  }
+`;
+
+export const UPDATE_WISH = gql`
+  mutation($course_name: String!, $priority: [String!]!) {
+    wish: updateWish(data: { course_name: $course_name, priority: $priority }) {
+      _id
+      name: course_name
+      priority
+    }
   }
 `;

@@ -10,9 +10,15 @@ import {
   Paper,
   Typography
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { send_success } from '../redux/actions';
 import { withStyles } from '@material-ui/core/styles';
 import { Mutation } from 'react-apollo';
 import { CHANGE_NICKNAME, CHANGE_PASSWORD } from '../graphql/mutation';
+
+const mapDispatchToProps = dispatch => ({
+  sendSuccess: data => dispatch(send_success(data))
+});
 
 const style = theme => ({
   formPaper: {
@@ -35,7 +41,7 @@ const style = theme => ({
   }
 });
 
-const ProfileEditor = ({ classes }) => {
+const ProfileEditor = ({ classes, sendSuccess }) => {
   const [nickname, setNickname] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordConfirm, setPasswordConfirm] = React.useState('');
@@ -46,7 +52,10 @@ const ProfileEditor = ({ classes }) => {
       </Typography>
       <Grid container spacing={24} style={{ marginTop: '2rem' }}>
         <Grid item md={6} xs={12}>
-          <Mutation mutation={CHANGE_NICKNAME}>
+          <Mutation
+            mutation={CHANGE_NICKNAME}
+            onCompleted={data => data.success && sendSuccess('成功更改暱稱')}
+          >
             {(changeNickname, _) => (
               <Paper
                 component="form"
@@ -75,7 +84,10 @@ const ProfileEditor = ({ classes }) => {
           </Mutation>
         </Grid>
         <Grid item md={6} xs={12}>
-          <Mutation mutation={CHANGE_PASSWORD}>
+          <Mutation
+            mutation={CHANGE_PASSWORD}
+            onCompleted={data => data.success && sendSuccess('成功更改密碼')}
+          >
             {(changePassword, _) => (
               <Paper
                 component="form"
@@ -137,4 +149,8 @@ const ProfileEditor = ({ classes }) => {
   );
 };
 
-export default withStyles(style)(ProfileEditor);
+const connectedProfileEditor = connect(
+  undefined,
+  mapDispatchToProps
+)(ProfileEditor);
+export default withStyles(style)(connectedProfileEditor);
