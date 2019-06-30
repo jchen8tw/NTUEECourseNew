@@ -74,23 +74,40 @@ function wish_db2backend(before,class_info){
     return [after, group_info];
 }
 function class_info_db2backend(before){
-    
+    let after = {}
+    before.forEach((course_comment)=>{
+        // not in -> initialization
+        if (!(course_comment['name'] in after))
+            after[course_comment['name']] = []
+        after[course_comment['name']].push(
+            {
+                name: course_comment['teacher'],
+                max: course_comment['limit'],
+                group: course_comment['type'] == '十選二' ? true : false;
+
+            }
+        );
+    });
+    /*
+        Under Contruction !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
+    return after;
 }
 /*
-  type Course {
-    _id: ID!
-    name: String!
-    limit: Int!
-    group: CourseGroup
-    teacher: String!
-  }
+    const CourseCommentSchema = new mongoose.Schema({
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+        semester: { type: String, required: true },
+        type: { type: String, required: true }, //必修、選修、十選二
+        name: { type: String, required: true },
+        domain: { type: String }, //CS、光電...
+        teacher: { type: String, required: true },
+        studyTogether: { type: String },
+        studyBefore: { type: String },
+        content: [{ type: String }],
+        score: Number,
+        author: String
+    });
 
-    type CourseGroup {
-        _id: ID!
-        courses: [Course!]!
-        name: String!
-        grade: Int!
-    }
 
   class_info:{
         第一門課：［{name: --, max: --, group: true/false} ］,
