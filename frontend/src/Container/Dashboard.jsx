@@ -41,6 +41,7 @@ function Dashboard(props) {
           props.getCourse(data.allCourseGroups) &&
           props.getWishes(data.allWishes)
         }
+        fetchPolicy="no-cache"
       >
         {({ loading, error }) => {
           if (loading) {
