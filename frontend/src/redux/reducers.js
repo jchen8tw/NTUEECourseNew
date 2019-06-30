@@ -36,7 +36,7 @@ function rootReducer(state = initialState, action) {
       return { ...state, wishes: action.payload, unselected };
     case UPDATE_WISHES:
       let ind = state.wishes.findIndex(
-        wish => wish.course_name === action.payload.course_name
+        wish => wish.name === action.payload.name
       );
       let newWishes = state.wishes;
       if (ind !== -1) {
@@ -44,7 +44,12 @@ function rootReducer(state = initialState, action) {
           newWishes.splice(ind, 1);
         // Remove from wishes
         else newWishes[ind].priority = action.payload.priority; // Replace priority
-      } else newWishes.push(action.payload); // not in wishes, append to wishes
+      } else {
+        action.payload.grade = state.courses.find(
+          course => course.name === action.payload.name
+        ).grade; // Get and save the grade of newly appended wish
+        newWishes.push(action.payload); // not in wishes, append to wishes
+      }
       return { ...state, wishes: newWishes };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
