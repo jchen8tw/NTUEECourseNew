@@ -45,8 +45,8 @@ class CommentPage extends Component {
     const { id } = this.props.match.params;
     const { classes } = this.props;
     return (
-      <Query query={CONTENT_QUERY} variables={{ id }}>
-        {({ loading, error, data }) => {
+      <Query query={CONTENT_QUERY} variables={{ id }} fetchPolicy="no-cache">
+        {({ loading, error, data, refetch }) => {
           if (loading) return <CircularProgress color="secondary" />;
           if (error) return `Error! ${error.message}`;
           let mainComment = data.getComment.content;
@@ -83,19 +83,20 @@ class CommentPage extends Component {
                   <p style={{ whiteSpace: 'pre-line' }}>{response.content}</p>
                 </Paper>
               ))}
-
-              <Mutation mutation={RESPONSE_MUTATION}>
+              <Mutation mutation={RESPONSE_MUTATION} onCompleted={refetch}>
                 {(submit, { returnData }) => {
                   return (
                     <form
                       onSubmit={e => {
                         e.preventDefault();
+                        let temp = this.state.content;
+                        this.setState({ content: '' });
                         submit({
                           variables: {
                             author: JSON.parse(
                               atob(this.props.token.split('.')[1])
                             ).id,
-                            content: this.state.content,
+                            content: temp,
                             comment_id: data.getComment._id
                           }
                         });
@@ -116,6 +117,14 @@ class CommentPage extends Component {
                           variant="outlined"
                         />
                         <div className={style.buttonContainer}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            className={classes.button}
+                            onClick={e => e.preventDefault() && refetch()}
+                          >
+                            重新整理
+                          </Button>
                           <Button
                             variant="outlined"
                             color="primary"
