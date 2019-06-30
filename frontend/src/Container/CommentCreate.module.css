@@ -26,6 +26,8 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: nowrap;
+    align-items: center;
+    padding: 10px 0 0 30px!important;
 }
 
 

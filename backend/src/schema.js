@@ -9,6 +9,7 @@ const schema = gql`
     allTeacher: [Course!]!
     getCommentList(type: String!, filter: CommentFilterInput): [Comment]
     getComment(_id: String): Comment
+    getAuthor: Student
     allWishes: [Wish!] # Only gets wishes associated to token
   }
 
@@ -17,7 +18,8 @@ const schema = gql`
     login(data: LoginInput!): Token
     submitStudent(data: AdminInput!): String!
     submitCourse(data: AdminInput!): String!
-    createComment(data: CommentInput!): Comment
+    createComment(data: CommentInput!): String
+    createResponse(data: ResponseInput!): String
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
     updateWish(data: WishUpdateInput!): Wish! # Normal course without teammate
@@ -41,21 +43,26 @@ const schema = gql`
     teacher: String!
     studyTogether: String
     studyBefore: String
-    content: [String]!
-    score: Int
+    content: String!
+    score: Float
     author: String
   }
 
   input CommentFilterInput {
     name: String
     teacher: String
+    comment_id: String
   }
 
   input WishUpdateInput {
     course_name: String!
     priority: [String!]!
   }
-
+  input ResponseInput {
+    author: String
+    content: String
+    comment_id: String
+  }
   type Student {
     _id: ID!
     id: String!
@@ -87,11 +94,15 @@ const schema = gql`
     teacher: String!
     studyTogether: String
     studyBefore: String
-    content: [String]!
-    score: Int
+    content: String!
+    score: Float
     author: String
+    responses: [Response]
   }
-
+  type Response {
+    author: String
+    content: String
+  }
   type Wish {
     _id: ID!
     student_ids: [String!]
