@@ -10,32 +10,20 @@
         第一門課：［志願序］
         第二門課：［志願序］
     ｝}
+    group_info:
+        ｛
+            第一門課: [[學生1,學生2,學生3]]
+            第二門課: [[學生1,學生2,學生3]]
+        ｝
 */
-const test = require('./test_generator');
-
-function wish_db2backend(before){
-    after = {};
-    before.forEach(wish => {
-        if (!(wish['student_ids'] in after))
-            after[wish['student_ids']] = {};
-        after[wish['student_ids']][wish['course_name']] = wish['priority'];
-    });
-    return after;
-}
-function wish_backend2db(before){
-    after = [];
-    for(let student_id in before){
-        for(let class_name in before[student_id]){
-            after.push({
-                student_ids: student_id,
-                course_name: class_name,
-                priority: before[student_id][class_name]
-            });
-        }
-    }
-    return after;
-}
-
+let test_wish = [
+    {student_ids:['b03902001'],course_name:'class 1', priority:['T1-1','T1-3','T1-2']},
+    {student_ids:['b03902001'],course_name:'class 3-group', priority:['T3-1']},
+    {student_ids:['b03902002','b03902003'],course_name:'class 3-group', priority:['T3-1']},
+    {student_ids:['b03902004','b03902005','b03902006'],course_name:'class 3-group', priority:['T3-1']},
+    {student_ids:['b03902007','b03902008'],course_name:'class 3-group', priority:['T3-1']},
+    {student_ids:['b03902009'],course_name:'class 3-group', priority:['T3-1']},
+];
 let class_info = {
     "class 1":
         [ 
@@ -56,6 +44,38 @@ let class_info = {
             {teacher_name : 'T3-3', max: 110, group: true},
         ]
 };
+const test = require('./test_generator');
+
+function wish_db2backend(before,class_info){
+    let after = {};
+    let group_info = {}
+    before.forEach(wish => {
+        wish['student_ids'].forEach((student_id) => {
+            if (!(student_id in after))
+                after[student_id] = {};
+        });
+        
+        if(class_info[wish['course_name']][0]['group']){        
+            // if is group class
+            if(!(wish['course_name'] in group_info))
+                group_info[wish['course_name']] = [];
+            
+            wish['student_ids'].forEach((student_id) => {
+                after[student_id][wish['course_name']] = wish['priority'];
+
+            });
+            group_info[wish['course_name']].push(wish['student_ids']);
+
+        }else{
+            // normal class
+            after[wish['student_ids'][0]][wish['course_name']] = wish['priority'];
+        }
+    });
+    return [after, group_info];
+}
+function class_info_db2backend(before){
+    
+}
 /*
   type Course {
     _id: ID!
@@ -77,12 +97,11 @@ let class_info = {
     }
 */
 
-let [wish, group_info] = test.random_testcase3(class_info);
-console.log(wish);
-let db_wishs = wish_backend2db(wish);
-// console.log(db_wishs);
-let rev_wishs = wish_db2backend(db_wishs);
+let [wishs , group_info] = wish_db2backend(test_wish,class_info);
 console.log("===");
-console.log(rev_wishs);
+console.log(wishs);
+
+console.log("===");
+console.log(group_info);
 
 // 
