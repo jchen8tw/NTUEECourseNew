@@ -67,6 +67,7 @@ export const CHANGE_PASSWORD = gql`
 export const UPDATE_WISH = gql`
   mutation($course_name: String!, $priority: [String!]!) {
     wish: updateWish(data: { course_name: $course_name, priority: $priority }) {
+      _id
       name: course_name
       priority
     }

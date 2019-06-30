@@ -39,11 +39,12 @@ function rootReducer(state = initialState, action) {
         wish => wish.course_name === action.payload.course_name
       );
       let newWishes = state.wishes;
-      if (ind !== -1)
+      if (ind !== -1) {
         if (!action.payload.priority || action.payload.priority.length === 0)
           newWishes.splice(ind, 1);
         // Remove from wishes
         else newWishes[ind].priority = action.payload.priority; // Replace priority
+      } else newWishes.push(action.payload); // not in wishes, append to wishes
       return { ...state, wishes: newWishes };
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };

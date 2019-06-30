@@ -20,7 +20,7 @@ const schema = gql`
     createComment(data: CommentInput!): Comment
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
-    updateWish(data: WishUpdateInput!): Wish # Normal course without teammate
+    updateWish(data: WishUpdateInput!): Wish! # Normal course without teammate
   }
 
   input LoginInput {
