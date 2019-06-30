@@ -20,11 +20,23 @@ function generate_course() {
   let course_info = {};
   for (let class_name = 1; class_name <= 12; class_name += 1) {
     let tmp_teachers = [];
+    let this_group_class_pushed = false;
     for (let teachers_name = 1; teachers_name <= 4; teachers_name += 1) {
-      tmp_teachers.push({
-        teacher_name: 'T' + String(class_name) + '-' + String(teachers_name),
-        max: Math.floor(Math.random() * 100)
-      });
+      if (class_name % 4 != 0) {
+        tmp_teachers.push({
+          teacher_name: 'T' + String(class_name) + '-' + String(teachers_name),
+          max: Math.floor(Math.random() * 100)
+        });
+      } else {
+        if (this_group_class_pushed) continue;
+        tmp_teachers.push({
+          teacher_name: 'T' + String(class_name) + '-' + String(teachers_name),
+          max: Math.floor(Math.random() * 100) * 3,
+          group: true
+        });
+        this_group_class_pushed = true;
+      }
+
       course_info['class ' + String(class_name)] = tmp_teachers;
     }
   }
@@ -32,7 +44,79 @@ function generate_course() {
 }
 const courses_info = generate_course();
 const student_wishes = random_testcase2(courses_info);
-
+//console.log(courses_info);
+//console.log(student_wishes);
+function Grouping() {
+  function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  let group_courses = {};
+  let ind = 1;
+  for (class_name in courses_info) {
+    if (ind % 4 === 0) {
+      group_courses[class_name] = true;
+    }
+    ind++;
+  }
+  //get students wishes to select this class
+  let course_students = {};
+  for (course in group_courses) {
+    course_students[course] = [];
+  }
+  for (student in student_wishes) {
+    for (class_name in student_wishes[student]) {
+      //student did select the course and the course is a group_course
+      //console.log(student_wishes[student]);
+      if (
+        student_wishes[student][class_name].length > 0 &&
+        group_courses[class_name]
+      ) {
+        course_students[class_name] = course_students[class_name].concat(
+          student
+        );
+      }
+    }
+  }
+  //console.log(course_students);
+  //randomly shuffle and split into groups
+  for (course in course_students) {
+    course_students[course] = shuffle(course_students[course]);
+    let course_teams = [];
+    for (let i = 0; i < course_students[course].length; ) {
+      let now_group_lenth = Math.floor(Math.random() * 3) + 1;
+      if (i + now_group_lenth > course_students[course].length) {
+        now_group_lenth = course_students[course].length - i;
+      }
+      course_teams.push(course_students[course].slice(i, i + now_group_lenth).sort());
+      i += now_group_lenth;
+    }
+    course_students[course] = course_teams;
+  }
+  /**
+   * 'class 12': [
+    [ 'b04901029', 'b03901058' ],
+    [ 'b06901096' ],
+    [ 'b03901051', 'b05901009', 'b06901070' ],
+    [ 'b03901030', 'b05901099' ],
+    [ 'b04901005', 'b06901009', 'b06901052' ],
+    [ 'b05901064', 'b05901036' ],
+    [ 'b06901004', 'b03901008' ],
+    [ 'b03901092', 'b03901100' ],
+    [ 'b05901050', 'b06901067', 'b04901044' ],
+    [ 'b06901001', 'b06901073', 'b05901048' ],
+    [ 'b05901010' ]
+  ]
+   */
+  //console.log(course_students);
+  return course_students;
+}
+const course2students = Grouping();
+//console.log(course2students);
+//console.log(student_wishes);
 //generate coursegroup and courses from courses_info
 //console.log(courses_info);
 /**
@@ -116,8 +200,13 @@ const { coursegroups, courses } = to_courses();
 
 function to_Wish() {
   let Wish = [];
+  //not group_course
   for (student in student_wishes) {
+    let ind = 0;
     for (course in student_wishes[student]) {
+      ind++;
+      //skip group course
+      if (ind % 4 === 0) continue;
       Wish.push({
         _id: new mongoose.Types.ObjectId(),
         student_ids: [student],
@@ -126,10 +215,25 @@ function to_Wish() {
       });
     }
   }
+  for(course in course2students){
+    for(teams of course2students[course]){
+      //console.log(teams);
+      
+      Wish.push({
+        _id: new mongoose.Types.ObjectId(),
+        student_ids: teams,
+        course_name: course,
+        //since there's only one teacher for group_course
+        //all students in the team have same priority
+        priority: student_wishes[teams[0]][course]
+      })
+    }
+  }
   return Wish;
 }
 const wishes = to_Wish();
-console.log(wishes);
+//console.log(wishes);
+//console.log(wishes.slice(wishes.length-10,wishes.length-1));
 //console.log(coursegroups);
 //console.log(courses,coursegroups,wishes);
 async function insert_to_db() {

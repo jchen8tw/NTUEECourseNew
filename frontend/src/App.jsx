@@ -36,13 +36,18 @@ function App(props) {
               to={{ pathname: '/login', state: { notLogin: true } }}
             />
           )}
+          <Route path="/admin" component={Admin} />
+          {!!props.token && JSON.parse(atob(props.token.split('.')[1])).id === 'ADMIN' && (
+          <Redirect to="/admin" />)}
+          <Route path="/profileEditor" component={ProfileEditor} />
           <Route path="/select" render={props => <Select {...props} />} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/commentlist" component={CommentList} />
-          {/* <Route path="/commentlist/:id?" component={CommentPage} /> */}
-          <Route path="/admin" component={Admin} />
-          <Route path="/profileEditor" component={ProfileEditor} />
           <Redirect from="/" to="/login" />
+          
+          {/* <Route path="/commentlist/:id?" component={CommentPage} /> */}
+          
+          )}
         </Switch>
       </div>
       {props.successMessage && (
