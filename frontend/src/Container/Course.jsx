@@ -25,9 +25,10 @@ const Course = props => {
   let priority = props.getSelected(name).priority;
   courses.forEach(course => {
     let res = { id: course._id, text: course.teacher };
-    if (priority && priority.indexOf(course.teacher) !== -1)
+    let ind = priority.indexOf(course.teacher);
+    if (priority && ind !== -1)
       // in wishes, i.e. selected
-      selected.push(res);
+      selected[ind] = res;
     else notSelected.push(res);
   });
   return (
