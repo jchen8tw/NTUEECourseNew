@@ -12,14 +12,15 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { send_success } from '../redux/actions';
+import { send_success, send_error } from '../redux/actions';
 import { withStyles } from '@material-ui/core/styles';
 import { Query, Mutation } from 'react-apollo';
 import { CHANGE_NICKNAME, CHANGE_PASSWORD } from '../graphql/mutation';
 import { NICKNAME_QUERY } from '../graphql/query';
 
 const mapDispatchToProps = dispatch => ({
-  sendSuccess: data => dispatch(send_success(data))
+  sendSuccess: data => dispatch(send_success(data)),
+  sendError: data => dispatch(send_error(data))
 });
 
 const style = theme => ({
@@ -83,7 +84,12 @@ const nicknameList = [
   '放火'
 ];
 
-const ProfileEditor = ({ oldNickname = '', classes }) => {
+const ProfileEditor = ({
+  oldNickname = '',
+  classes,
+  sendSuccess,
+  sendError
+}) => {
   const [nickname, setNickname] = React.useState(oldNickname);
   const [password, setPassword] = React.useState('');
   const [passwordConfirm, setPasswordConfirm] = React.useState('');
@@ -119,9 +125,9 @@ const ProfileEditor = ({ oldNickname = '', classes }) => {
                   placeholder="請輸入暱稱(長度最多12個字)"
                   value={nickname}
                   onChange={e => {
-                    if (e.target.value.length > 12) {
-                      alert('暱稱不可超過12個字');
-                    } else setNickname(e.target.value);
+                    if (e.target.value.length > 12)
+                      sendError('暱稱不可超過12個字');
+                    else setNickname(e.target.value);
                   }}
                 />
                 <div
@@ -176,7 +182,7 @@ const ProfileEditor = ({ oldNickname = '', classes }) => {
                     value={password}
                     onChange={e => {
                       if (e.target.value.length > 50) {
-                        alert('密碼過長!不可超過50個字');
+                        sendError('密碼過長!不可超過50個字');
                       } else setPassword(e.target.value);
                     }}
                   />
@@ -187,7 +193,7 @@ const ProfileEditor = ({ oldNickname = '', classes }) => {
                     value={passwordConfirm}
                     onChange={e => {
                       if (e.target.value.length > 50) {
-                        alert('密碼過長!不可超過50個字');
+                        sendError('密碼過長!不可超過50個字');
                       } else setPasswordConfirm(e.target.value);
                     }}
                   />
@@ -225,7 +231,7 @@ const connectedProfileEditor = connect(
   mapDispatchToProps
 )(ProfileEditor);
 
-const StyledProfileEditor = withStyles(style)(ProfileEditor);
+const StyledProfileEditor = withStyles(style)(connectedProfileEditor);
 
 const ProfileEditorWithUserData = () => (
   <Query query={NICKNAME_QUERY} fetchPolicy="no-cache">

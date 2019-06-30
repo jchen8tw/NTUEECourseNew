@@ -5,7 +5,8 @@ import {
   UPDATE_WISHES,
   LOGOUT,
   TAB_CHANGE,
-  SEND_SUCCESS
+  SEND_SUCCESS,
+  SEND_ERROR
 } from './action-types';
 
 export function store_jwt(payload) {
@@ -34,4 +35,8 @@ export function handleTabChange(payload) {
 
 export function send_success(payload) {
   return { type: SEND_SUCCESS, payload };
+}
+
+export function send_error(payload) {
+  return { type: SEND_ERROR, payload };
 }
