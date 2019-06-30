@@ -21,7 +21,9 @@ const Mutation = {
       nickname: nickname,
       fullname: fullname
     });
-    return await student.save().catch(err => console.log(err.errmsg));
+    return await student
+      .save()
+      .catch(err => console.log(err.errmsg || err.message));
   },
 
   async login(_, { data }, context) {
@@ -44,7 +46,9 @@ const Mutation = {
       else {
         const token = await context.passwordProcessor.issueToken(student_id);
         student.token = token;
-        await student.save().catch(err => console.log(err.errmsg));
+        await student
+          .save()
+          .catch(err => console.log(err.errmsg || err.message));
         raw = token;
       }
       return { raw };
@@ -53,10 +57,14 @@ const Mutation = {
   },
 
   async submitCourse(_, { data }, context) {
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
-    
+
     let courseList = data.content.split(/\r\n|\r|\n/);
     let newCourses = courseList.map(item => {
       const _id = new mongoose.Types.ObjectId();
@@ -96,7 +104,11 @@ const Mutation = {
   },
 
   async submitStudent(_, { data }, context) {
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
     let studentList = data.content.split(/\r\n|\r|\n/);
@@ -183,26 +195,65 @@ const Mutation = {
     const { course_name, priority } = data;
     const student_id = context.passwordProcessor.getStudentID(context.token);
     if (!priority || priority.length === 0) {
-      // Set priority to empty array => remove from priority
+      // Set priority to empty array => remove from wishes
       let res = await Wish.findOneAndDelete({
         student_ids: student_id,
         course_name
       });
-      res = res.toObject();
-      res.priority = [];
+      if (res) {
+        res = res.toObject();
+        res.priority = [];
+      } // not found => return a dummy wish to update frontend
+      else
+        res = {
+          _id: 'dummy_id',
+          course_name,
+          priority,
+          student_ids: [student_id]
+        };
       return res;
     }
     let wish = await Wish.findOne({ student_ids: student_id, course_name });
     if (wish === null)
       wish = new Wish({ student_ids: [student_id], course_name, priority });
     else wish.priority = priority;
-    return await wish.save().catch(err => console.log(err.errmsg));
+
+    return await wish
+      .save()
+      .catch(err => console.log(err.errmsg || err.message));
   },
-  async startAdmission(_,{data},context){
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+
+  async startAdmission(_, { data }, context) {
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
-    
+  },
+
+  async updateWishWithTeammate(_, { data }, context) {
+    let { student_ids, course_name, priority } = data;
+    student_ids = student_ids.map(i => i.toUpperCase());
+    await Wish.deleteMany({
+      student_ids: { $in: student_ids },
+      course_name
+    }); // [Crucial] delete all wishes of the same course with duplicated student id
+    if (!priority || priority.length === 0) {
+      // Set priority to empty array => remove from wishes
+      // return a dummy wish to update frontend
+      return {
+        _id: 'dummy_id',
+        course_name,
+        priority,
+        student_ids: []
+      };
+    }
+    let wish = new Wish({ student_ids, course_name, priority });
+    return await wish
+      .save()
+      .catch(err => console.log(err.errmsg || err.message));
   }
 };
 

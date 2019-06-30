@@ -3,6 +3,7 @@ import {
   GET_COURSE_INFO,
   GET_WISHES,
   UPDATE_WISHES,
+  UPDATE_WISHES_WITH_TEAMMATE,
   LOGOUT,
   TAB_CHANGE,
   SEND_SUCCESS,
@@ -25,7 +26,7 @@ function rootReducer(state = initialState, action) {
     case STORE_JWT:
       localStorage.setItem('jwt', action.payload);
       return { ...state, jwt: action.payload };
-    case GET_WISHES:
+    case GET_WISHES: {
       // assume GET_COURSE_INFO is called before
       // unselected = courses of user grade - wishes
       let grade = getGrade(getStudentID(state.jwt));
@@ -36,7 +37,8 @@ function rootReducer(state = initialState, action) {
         return grade === group.grade;
       });
       return { ...state, wishes: action.payload, unselected };
-    case UPDATE_WISHES:
+    }
+    case UPDATE_WISHES: {
       let ind = state.wishes.findIndex(
         wish => wish.name === action.payload.name
       );
@@ -46,13 +48,31 @@ function rootReducer(state = initialState, action) {
           newWishes.splice(ind, 1);
         // Remove from wishes
         else newWishes[ind].priority = action.payload.priority; // Replace priority
-      } else {
+      } else if (action.payload.priority.length !== 0) {
         action.payload.grade = state.courses.find(
           course => course.name === action.payload.name
         ).grade; // Get and save the grade of newly appended wish
         newWishes.push(action.payload); // not in wishes, append to wishes
       }
       return { ...state, wishes: newWishes };
+    }
+    case UPDATE_WISHES_WITH_TEAMMATE: {
+      let ind = state.wishes.findIndex(
+        wish => wish.name === action.payload.name
+      );
+      let newWishes = state.wishes;
+      if (ind !== -1) {
+        if (!action.payload.student_ids || action.payload.student_ids === 0)
+          newWishes.splice(ind, 1);
+        else newWishes[ind].student_ids = action.payload.student_ids;
+      } else if (action.payload.student_ids.length !== 0) {
+        action.payload.grade = state.courses.find(
+          course => course.name === action.payload.name
+        ).grade;
+        newWishes.push(action.payload);
+      }
+      return { ...state, wishes: newWishes };
+    }
     case GET_COURSE_INFO:
       return { ...state, courses: action.payload };
     case LOGOUT:
