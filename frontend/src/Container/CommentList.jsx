@@ -5,7 +5,6 @@ import CommentCreate from './CommentCreate.jsx';
 import CommentManage from './CommentManage';
 import CommentModify from './CommentModify';
 import Contributors from './Contributors';
-
 import { withStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -28,6 +27,7 @@ import { connect } from 'react-redux';
 
 import { Query } from 'react-apollo';
 import { QUERY_COMMENT_LIST } from '../graphql/query';
+import classNames from 'classnames';
 
 function TabContainer(props) {
   return (
@@ -353,6 +353,7 @@ const mapDisPatchToProps = dispatch => {
 function Comment(props) {
   useEffect(() => {
     props.handleTopTabChange(2);
+    new WOW().init();
   });
   return (
     <div
@@ -365,8 +366,8 @@ function Comment(props) {
         <div className="text-center wow fadeInUp">
           <h1 className={style.headerTitle}>NTUEE 課程地圖</h1>
           <br />
-          <p className={style.headerWord}>
-            {'肥宅出得去\n學妹進得來\n電機發大財'}
+          <p className={classNames(style.headerWord, 'animated', 'slideInUp')}>
+            {'堅定支持一個電機原則\n反對任何形式的"電機"分裂活動'}
           </p>
         </div>
       </div>
