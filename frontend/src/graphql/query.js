@@ -43,6 +43,10 @@ export const CONTENT_QUERY = gql`
       content
       score
       author
+      responses {
+        author
+        content
+      }
     }
   }
 `;

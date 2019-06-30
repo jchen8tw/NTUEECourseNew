@@ -37,9 +37,10 @@ const CourseCommentSchema = new mongoose.Schema({
   teacher: { type: String, required: true },
   studyTogether: { type: String },
   studyBefore: { type: String },
-  content: [{ type: String }],
+  content: { type: String },
   score: Number,
-  author: String
+  author: String,
+  responses: [{ content: { type: String }, author: { type: String } }]
 });
 
 const WishSchema = new mongoose.Schema({

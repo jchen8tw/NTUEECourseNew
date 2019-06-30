@@ -34,8 +34,6 @@ class UserAvatar extends Component {
   }
   render() {
     const { classes } = this.props;
-    console.log(this.props);
-
     if (this.props.query)
       return (
         <Query query={NICKNAME_QUERY} fetchPolicy="network-only">
@@ -72,7 +70,6 @@ class UserAvatar extends Component {
           </h4>
         </div>
       );
-    console.log(this.props);
   }
 }
 export default withStyles(styles)(UserAvatar);

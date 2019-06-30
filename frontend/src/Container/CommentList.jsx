@@ -167,39 +167,17 @@ class CommentTitleListRaw extends Component {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell} item md={3}>
-                名稱
-              </TableCell>
-              <TableCell
-                align="right"
-                className={classes.tableCellType}
-                item
-                md={3}
-              >
+              <TableCell className={classes.tableCell}>名稱</TableCell>
+              <TableCell align="right" className={classes.tableCellType}>
                 類別
               </TableCell>
-              <TableCell
-                align="right"
-                className={classes.tableCell}
-                item
-                md={2}
-              >
+              <TableCell align="right" className={classes.tableCell}>
                 開課教授
               </TableCell>
-              <TableCell
-                align="right"
-                className={classes.tableCellScore}
-                item
-                md={1}
-              >
+              <TableCell align="right" className={classes.tableCellScore}>
                 分數
               </TableCell>
-              <TableCell
-                align="right"
-                className={classes.tableCell}
-                item
-                md={3}
-              >
+              <TableCell align="right" className={classes.tableCell}>
                 作者
               </TableCell>
             </TableRow>

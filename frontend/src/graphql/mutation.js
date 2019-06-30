@@ -28,11 +28,11 @@ export const CREATE_COMMENT_MUTATION = gql`
     $teacher: String!
     $studyTogether: String
     $studyBefore: String
-    $content: [String]!
+    $content: String!
     $score: Int
     $author: String
   ) {
-    createComment(
+    message: createComment(
       data: {
         semester: $semester
         type: $type
@@ -45,9 +45,7 @@ export const CREATE_COMMENT_MUTATION = gql`
         score: $score
         author: $author
       }
-    ) {
-      name
-    }
+    )
   }
 `;
 
@@ -60,5 +58,13 @@ export const CHANGE_NICKNAME = gql`
 export const CHANGE_PASSWORD = gql`
   mutation($password: String!) {
     success: changePassword(password: $password)
+  }
+`;
+
+export const RESPONSE_MUTATION = gql`
+  mutation($author: String, $content: String, $comment_id: String) {
+    message: createResponse(
+      data: { author: $author, content: $content, comment_id: $comment_id }
+    )
   }
 `;

@@ -1,19 +1,56 @@
 import React, { Component } from 'react';
 import style from './CommentPage.module.css';
-import { Query } from 'react-apollo';
-import { Paper, CircularProgress } from '@material-ui/core';
-import { CONTENT_QUERY } from '../graphql/query';
+import { Query, Mutation } from 'react-apollo';
+import { CONTENT_QUERY, NICKNAME_QUERY } from '../graphql/query';
+import { connect } from 'react-redux';
+import { RESPONSE_MUTATION } from '../graphql/mutation';
 import UserAvatar from '../Components/Avatar';
 
+import { withStyles } from '@material-ui/core/styles';
+import { Paper, CircularProgress, TextField, Button } from '@material-ui/core';
+const mapStateToProps = state => {
+  return { student_id: state.student_id, token: state.jwt };
+};
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  textFieldComment: {
+    maxWidth: '950px',
+    minWidth: '350px',
+    width: '90%',
+    margin: '10px 5%',
+    textAlign: 'right'
+  },
+  button: {
+    margin: theme.spacing.unit
+  }
+});
+
 class CommentPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: ''
+    };
+  }
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+  handleResponseSubmit = () => {
+    console.log(this.state.content);
+  };
   render() {
     const { id } = this.props.match.params;
+    const { classes } = this.props;
     return (
       <Query query={CONTENT_QUERY} variables={{ id }}>
         {({ loading, error, data }) => {
           if (loading) return <CircularProgress color="secondary" />;
           if (error) return `Error! ${error.message}`;
-          let [mainComment, ...responseList] = data.getComment.content;
+          let mainComment = data.getComment.content;
+          let responseList = data.getComment.responses;
           return (
             <div className={style.allRoot}>
               <Paper className={style.pageRoot}>
@@ -41,10 +78,59 @@ class CommentPage extends Component {
 
               {responseList.map((response, index) => (
                 <Paper className={style.pageRoot} key={index}>
+                  <UserAvatar author={response.author} />
                   <h3>課程評價回應 : </h3>
-                  <p style={{ whiteSpace: 'pre-line' }}>{response}</p>
+                  <p style={{ whiteSpace: 'pre-line' }}>{response.content}</p>
                 </Paper>
               ))}
+
+              <Mutation mutation={RESPONSE_MUTATION}>
+                {(submit, { returnData }) => {
+                  return (
+                    <form
+                      onSubmit={e => {
+                        e.preventDefault();
+                        submit({
+                          variables: {
+                            author: JSON.parse(
+                              atob(this.props.token.split('.')[1])
+                            ).id,
+                            content: this.state.content,
+                            comment_id: data.getComment._id
+                          }
+                        });
+                      }}
+                    >
+                      <Paper className={style.pageRootSubmit}>
+                        <UserAvatar query={true} />
+                        <TextField
+                          id="content"
+                          fullWidth={true}
+                          label="評價回應"
+                          className={classes.textFieldComment}
+                          multiline
+                          rows="10"
+                          onChange={this.handleChange('content')}
+                          margin="normal"
+                          value={this.state.content}
+                          variant="outlined"
+                        />
+                        <div className={style.buttonContainer}>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            className={classes.button}
+                            type="submit"
+                            onClick={this.handleResponseSubmit}
+                          >
+                            確認送出
+                          </Button>
+                        </div>
+                      </Paper>
+                    </form>
+                  );
+                }}
+              </Mutation>
             </div>
           );
         }}
@@ -52,4 +138,10 @@ class CommentPage extends Component {
     );
   }
 }
-export default CommentPage;
+
+const connectedCommentPage = connect(
+  mapStateToProps,
+  undefined
+)(CommentPage);
+
+export default withStyles(styles)(connectedCommentPage);

@@ -60,12 +60,27 @@ const Query = {
   async getComment(_, args, context) {
     const { _id } = args;
     let commentRaw = await CourseComment.findById({ _id }).exec();
+    commentRaw = commentRaw.toObject();
     if (commentRaw['author']) {
       let authorInfo = await Student.findOne({
         id: commentRaw.author
       }).exec();
       commentRaw['author'] = authorInfo.nickname;
     }
+    if (commentRaw['responses'].length > 0) {
+      commentRaw['responses'] = await Promise.all(
+        commentRaw['responses'].map(async response => {
+          if (response.author) {
+            let authorInfo = await Student.findOne({
+              id: response.author
+            });
+            response.author = authorInfo.nickname;
+          }
+          return response;
+        })
+      );
+    }
+
     return commentRaw;
   },
 
