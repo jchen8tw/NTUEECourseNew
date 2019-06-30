@@ -29,7 +29,7 @@ async function allocate() {
   let [wishes, group_info] = wish_db2backend(wish, class_info);
   //console.log(wishes,group_info);
   let [per_class_result,per_stu_result] = admission(wishes, class_info, group_info);
-  console.log(per_stu_result);
+  //console.log(per_stu_result);
 /*
   await stream.once('open', function(fd) {
     stream.write(JSON.stringify(per_stu_result));

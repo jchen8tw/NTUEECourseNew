@@ -258,10 +258,10 @@ function connect_to_db() {
   );
   mongoose.connection.once('open', () => {
     console.log('Successfully connected to MongoDB');
-    //insert_to_db();
+    insert_to_db();
   });
 }
-//connect_to_db();
+connect_to_db();
 //console.log(coursegroups,courses);
 
 //console.log(courses);
