@@ -26,8 +26,10 @@ class Contributors extends Component {
     return (
       <div className={style.allRoot}>
         <Paper className={style.pageRoot}>
-          <h2>課程評價網頁設計</h2> <h3>B06林泓均</h3> <h3>B06李子筠</h3>
+          <h2>課程評價網頁設計</h2> <h3>B06林泓均</h3> 
           <h3>B06陳昱行</h3>
+          <h3>B06李子筠</h3>
+          <h3>B05劉俊緯</h3>
           <h2>發行人 </h2>
           <h3>台大電機工程學系學生會</h3>
           <h2>一版 </h2>
