@@ -7,7 +7,8 @@ import { UPDATE_WISH } from '../graphql/mutation';
 import { send_success } from '../redux/actions';
 
 const mapStateToProps = state => ({
-  getSelected: name => state.wishes && state.wishes.find(i => i.name === name)
+  getSelected: name =>
+    (state.wishes && state.wishes.find(i => i.name === name)) || []
 });
 
 const mapDispatchToProps = dispatch => ({
