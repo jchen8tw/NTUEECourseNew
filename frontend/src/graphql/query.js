@@ -15,8 +15,11 @@ export const COURSE_QUERY = gql`
 `;
 
 export const QUERY_COMMENT_LIST = gql`
-  query($type: String!, $name: String, $teacher: String) {
-    getCommentList(type: $type, filter: { name: $name, teacher: $teacher }) {
+  query($type: String!, $name: String, $teacher: String, $author: String) {
+    getCommentList(
+      type: $type
+      filter: { name: $name, teacher: $teacher, author: $author }
+    ) {
       _id
       semester
       type

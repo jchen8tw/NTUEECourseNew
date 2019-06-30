@@ -19,6 +19,8 @@ const schema = gql`
     submitStudent(data: AdminInput!): String!
     submitCourse(data: AdminInput!): String!
     createComment(data: CommentInput!): String
+    modifyComment(data: CommentInput!): String
+    deleteComment(data: deleteCommentInput!): String
     createResponse(data: ResponseInput!): String
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
@@ -36,6 +38,7 @@ const schema = gql`
   }
 
   input CommentInput {
+    _id: String
     semester: String!
     type: String! #必修、選修、十選二
     name: String!
@@ -47,10 +50,13 @@ const schema = gql`
     score: Float
     author: String
   }
-
+  input deleteCommentInput {
+    _id: String!
+  }
   input CommentFilterInput {
     name: String
     teacher: String
+    author: String
     comment_id: String
   }
 

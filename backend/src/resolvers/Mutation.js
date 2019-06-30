@@ -60,21 +60,6 @@ const Mutation = {
       const id = Buffer.from(name + teacher).toString('base64'); //use base64 name+teacher to prevent duplicate import
       return { _id, id, teacher, name, limit, grade };
     });
-
-    /*
-    nameHash = {
-      CourseGroupNameA: {
-        _id: ObjectID,
-        grade: course.grade,
-        courses: [CourseObjectID]
-      },
-      CourseGroupNameB: {
-        _id: ObjectID,
-        grade: course.grade,
-        courses: [CourseObjectID]
-      }
-    }
-     */
     let nameHash = {};
     newCourses.forEach(course => {
       if (nameHash[course.name]) {
@@ -138,6 +123,23 @@ const Mutation = {
     });
     await courseComment.save().catch(err => err.errmsg);
     return '成功上傳啦';
+  },
+  async modifyComment(_, { data }, context) {
+    const { _id } = data;
+    await CourseComment.updateOne({ _id }, { $set: { ...data } }, function(
+      err,
+      raw
+    ) {
+      // console.log(raw);
+    });
+    return '已成功修改!';
+  },
+  async deleteComment(_, { data }, context) {
+    const { _id } = data;
+    await CourseComment.deleteOne({ _id }, function(err, raw) {
+      // console.log(raw);
+    });
+    return '已刪除!!!';
   },
   async createResponse(_, { data }, context) {
     const { author, content, comment_id } = data;

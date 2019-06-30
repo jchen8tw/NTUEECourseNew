@@ -49,7 +49,42 @@ export const CREATE_COMMENT_MUTATION = gql`
     )
   }
 `;
-
+export const MODIFY_COMMENT_MUTATION = gql`
+  mutation(
+    $_id: String!
+    $semester: String!
+    $type: String! #必修、選修、十選二
+    $name: String!
+    $domain: String #CS、光電...
+    $teacher: String!
+    $studyTogether: String
+    $studyBefore: String
+    $content: String!
+    $score: Float
+    $author: String
+  ) {
+    message: modifyComment(
+      data: {
+        semester: $semester
+        type: $type
+        name: $name
+        domain: $domain
+        teacher: $teacher
+        studyTogether: $studyTogether
+        studyBefore: $studyBefore
+        content: $content
+        score: $score
+        author: $author
+        _id: $_id
+      }
+    )
+  }
+`;
+export const DELETE_COMMENT_MUTATION = gql`
+  mutation($_id: String!) {
+    message: deleteComment(data: { _id: $_id })
+  }
+`;
 export const CHANGE_NICKNAME = gql`
   mutation($nickname: String!) {
     success: changeNickname(nickname: $nickname)

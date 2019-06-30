@@ -121,7 +121,10 @@ class CommentPage extends Component {
                             variant="outlined"
                             color="primary"
                             className={classes.button}
-                            onClick={e => e.preventDefault() && refetch()}
+                            onClick={e => {
+                              e.preventDefault();
+                              refetch();
+                            }}
                           >
                             重新整理
                           </Button>

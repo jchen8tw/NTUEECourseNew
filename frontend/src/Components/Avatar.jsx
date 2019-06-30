@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import deepPurple from '@material-ui/core/colors/deepPurple';
+import blue from '@material-ui/core/colors/blue';
 import Avatar from '@material-ui/core/Avatar';
 
 import { Query } from 'react-apollo';
@@ -12,6 +13,11 @@ const styles = theme => ({
     margin: 10,
     color: '#fff',
     backgroundColor: deepPurple[500]
+  },
+  blueAvater: {
+    margin: 10,
+    color: '#fff',
+    backgroundColor: blue[500]
   },
   avatar: {
     margin: 10
