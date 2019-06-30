@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { send_success } from './redux/actions';
+import { send_success, send_error } from './redux/actions';
 import { Snackbar } from '@material-ui/core';
 import SnackbarContent from './Components/SnackbarContent';
 import Login from './Container/Login';
@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
   successMessage: state.successMessage
 });
 const mapDispatchToProps = dispatch => ({
-  resetSuccess: () => dispatch(send_success(null))
+  resetSuccess: () => dispatch(send_success(null)),
+  resetError: () => dispatch(send_error(null))
 });
 
 function App(props) {
@@ -55,6 +56,20 @@ function App(props) {
             variant="success"
             message={props.successMessage}
             onClose={props.resetSuccess}
+          />
+        </Snackbar>
+      )}
+      {props.errorMessage && (
+        <Snackbar
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          open={!!props.errorMessage}
+          autoHideDuration={2200}
+          onClose={props.resetError}
+        >
+          <SnackbarContent
+            variant="error"
+            message={props.errorMessage}
+            onClose={props.resetError}
           />
         </Snackbar>
       )}

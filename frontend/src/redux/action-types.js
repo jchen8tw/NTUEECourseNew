@@ -5,3 +5,4 @@ export const UPDATE_WISHES = 'UPDATE_WISHES';
 export const LOGOUT = 'LOGOUT';
 export const TAB_CHANGE = 'TAB_CHANGE';
 export const SEND_SUCCESS = 'SEND_SUCCESS';
+export const SEND_ERROR = 'SEND_ERROR';
