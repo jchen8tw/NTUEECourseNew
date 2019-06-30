@@ -112,7 +112,7 @@ function class_info_db2backend(before){
             {
                 teacher_name: course['teacher'],
                 max: course['limit'],
-                // check if group exists.
+                // check if group exists, and all grade==4 is group class.
                 group: course['group'] && course['group']['grade'] == 4 ? true : false
             }
         );
@@ -149,7 +149,3 @@ console.log(wishs);
 
 console.log("===");
 console.log(group_info);
-
-
-
-// 
