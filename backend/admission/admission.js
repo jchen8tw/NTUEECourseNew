@@ -46,11 +46,20 @@ function admission(wish_ref,class_info,pre_group_info){
     // visited, or has been selected: {number:{class: True/False}}
     //TODO need to change hardcoded year
     for( let school_number in wish ){
+        let date = new Date();
+        let year = date.getFullYear();
+        let current_school_number = year - 2012;
         wish[school_number]["__generator__"] = 
+        parseInt(school_number.slice(1,3)) == current_school_number ? ()=>randn(0.5,0.12) :
+        parseInt(school_number.slice(1,3)) == current_school_number-1 ? ()=>randn(0.6,0.09) :
+        parseInt(school_number.slice(1,3)) == current_school_number-2 ? ()=>randn(0.7,0.085) :
+        parseInt(school_number.slice(1,3)) == current_school_number-3 ? ()=>randn(0.8,0.05) : ()=>randn(0.8,0.05);
+        /*
         school_number[2] == '3' ? ()=>randn(0.8,0.05) :
         school_number[2] == '4' ? ()=>randn(0.7,0.085) :
         school_number[2] == '5' ? ()=>randn(0.6,0.09) :
         school_number[2] == '6' ? ()=>randn(0.5,0.12) : undefined;
+        */
 
         visited[school_number] = {}
         for( let class_name in class_info){
