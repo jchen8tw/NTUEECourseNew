@@ -185,7 +185,6 @@ const Mutation = {
       res.priority = [];
       return res;
     }
-    priority.sort(); // In-place, lexicographical order sort
     let wish = await Wish.findOne({ student_ids: student_id, course_name });
     if (wish === null)
       wish = new Wish({ student_ids: [student_id], course_name, priority });
