@@ -4,6 +4,7 @@ import CommentPage from './CommentPage.jsx';
 import CommentCreate from './CommentCreate.jsx';
 import CommentManage from './CommentManage';
 import CommentModify from './CommentModify';
+import Contributors from './Contributors';
 
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -138,6 +139,7 @@ class CommentTab extends Component {
             <Tab label="專題" component={Link} to={'/commentlist'} />
             <Tab label="發表評論" component={Link} to={'/commentlist'} />
             <Tab label="文章管理" component={Link} to={'/commentlist'} />
+            <Tab label="歷代貢獻者" component={Link} to={'/commentlist'} />
           </Tabs>
         </AppBar>
         {tabIndex < tabs.length && (
@@ -168,6 +170,9 @@ class CommentTab extends Component {
               render={props => <CommentModify modify={true} {...props} />}
             />
           </TabContainer>
+        )}
+        {tabIndex === 7 && (
+          <Route exact path="/commentlist" component={Contributors} />
         )}
       </div>
     );
