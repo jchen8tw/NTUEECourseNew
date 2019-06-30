@@ -24,26 +24,54 @@ let test_wish = [
     {student_ids:['b03902007','b03902008'],course_name:'class 3-group', priority:['T3-1']},
     {student_ids:['b03902009'],course_name:'class 3-group', priority:['T3-1']},
 ];
-let class_info = {
-    "class 1":
-        [ 
-            {teacher_name : 'T1-1', max: 10},
-            {teacher_name : 'T1-2', max: 50},
-            {teacher_name : 'T1-3', max: 1000},
-        ],
-    "class 2":
-        [ 
-            {teacher_name : 'T2-1', max: 10},
-            {teacher_name : 'T2-2', max: 50},
-            {teacher_name : 'T2-3', max: 110},
-        ],
-    "class 3-group":
-        [ 
-            {teacher_name : 'T3-1', max: 20,  group: true},
-            {teacher_name : 'T3-2', max: 50,  group: true},
-            {teacher_name : 'T3-3', max: 110, group: true},
-        ]
-};
+/*
+  type Course {
+    _id: ID!
+    name: String!
+    limit: Int!
+    group: CourseGroup
+    teacher: String!
+  }
+  type CourseGroup {
+    _id: ID!
+    courses: [Course!]!
+    name: String!
+    grade: Int!
+  }
+*/
+let test_course = [
+    {name: "class 1", limit: 10, group: {grade: 3}, teacher: 'T1-1'},
+    {name: "class 1", limit: 50, group: {grade: 3}, teacher: 'T1-2'},
+    {name: "class 1", limit: 100, group: {grade: 3}, teacher: 'T1-3'},
+
+    {name: "class 2", limit: 10, group: {grade: 3}, teacher: 'T2-1'},
+    {name: "class 2", limit: 50, group: {grade: 3}, teacher: 'T2-2'},
+    {name: "class 2", limit: 110, group: {grade: 3}, teacher: 'T2-3'},
+    
+    {name: "class 3-group", limit: 20, group: {grade: 4}, teacher: 'T3-1'},
+    {name: "class 3-group", limit: 50, group: {grade: 4}, teacher: 'T3-2'},
+    {name: "class 3-group", limit: 110, group: {grade: 4}, teacher: 'T3-3'},
+];
+//  expect : {
+//     "class 1":
+//         [ 
+//             {teacher_name : 'T1-1', max: 10},
+//             {teacher_name : 'T1-2', max: 50},
+//             {teacher_name : 'T1-3', max: 1000},
+//         ],
+//     "class 2":
+//         [ 
+//             {teacher_name : 'T2-1', max: 10},
+//             {teacher_name : 'T2-2', max: 50},
+//             {teacher_name : 'T2-3', max: 110},
+//         ],
+//     "class 3-group":
+//         [ 
+//             {teacher_name : 'T3-1', max: 20,  group: true},
+//             {teacher_name : 'T3-2', max: 50,  group: true},
+//             {teacher_name : 'T3-3', max: 110, group: true},
+//         ]
+// };
 const test = require('./test_generator');
 
 function wish_db2backend(before,class_info){
@@ -54,7 +82,6 @@ function wish_db2backend(before,class_info){
             if (!(student_id in after))
                 after[student_id] = {};
         });
-        
         if(class_info[wish['course_name']][0]['group']){        
             // if is group class
             if(!(wish['course_name'] in group_info))
@@ -75,22 +102,21 @@ function wish_db2backend(before,class_info){
 }
 function class_info_db2backend(before){
     let after = {}
-    before.forEach((course_comment)=>{
-        // not in -> initialization
-        if (!(course_comment['name'] in after))
-            after[course_comment['name']] = []
-        after[course_comment['name']].push(
-            {
-                name: course_comment['teacher'],
-                max: course_comment['limit'],
-                group: course_comment['type'] == '十選二' ? true : false;
+    before.forEach((course)=>{
+    // course format :{name: "class 1", limit: 50, group: {grade: 3}, teacher: 'T1-2'},
 
+        // not in -> initialization
+        if (!(course['name'] in after))
+            after[course['name']] = []
+        after[course['name']].push(
+            {
+                teacher_name: course['teacher'],
+                max: course['limit'],
+                // check if group exists.
+                group: course['group'] && course['group']['grade'] == 4 ? true : false
             }
         );
     });
-    /*
-        Under Contruction !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
     return after;
 }
 /*
@@ -113,6 +139,9 @@ function class_info_db2backend(before){
         第一門課：［{name: --, max: --, group: true/false} ］,
     }
 */
+let class_info = class_info_db2backend(test_course);
+console.log("===");
+console.log(class_info);
 
 let [wishs , group_info] = wish_db2backend(test_wish,class_info);
 console.log("===");
@@ -120,5 +149,7 @@ console.log(wishs);
 
 console.log("===");
 console.log(group_info);
+
+
 
 // 
