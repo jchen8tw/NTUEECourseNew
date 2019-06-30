@@ -114,3 +114,11 @@ export const RESPONSE_MUTATION = gql`
     )
   }
 `;
+
+export const STARTADMISSION_MUTATION = gql`
+  mutation{
+    file: startAdmission{
+      raw
+    } 
+  }
+`;

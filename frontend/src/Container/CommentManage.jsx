@@ -20,7 +20,7 @@ import {
   Button
 } from '@material-ui/core';
 import { Route, Link } from 'react-router-dom';
-import { handleTabChange } from '../redux/actions';
+import { handleTabChange,send_success } from '../redux/actions';
 import { Query } from 'react-apollo';
 import { QUERY_COMMENT_LIST } from '../graphql/query';
 const mapStateToProps = state => {

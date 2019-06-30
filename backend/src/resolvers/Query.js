@@ -89,12 +89,6 @@ const Query = {
   async allWishes(_, __, context) {
     const student_id = context.passwordProcessor.getStudentID(context.token);
     return await Wish.find({ student_ids: student_id }).exec();
-  },
-  async startAdmission(_,_,context){
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
-      throw new Error('invalid token');
-    }
-    
   }
 };
 

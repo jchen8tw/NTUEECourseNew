@@ -197,6 +197,12 @@ const Mutation = {
       wish = new Wish({ student_ids: [student_id], course_name, priority });
     else wish.priority = priority;
     return await wish.save().catch(err => console.log(err.errmsg));
+  },
+  async startAdmission(_,{data},context){
+    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+      throw new Error('invalid token');
+    }
+    
   }
 };
 
