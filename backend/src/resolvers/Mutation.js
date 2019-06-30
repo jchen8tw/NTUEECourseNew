@@ -7,6 +7,8 @@ const {
 } = require('../model.js');
 const mongoose = require('mongoose');
 const Buffer = require('buffer').Buffer;
+const { admission } = require('../../admission/admission');
+const { class_info_db2backend, wish_db2backend } = require('../../admission/converter');
 
 const Mutation = {
   async createStudent(_, { data }, context) {
@@ -53,10 +55,14 @@ const Mutation = {
   },
 
   async submitCourse(_, { data }, context) {
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
-    
+
     let courseList = data.content.split(/\r\n|\r|\n/);
     let newCourses = courseList.map(item => {
       const _id = new mongoose.Types.ObjectId();
@@ -96,7 +102,11 @@ const Mutation = {
   },
 
   async submitStudent(_, { data }, context) {
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
     let studentList = data.content.split(/\r\n|\r|\n/);
@@ -198,14 +208,35 @@ const Mutation = {
     else wish.priority = priority;
     return await wish.save().catch(err => console.log(err.errmsg));
   },
-  /*
-  async startAdmission(_,{data},context){
-    if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
+
+  async startAdmission(_, { data }, context) {
+    /*
+    if (
+      !context.passwordProcessor.isValid(context.token) &&
+      JSON.parse(Buffer.from(context.token.split('.')[1], 'base64').toString())
+        .id != 'Admin'
+    ) {
       throw new Error('invalid token');
     }
-    
+    */
+    let course = await Course.find({})
+      .populate('group')
+      .exec()
+      .catch(err => new Error(err));
+    let wish = await Wish.find({}).catch(err => new Error(err));
+    //console.log(course);
+    let class_info = class_info_db2backend(course);
+    //console.log(class_info);
+    let [wishes, group_info] = wish_db2backend(wish, class_info);
+    //console.log(wishes,group_info);
+    let [per_class_result, per_stu_result] = admission(
+      wishes,
+      class_info,
+      group_info
+    );
+    //console.log(per_stu_result);
+    return { raw: JSON.stringify(per_stu_result)};
   }
-  */
 };
 
 module.exports = { Mutation };

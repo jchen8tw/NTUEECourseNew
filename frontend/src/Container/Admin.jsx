@@ -217,8 +217,8 @@ const Admin = ({ classes }) => {
             <Typography variant="h4" component="h1" className={classes.title}>
               開始選課
             </Typography>
-            <Mutation mutation={STARTADMISSION_MUTATION}>
-              {(login, { data, loading }) => {
+            <Mutation mutation={STARTADMISSION_MUTATION} onCompleted={data=>fileDownload(data.file.raw,'result.json')}>
+              {(admission, { data, loading }) => {
                 return (
                   <Button
                     variant="contained"
@@ -226,7 +226,7 @@ const Admin = ({ classes }) => {
                     color="secondary"
                     className={classes.button}
                     disabled={loading}
-                    onClick={data => fileDownload(data, 'result.csv')}
+                    onClick={()=>admission()}
                   >
                     開始選課啦 GOGOGO
                   </Button>

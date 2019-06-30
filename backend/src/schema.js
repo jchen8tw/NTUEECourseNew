@@ -25,7 +25,7 @@ const schema = gql`
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
     updateWish(data: WishUpdateInput!): Wish! # Normal course without teammate
-    startAdmission():String!
+    startAdmission:Admission_Result!
   }
 
   input LoginInput {
@@ -118,6 +118,9 @@ const schema = gql`
   }
 
   type Token {
+    raw: String!
+  }
+  type Admission_Result{
     raw: String!
   }
 `;
