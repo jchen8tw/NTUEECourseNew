@@ -57,7 +57,7 @@ const Course = props => {
         >
           {(updateWish, result) => {
             if (result.loading) return <LinearProgress color="secondary" />;
-            else if (result.error) return <p>{result.error.message}</p>;
+            else if (result.error) return null;
             else
               return (
                 <SotableList {...{ selected, notSelected, name, updateWish }} />

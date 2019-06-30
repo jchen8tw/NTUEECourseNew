@@ -1,42 +1,48 @@
 #header {
-  color: white;
-  background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
-  background-size: cover;
-  height: 60%;
-  width: 100%;
-  padding: 0;
-  display: table;
-  white-space: pre-line;
+    color: white;
+    background-image: url(../assets/img/EE-comp-BEng-ind.jpg);
+    background-size: cover;
+    height: 60%;
+    width: 100%;
+    padding: 0;
+    display: table;
+    white-space: pre-line;
 }
 
-#header > div {
-  display: table-cell;
-  vertical-align: middle;
+#header>div {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .headerTitle {
-  font-size: 70px;
-  /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
-  text-shadow: 0 0 0.2em #87f, 0 0 0.2em #87f, 0 0 0.2em #87f;
+    font-size: 70px;
+    /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
+    text-shadow: 0 0 0.2em #87f, 0 0 0.2em #87f, 0 0 0.2em #87f;
 }
 
 .headerWord {
-  font-size: 35px;
-  color: white;
-  text-shadow: black 0.1em 0.1em 0.2em;
-  letter-spacing: 10px;
+    font-size: 35px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    letter-spacing: 10px;
+    /* -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: slideInUp;
+    animation-name: slideInUp; */
 }
 
 .flexContainer {
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .loadingStyle {
-  font-size: 15px;
-  min-height: 70px;
-  display: block;
+    font-size: 15px;
+    min-height: 70px;
+    display: block;
 }

@@ -26,14 +26,16 @@
     "react-scripts": "2.1.8",
     "react-smooth-dnd": "^0.11.0",
     "redux": "^4.0.1",
-    "url-loader": "^2.0.1"
+    "url-loader": "^2.0.1",
+    "wow.js": "^1.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "webpack-dev-server --open"
+    "dev": "webpack-dev-server --open",
+    "watch": "./node_modules/.bin/webpack --mode development --watch"
   },
   "eslintConfig": {
     "extends": "react-app"

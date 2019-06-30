@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const PasswordProcessor = require('./src/PasswordProcessor.js');
 const resolvers = require('./src/resolver.js');
 const typeDefs = require('./src/schema.js');
+const path = require('path');
 const { Student } = require('./src/model.js');
 
 const port = process.env.PORT || 8000;

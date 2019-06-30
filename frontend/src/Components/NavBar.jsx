@@ -61,7 +61,7 @@ class NavBar extends React.Component {
               onChange={handleTabChange}
               scrollButtons="auto"
             >
-              <EnlargedTab label="Home" component={Link} to="/dashboard" />
+              <EnlargedTab label="首頁" component={Link} to="/dashboard" />
               <EnlargedTab label="選課" component={Link} to="/select" />
               <EnlargedTab label="評價" component={Link} to="/commentlist" />
 

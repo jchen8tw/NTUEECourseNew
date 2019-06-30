@@ -80,8 +80,11 @@ const nicknameList = [
   '出哥',
   '葛格',
   '聖結石',
-  '小玉',
-  '放火'
+  '顏值擔當',
+  '系邊',
+  '系核',
+  '卷哥',
+  '卷姐'
 ];
 
 const ProfileEditor = ({
