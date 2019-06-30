@@ -31,7 +31,7 @@ function random_testcase2(class_info){
     test_data = {}
     for(let year=3; year<=6; year++){
         for(let number=1; number<=100; number++){
-            let school_number = "b0" + year + "901" + String(number).padStart(3,"0");
+            let school_number = "B0" + year + "901" + String(number).padStart(3,"0");
             test_data[school_number] = {};
             for(let key in class_info){
                 if(Math.random() > 0.1){

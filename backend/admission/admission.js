@@ -44,6 +44,7 @@ function admission(wish_ref,class_info,pre_group_info){
     // get each student's random generator.
     let visited = {}
     // visited, or has been selected: {number:{class: True/False}}
+    //TODO need to change hardcoded year
     for( let school_number in wish ){
         wish[school_number]["__generator__"] = 
         school_number[2] == '3' ? ()=>randn(0.8,0.05) :

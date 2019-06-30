@@ -198,12 +198,14 @@ const Mutation = {
     else wish.priority = priority;
     return await wish.save().catch(err => console.log(err.errmsg));
   },
+  /*
   async startAdmission(_,{data},context){
     if (!context.passwordProcessor.isValid(context.token) && JSON.parse(Buffer.from(context.token.split('.')[1],'base64').toString()).id != 'Admin'){
       throw new Error('invalid token');
     }
     
   }
+  */
 };
 
 module.exports = { Mutation };

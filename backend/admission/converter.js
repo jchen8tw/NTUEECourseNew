@@ -139,6 +139,7 @@ function class_info_db2backend(before){
         第一門課：［{name: --, max: --, group: true/false} ］,
     }
 */
+/*
 let class_info = class_info_db2backend(test_course);
 console.log("===");
 console.log(class_info);
@@ -149,7 +150,9 @@ console.log(wishs);
 
 console.log("===");
 console.log(group_info);
-
+*/
+exports.class_info_db2backend = class_info_db2backend;
+exports.wish_db2backend = wish_db2backend;
 
 
 // 
