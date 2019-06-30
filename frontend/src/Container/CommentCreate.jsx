@@ -117,7 +117,7 @@ class CommentCreate extends Component {
                   teacher: this.getValue('teacher'),
                   semester: this.getValue('semester'),
                   domain: this.getValue('domain'),
-                  score: parseInt(this.getValue('score')),
+                  score: parseFloat(this.getValue('score')),
                   studyBefore: this.getValue('studyBefore'),
                   studyTogether: this.getValue('studyTogether'),
                   content: this.getValue('content'),
@@ -252,6 +252,7 @@ class CommentCreate extends Component {
                   <TextField
                     id="score"
                     label="私心推薦指數(0~5分)"
+                    required
                     // value={this.state.score}
                     // onChange={this.handleChange('score')}
                     inputProps={{ min: 0, max: 5, step: 0.5 }}

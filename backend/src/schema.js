@@ -43,7 +43,7 @@ const schema = gql`
     studyTogether: String
     studyBefore: String
     content: String!
-    score: Int
+    score: Float
     author: String
   }
 
@@ -93,7 +93,7 @@ const schema = gql`
     studyTogether: String
     studyBefore: String
     content: String!
-    score: Int
+    score: Float
     author: String
     responses: [Response]
   }

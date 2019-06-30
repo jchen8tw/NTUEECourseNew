@@ -55,6 +55,10 @@ const styles = theme => ({
     maxWidth: '1000px',
     minWidth: '400px'
   },
+  maintable: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3
+  },
   tableCell: {
     padding: '0 3% 0 2%',
     minWidth: '70px',
@@ -84,6 +88,16 @@ const styles = theme => ({
     minHeight: '70px',
     fontSize: '1.2em',
     width: '10%',
+    '& > a': {
+      color: 'inherit'
+    }
+  },
+  tableCellTeacher: {
+    padding: '0 3% 0 2%',
+    minWidth: '20px',
+    minHeight: '70px',
+    fontSize: '1.2em',
+    width: '15%',
     '& > a': {
       color: 'inherit'
     }
@@ -120,7 +134,7 @@ class CommentTab extends Component {
             <Tab label="選修" component={Link} to={'/commentlist'} />
             <Tab label="十選二" component={Link} to={'/commentlist'} />
             <Tab label="專題" component={Link} to={'/commentlist'} />
-            <Tab label="發表評論" />
+            <Tab label="發表評論" component={Link} to={'/commentlist'} />
             <Tab label="文章管理" />
           </Tabs>
         </AppBar>
@@ -138,7 +152,7 @@ class CommentTab extends Component {
           </TabContainer>
         )}
         {tabIndex === 5 && (
-          <Route path="/commentlist" component={CommentCreate} />
+          <Route exact path="/commentlist" component={CommentCreate} />
         )}
         {tabIndex === 6 && <Link to="/manageComment" />}
       </div>
@@ -164,14 +178,14 @@ class CommentTitleListRaw extends Component {
     }
     return (
       <Paper className={classes.CommentTitleListRawRoot}>
-        <Table className={classes.table}>
+        <Table className={classes.maintable}>
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>名稱</TableCell>
               <TableCell align="right" className={classes.tableCellType}>
                 類別
               </TableCell>
-              <TableCell align="right" className={classes.tableCell}>
+              <TableCell align="right" className={classes.tableCellTeacher}>
                 開課教授
               </TableCell>
               <TableCell align="right" className={classes.tableCellScore}>
@@ -217,14 +231,17 @@ class CommentTitleListRaw extends Component {
                           ? row.type
                           : `${row.type}/${row.domain}`}
                       </TableCell>
-                      <TableCell align="right" className={classes.tableCell}>
+                      <TableCell
+                        align="right"
+                        className={classes.tableCellTeacher}
+                      >
                         {row.teacher}
                       </TableCell>
                       <TableCell
                         align="right"
                         className={classes.tableCellScore}
                       >
-                        {row.score || ''}
+                        {Number.isFinite(row.score) && row.score}
                       </TableCell>
                       <TableCell align="right" className={classes.tableCell}>
                         {row.author || ''}
@@ -297,15 +314,7 @@ class CommentListRaw extends Component {
             color="inherit"
             onClick={this.handleTeacherClick}
           >
-            教授
-          </Button>
-          <Button
-            variant="outlined"
-            type="submit"
-            className={classes.button}
-            color="inherit"
-          >
-            評論數
+            開課教授
           </Button>
         </form>
         <CommentTitleList

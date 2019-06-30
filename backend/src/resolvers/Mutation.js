@@ -123,6 +123,7 @@ const Mutation = {
   async createComment(_, { data }, context) {
     const _id = new mongoose.Types.ObjectId();
     const { score } = data;
+    console.log(score);
     if (score > 5) return '拎北跟你講過滿分5分聽不懂逆?欠嗆?';
     if (score < 0) return '阿不是不能低於0分?眼幹逆';
     if (!Number.isInteger(score * 2)) return '要是0.5分為一等級啦87';

@@ -10,8 +10,9 @@ mongoose.connect('mongodb://test:debug1@ds231207.mlab.com:31207/course_test', {
   useNewUrlParser: true,
   useCreateIndex: true // Avoid node DeprecationWarning
 });
-mongoose.connection.once('open', () => {
+mongoose.connection.once('open', async () => {
   console.log('Successfully connected to MongoDB in storeToDB');
+  await CourseComment.deleteMany({});
   for (let i = 0; i < semester.length * type.length; ++i) {
     if (i === 3) continue;
     fs.readFile(

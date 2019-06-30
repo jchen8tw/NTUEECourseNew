@@ -29,7 +29,7 @@ export const CREATE_COMMENT_MUTATION = gql`
     $studyTogether: String
     $studyBefore: String
     $content: String!
-    $score: Int
+    $score: Float
     $author: String
   ) {
     message: createComment(
