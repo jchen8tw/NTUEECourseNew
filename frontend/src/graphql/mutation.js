@@ -79,3 +79,24 @@ export const RESPONSE_MUTATION = gql`
     )
   }
 `;
+
+export const UPDATE_WISH_WITH_TEAMMATE = gql`
+  mutation(
+    $student_ids: [String!]
+    $course_name: String!
+    $priority: [String!]!
+  ) {
+    wish: updateWishWithTeammate(
+      data: {
+        student_ids: $student_ids
+        course_name: $course_name
+        priority: $priority
+      }
+    ) {
+      _id
+      student_ids
+      name: course_name
+      priority
+    }
+  }
+`;

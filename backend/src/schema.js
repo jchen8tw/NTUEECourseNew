@@ -23,6 +23,7 @@ const schema = gql`
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
     updateWish(data: WishUpdateInput!): Wish! # Normal course without teammate
+    updateWishWithTeammate(data: WishUpdateWithTeammateInput!): Wish! # Course with teammate
   }
 
   input LoginInput {
@@ -58,6 +59,13 @@ const schema = gql`
     course_name: String!
     priority: [String!]!
   }
+
+  input WishUpdateWithTeammateInput {
+    student_ids: [String!]
+    course_name: String!
+    priority: [String!]!
+  }
+
   input ResponseInput {
     author: String
     content: String

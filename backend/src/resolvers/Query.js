@@ -86,7 +86,8 @@ const Query = {
 
   async allWishes(_, __, context) {
     const student_id = context.passwordProcessor.getStudentID(context.token);
-    return await Wish.find({ student_ids: student_id }).exec();
+    let res = await Wish.find({ student_ids: student_id }).exec();
+    return res;
   }
 };
 
