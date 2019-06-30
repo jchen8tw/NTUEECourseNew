@@ -25,11 +25,8 @@ const schema = gql`
     changeNickname(nickname: String!): Boolean!
     changePassword(password: String!): Boolean!
     updateWish(data: WishUpdateInput!): Wish! # Normal course without teammate
-<<<<<<< HEAD
     startAdmission:Admission_Result!
-=======
     updateWishWithTeammate(data: WishUpdateWithTeammateInput!): Wish! # Course with teammate
->>>>>>> master
   }
 
   input LoginInput {
