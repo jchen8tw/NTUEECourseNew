@@ -55,12 +55,13 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    maxWidth: '1000px',
-    minWidth: '400px'
+    maxWidth: '1000px'
+    // minWidth: '400px'
   },
   maintable: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing.unit * 3,
+    display: 'block'
   },
   tableCell: {
     padding: '0 3% 0 2%',
