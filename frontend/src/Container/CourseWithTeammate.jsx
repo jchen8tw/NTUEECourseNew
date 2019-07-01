@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Paper, TextField, Typography,LinearProgress } from '@material-ui/core';
+import {
+  Paper,
+  TextField,
+  Typography,
+  LinearProgress
+} from '@material-ui/core';
 import { Mutation } from 'react-apollo';
 import { getStudentID } from '../util';
 import { UPDATE_WISH_WITH_TEAMMATE } from '../graphql/mutation';
@@ -73,9 +78,9 @@ class TeammateInput extends React.Component {
         </Typography>
         <TextField
           value={this.state.student_ids[0]}
-          label={`你自己的學號`}
+          onChange={this.handleChange(0)}
+          label={`你自己的學號(不選請留白)`}
           style={{ display: 'block' }}
-          disabled
         />
         {this.state.student_ids.map(
           (i, index) =>
