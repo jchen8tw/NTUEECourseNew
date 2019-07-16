@@ -49,7 +49,31 @@ class NavBar extends React.Component {
 
   render() {
     const { classes, tabIndex, handleTabChange, logout, location } = this.props;
-    if (location.pathname.match(/admin$/)) return <p>you are admin</p>;
+    if (location.pathname.match(/admin$/))
+      return (
+        <div className={classes.root}>
+          <AppBar position="static">
+            <Toolbar className={classes.toolbar}>
+              <IconButton
+                aria-owns="account"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={this.handleClick}
+                style={{ padding: 0 }}
+              >
+                <AccountCircle style={{ fontSize: '2.1rem' }} />
+              </IconButton>
+              <Menu
+                anchorEl={this.state.anchorEl}
+                open={!!this.state.anchorEl}
+                onClose={this.handleClose}
+              >
+                <MenuItem onClick={logout}>登出</MenuItem>
+              </Menu>
+            </Toolbar>
+          </AppBar>
+        </div>
+      );
     return (
       <div className={classes.root}>
         <AppBar position="static">
