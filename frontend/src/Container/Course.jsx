@@ -22,7 +22,7 @@ const Course = props => {
   //need to add a dummy list item to default not selecting any course
   let selected = [],
     notSelected = [];
-  let priority = props.getSelected(name).priority;
+  let priority = props.getSelected(name).priority || [];
   courses.forEach(course => {
     let res = { id: course._id, text: course.teacher };
     let ind = priority.indexOf(course.teacher);
