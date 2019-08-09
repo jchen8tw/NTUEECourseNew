@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
   resetError: () => dispatch(send_error(null))
 });
 
-// test
+// test Mike
 
 function App(props) {
   return (
