@@ -23,6 +23,8 @@ const mapDispatchToProps = dispatch => ({
   resetError: () => dispatch(send_error(null))
 });
 
+// test
+
 function App(props) {
   return (
     <BrowserRouter>
